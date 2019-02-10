@@ -71,20 +71,6 @@ TEST(Levelized_outputLevelConst_Test, TEST02) {
 	EXPECT_NO_THROW(int ilevel = l->outputLevelConst(););
 }
 
-//int outputLevelConst(void* _obj) const;
-//void outputLevelZero(void* _obj);
-//void outputLevelClear(void* _obj);
-TEST(Levelized_outputLevelConst_Test, TEST03) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1, b1);
-	Levelized* l = new Levelized{ a1,b1 };
-	l->outputLevelZero();
-	l->outputLevelClear();
-	EXPECT_ANY_THROW(int olevel = l->outputLevelConst(););
-}
-
 //int outputLevel(void* _obj);
 TEST(Levelized_outputLevel_Test, TEST01) {
 	Connecting*a = new Connecting; Connecting*b = new Connecting;
