@@ -76,7 +76,15 @@ Levelized * Parser::newNode(std::string _functionName, std::unordered_set<Leveli
 	} else {
 		function = new BooleanFunction(_functionName);
 	}
-	Levelized* newNode = new SimulationNode<bool>(function, _inputs, _outputs);
+	std::unordered_set <SimulationLine<bool>*> inputs;
+	std::unordered_set <SimulationLine<bool>*> outputs;
+	for (Levelized* input : _inputs) {
+		inputs.emplace(dynamic_cast<SimulationLine<bool>*>(input));
+	}
+	for (Levelized* output : _outputs) {
+		outputs.emplace(dynamic_cast<SimulationLine<bool>*>(output));
+	}
+	Levelized* newNode = new SimulationNode<bool>(function, inputs, outputs);
 	return newNode;
 }
 

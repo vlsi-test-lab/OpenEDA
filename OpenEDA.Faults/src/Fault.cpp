@@ -37,8 +37,8 @@ Value<_primitive> Fault<_primitive>::deactivate() {
 }
 
 template<class _primitive>
-std::set<std::pair<size_t, Evented*>> Fault<_primitive>::go() {
-	std::set<std::pair<size_t, Evented*>> toReturn;
+std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
+	std::set<std::pair<size_t, Evented<_primitive>*>> toReturn;
 
 	SimulationLine<_primitive> line = dynamic_cast<SimulationLine<_primitive>*>(this->location_);
 	line->value(this->value_);

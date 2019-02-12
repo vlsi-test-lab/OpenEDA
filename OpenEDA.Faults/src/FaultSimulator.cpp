@@ -14,7 +14,7 @@
 template<class _primitive>
 std::vector<Value<_primitive>> FaultSimulator<_primitive>::applyStimulus(Circuit * _circuit, 
 																		 std::vector<Value<_primitive>> _stimulus,
-																		 EventQueue _simulationQueue, 
+																		 EventQueue<_primitive> _simulationQueue,
 																		 std::vector<SimulationNode<_primitive>*> _inputs) 
 {
 	//Obatin the "non-faulty" state.

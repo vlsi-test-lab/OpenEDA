@@ -60,10 +60,8 @@ private:
 	 * Create a new Node from the given information.
 	 *
 	 * @param _functionName The name of the function to create.
-	 * @param _inputs Input lines to the given node.
-	 * @param _outputs Output lines of the given node.
-	 * @param _pi (optional) Is the Node a PI (optional, default = false).
-	 * @param _po (optional) Is the node a PO (optional, default = false).
+	 * @param _inputs Input lines to the given node. It is presumed these will be cast.
+	 * @param _outputs Output lines of the given node. It is presumed these will be cast.
 	 * @return The newly created Node.
 	 */
 	virtual Levelized* newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs);

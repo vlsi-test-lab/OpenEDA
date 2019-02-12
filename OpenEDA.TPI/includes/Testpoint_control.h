@@ -57,13 +57,10 @@ private:
 
 	/*
 	 * The object which was previously connected to before this TP was activated.
+	 *
+	 * Cann be null.
 	 */
 	Connecting* oldDriver_;
-
-	/*
-	 * Was the old driver a node?
-	 */
-	bool oldDriverWasNode_;
 
 	/*
 	 * The new node created to implement a constant value.

@@ -189,9 +189,17 @@ public:
 	 * @param _pi (optional) Is the Node a PI (optional, default = false).
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 */
-	COPNode(Function<bool>* _function, std::unordered_set<Line*> _inputs, std::unordered_set<Line*> _outputs) :
-		SimulationNode(_function, _inputs, _outputs), COP(true) {
-
+	COPNode(Function<bool>* _function, 
+			std::unordered_set<COPLine*> _inputs, 
+			std::unordered_set<COPLine*> _outputs
+	) :
+		SimulationNode(
+			_function, 
+			std::unordered_set<SimulationLine<bool>*>(_inputs.begin(), _inputs.end()), 
+			std::unordered_set<SimulationLine<bool>*>(_outputs.begin(), _outputs.end())
+		),
+		COP(true) 
+	{
 	}
 
 	/*

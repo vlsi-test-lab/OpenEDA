@@ -29,7 +29,7 @@ TEST(ParserTest, TEST02) {
 TEST(ParserTest, TEST03) {
 	Parser parse;
 	Circuit* c = parse.Parse("c17.bench");
-	std::unordered_set<Node*> nodes = c->nodes();
+	std::unordered_set<Levelized*> nodes = c->nodes();
 	EXPECT_EQ(13,nodes.size());
 }
 
@@ -37,7 +37,7 @@ TEST(ParserTest, TEST03) {
 TEST(ParserTest, TEST04) {
 	Parser parse;
 	Circuit* c = parse.Parse("c17.bench");
-	std::unordered_set<Node*> pis = c->pis();
+	std::unordered_set<Levelized*> pis = c->pis();
 	EXPECT_EQ(5, pis.size());
 }
 
@@ -45,6 +45,6 @@ TEST(ParserTest, TEST04) {
 TEST(ParserTest, TEST05) {
 	Parser parse;
 	Circuit* c = parse.Parse("c17.bench");
-	std::unordered_set<Node*> pos = c->pos();
+	std::unordered_set<Levelized*> pos = c->pos();
 	EXPECT_EQ(2, pos.size());
 }

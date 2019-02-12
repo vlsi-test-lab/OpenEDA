@@ -25,25 +25,24 @@ SimulationNode<_primitive>* Testpoint_control<_primitive>::activate() {
 		throw "Cannot activate control testpoint: already activated.";
 	}
 	this->newNode = new SimulationNode<_primitive>(
-		CopyFunction<_primitive>(
-			"constant",
-			std::unordered_set<Line*>(),
-			std::unordered_set<Line*>()
+		new CopyFunction<_primitive>(
+			"constant"
 			)
 		);
 
-	this->oldDriver_ = *(this->location_->Line::inputs().begin());
-	this->oldDriverWasNode_ = this->location_->isInputNode();
+	std::vector<Connecting*> inputs = this->location_->inputs();
+	if (inputs.size() > 0) {
+		this->oldDriver_ = inputs.at(0);
+		this->location_->removeInput(oldDriver_);
+	}
 	this->location_->setInputNode(this->newNode);
 	return this->newNode;
 }
 
 template<class _primitive>
 SimulationNode<_primitive>* Testpoint_control<_primitive>::deactivate() {
-	if (this->oldDriverWasNode_ == true) {
-		this->location_->setInputNode(dynamic_cast<Node*>(this->oldDriver_));
-	} else {
-		this->location_->setInputNode(dynamic_cast<Node*>(nullptr));
+	this->location_->removeInput(this->newNode_);
+	if (this->oldDriver_ != nullptr) {
 		this->location_->addInput(oldDriver_);
 	}
 	SimulationNode<_primitive>* toReturn = this->newNode;

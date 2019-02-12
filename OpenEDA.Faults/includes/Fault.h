@@ -33,7 +33,7 @@ class FaultyLine;
  * @param _primitive The data primitive to simulate.
  */
 template <class _primitive>
-class Fault : public Evented {
+class Fault : public Evented<_primitive> {
 public:
 	/*
 	 * The given object is stuck at the given Value.
@@ -74,7 +74,7 @@ public:
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	virtual std::set<std::pair<size_t, Evented*>> go();
+	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go();
 
 private:
 	/*
