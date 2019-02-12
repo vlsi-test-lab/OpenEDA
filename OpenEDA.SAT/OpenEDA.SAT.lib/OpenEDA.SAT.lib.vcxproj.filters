@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\Combination.hpp">
+    <ClInclude Include="..\includes\Combination.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\SAT.h">
@@ -26,7 +26,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SAT.cpp">
+    <ClCompile Include="..\src\Combination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

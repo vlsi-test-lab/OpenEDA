@@ -12,7 +12,6 @@
 
 #include "Simulator.h"
 #include "SAT.h"
-#include "Trace.h"
 #include "Value.h"
 #include "ValueVectorFunctions.hpp"
 
@@ -29,8 +28,8 @@ void RestrictedSimulator<_primitive>::setActiveSimulationNodes(std::unordered_se
 template<class _primitive>
 void RestrictedSimulator<_primitive>::unssetActiveSimulationNodes(std::unordered_set<SatisfiableNode<_primitive>*> _nodes) {
 	for (SatisfiableNode<_primitive>* node : _nodes) {
-		SimulationLine<_primitive>* output = dynamic_cast<SimulationLine<_primitive>*>(*(node->Node::outputs().begin()));
-		output->value(Value<_primitive>());
+		TraceLine<_primitive>* output = dynamic_cast<TraceLine<_primitive>*>(*(node->outputs().begin()));
+		output->value(std::vector<Value<_primitive>>(1,Value<_primitive>()));
 		TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(node);
 		cast->flag(true);
 	}
@@ -45,7 +44,7 @@ template<class T>
 std::vector<Value<T>> nodesToValues(std::unordered_set<SatisfiableNode<T>*> _nodes) {
 	std::vector<Value<T>> toReturn;
 	for (SimulationNode<T>* node : _nodes) {
-		SimulationLine<T>* output = dynamic_cast<SimulationLine<T>*>(*(node->Node::outputs().begin()));
+		TraceLine<T>* output = dynamic_cast<TraceLine<T>*>(*(node->outputs().begin()));
 		toReturn.push_back(output->value());
 	}
 	return toReturn;
@@ -101,9 +100,8 @@ Combination<_primitive> SAT<_primitive>::satisfy(Circuit* _circuit,
 												 std::unordered_set<SatisfiableNode<_primitive>*>& _coi)
 {
 	if (_pis.empty() || _coi.empty()) {
-		std::unordered_set<Line*> lines(_combination->lines().begin(), _combination->lines().end());
 		std::unordered_set<TraceNode<_primitive>*> coi;
-		std::unordered_set<TraceNode<_primitive>*> pis = Trace<_primitive>::pis(_circuit, lines, coi);
+		std::unordered_set<TraceNode<_primitive>*> pis = _combination->pis(coi);
 		_pis = convert<_primitive>(pis);// std::unordered_set<SatisfiableNode<_primitive>*>(pis.begin(), pis.end());
 		_coi = convert<_primitive>(coi);//std::unordered_set<SatisfiableNode<_primitive>*>(coi.begin(), coi.end());
 	}
@@ -113,12 +111,12 @@ Combination<_primitive> SAT<_primitive>::satisfy(Circuit* _circuit,
 	
 	std::vector<SimulationNode<_primitive>*> simulationPis(_pis.begin(), _pis.end());
 	while (this->timeLeft(startTime) == true) {
-		simulator_.applyStimulus(_circuit, currentPiValues, EventQueue(), simulationPis);
+		simulator_.applyStimulus(_circuit, currentPiValues, EventQueue<_primitive>(), simulationPis);
 		if (_combination->seen() == true) {
 			simulator_.unssetActiveSimulationNodes(_coi); //for (SatisfiableNode<_primitive>* node : _coi) {node->flag(false); } //
-			std::unordered_set<SimulationLine<_primitive>*> lines;
+			std::unordered_set<TraceLine<_primitive>*> lines;
 			for (SatisfiableNode<_primitive>* pi : _pis) {
-				lines.emplace(dynamic_cast<SimulationLine<_primitive>*>(*(pi->Node::outputs().begin())));
+				lines.emplace(dynamic_cast<TraceLine<_primitive>*>(*(pi->outputs().begin())));
 			}
 			return Combination<_primitive>(lines, nodesToValues(_pis), true) ;
 		}
@@ -144,7 +142,7 @@ Combination<_primitive> SAT<_primitive>::satisfy(Circuit* _circuit,
 
 template<class _primitive>
 void SAT<_primitive>::prepare(Circuit * _circuit) {
-	for (Node* node : _circuit->nodes()) {
+	for (Levelized* node : _circuit->nodes()) {
 		SatisfiableNode<_primitive>* cast = dynamic_cast<SatisfiableNode<_primitive>*>(node);
 		cast->flag(true);
 	}
@@ -152,7 +150,7 @@ void SAT<_primitive>::prepare(Circuit * _circuit) {
 
 template<class _primitive>
 void SAT<_primitive>::release(Circuit * _circuit) {
-	for (Node* node : _circuit->nodes()) {
+	for (Levelized* node : _circuit->nodes()) {
 		SatisfiableNode<_primitive>* cast = dynamic_cast<SatisfiableNode<_primitive>*>(node);
 		cast->flag(false);
 	}

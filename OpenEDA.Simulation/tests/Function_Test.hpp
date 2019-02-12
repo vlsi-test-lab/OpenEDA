@@ -242,62 +242,63 @@ TEST(FunctionedConstructorTest, TEST01) {
 	EXPECT_EQ(functed->function(), nullptr);
 }
 
-//Functioned();
-TEST(FunctionedConstructorTest, TEST02) {
-	BooleanFunction* bfunc = new BooleanFunction("or");
-	Value<bool> val1(0), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	Connecting* c1 = new Connecting;
-	Connecting* c2 = new Connecting;
-	std::unordered_set<Connecting*>ip = { c1 };
-	std::unordered_set<Connecting*>op = { c2 };
-	Functioned<bool> funced(bfunc,ip,op);
-	Function<bool>* func = funced.function();
-	EXPECT_EQ(func->evaluate(vec_val),0);
-}
-
-//Functioned();
-//Function<T>* function() const;
-TEST(FunctionedConstructorTest, TEST03) {
-	BooleanFunction* bfunc = new BooleanFunction("or");
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	Connecting* c1 = new Connecting;
-	Connecting* c2 = new Connecting;
-	std::unordered_set<Connecting*>ip = { c1 };
-	std::unordered_set<Connecting*>op = { c2 };
-	Functioned<bool> funced(bfunc, ip, op);
-	Function<bool>* func = funced.function();
-	EXPECT_EQ(func->evaluate(vec_val), 1);
-}
-
-//Functioned();
-//Function<T>* function() const;
-TEST(FunctionedConstructorTest, TEST04) {
-	BooleanFunction* bfunc = new BooleanFunction("and");
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	Connecting* c1 = new Connecting;
-	Connecting* c2 = new Connecting;
-	std::unordered_set<Connecting*>ip = { c1 };
-	std::unordered_set<Connecting*>op = { c2 };
-	Functioned<bool> funced(bfunc, ip, op);
-	Function<bool>* func = funced.function();
-	EXPECT_EQ(func->evaluate(vec_val), 0);
-}
-
-//Functioned();
-//Function<T>* function() const;
-TEST(FunctionedFunctionTest, TEST01) {
-	BooleanFunction* bfunc = new BooleanFunction("and");
-	BooleanFunction* bfunc1 = new BooleanFunction("or");
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	Connecting* c1 = new Connecting;
-	Connecting* c2 = new Connecting;
-	std::unordered_set<Connecting*>ip = { c1 };
-	std::unordered_set<Connecting*>op = { c2 };
-	Functioned<bool> funced(bfunc, ip, op);
-	Function<bool>* func = funced.function(bfunc1);
-	EXPECT_EQ(func->evaluate(vec_val), 1);
-}
+//OBSOLETE
+////Functioned();
+//TEST(FunctionedConstructorTest, TEST02) {
+//	BooleanFunction* bfunc = new BooleanFunction("or");
+//	Value<bool> val1(0), val2(0), val;
+//	std::vector<Value<bool>>vec_val = { val1,val2 };
+//	Connecting* c1 = new Connecting;
+//	Connecting* c2 = new Connecting;
+//	std::unordered_set<Connecting*>ip = { c1 };
+//	std::unordered_set<Connecting*>op = { c2 };
+//	Functioned<bool> funced(bfunc,ip,op);
+//	Function<bool>* func = funced.function();
+//	EXPECT_EQ(func->evaluate(vec_val),0);
+//}
+//
+////Functioned();
+////Function<T>* function() const;
+//TEST(FunctionedConstructorTest, TEST03) {
+//	BooleanFunction* bfunc = new BooleanFunction("or");
+//	Value<bool> val1(1), val2(0), val;
+//	std::vector<Value<bool>>vec_val = { val1,val2 };
+//	Connecting* c1 = new Connecting;
+//	Connecting* c2 = new Connecting;
+//	std::unordered_set<Connecting*>ip = { c1 };
+//	std::unordered_set<Connecting*>op = { c2 };
+//	Functioned<bool> funced(bfunc, ip, op);
+//	Function<bool>* func = funced.function();
+//	EXPECT_EQ(func->evaluate(vec_val), 1);
+//}
+//
+////Functioned();
+////Function<T>* function() const;
+//TEST(FunctionedConstructorTest, TEST04) {
+//	BooleanFunction* bfunc = new BooleanFunction("and");
+//	Value<bool> val1(1), val2(0), val;
+//	std::vector<Value<bool>>vec_val = { val1,val2 };
+//	Connecting* c1 = new Connecting;
+//	Connecting* c2 = new Connecting;
+//	std::unordered_set<Connecting*>ip = { c1 };
+//	std::unordered_set<Connecting*>op = { c2 };
+//	Functioned<bool> funced(bfunc, ip, op);
+//	Function<bool>* func = funced.function();
+//	EXPECT_EQ(func->evaluate(vec_val), 0);
+//}
+//
+////Functioned();
+////Function<T>* function() const;
+//TEST(FunctionedFunctionTest, TEST01) {
+//	BooleanFunction* bfunc = new BooleanFunction("and");
+//	BooleanFunction* bfunc1 = new BooleanFunction("or");
+//	Value<bool> val1(1), val2(0), val;
+//	std::vector<Value<bool>>vec_val = { val1,val2 };
+//	Connecting* c1 = new Connecting;
+//	Connecting* c2 = new Connecting;
+//	std::unordered_set<Connecting*>ip = { c1 };
+//	std::unordered_set<Connecting*>op = { c2 };
+//	Functioned<bool> funced(bfunc, ip, op);
+//	Function<bool>* func = funced.function(bfunc1);
+//	EXPECT_EQ(func->evaluate(vec_val), 1);
+//}

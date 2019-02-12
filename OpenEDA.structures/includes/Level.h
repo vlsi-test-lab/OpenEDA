@@ -24,21 +24,19 @@
  * implies a "level" relative to a given object is craeted. This is most likely
  * applied to Verticies relative directed-graph objects.
  */
-class Levelized : public Connecting {
+class Levelized : public virtual Connecting {
 public:
-	/*
-	 * By default, a Levelized object will have an undefined level.
-	 */
-	Levelized();
-
 	/*
 	 * Create an object which are connected to other Levelized objects.
 	 *
-	 * @param inputs A vector of input Levelized objects.
-	 * @param outputs A vector of output Levelized objects.
+	 * @param (optional) _inputs A vector of input Levelized objects.
+	 * @param (optioanl) _outputs A vector of output Levelized objects.
+	 * @param (optional) _name Name of the connection (defaults to empty strying).
 	 */
-	Levelized(std::unordered_set<Connecting*> _inputs,
-			  std::unordered_set<Connecting*> _outputs);
+	Levelized(std::unordered_set<Levelized*> _inputs = std::unordered_set<Levelized*>(),
+			  std::unordered_set<Levelized*> _outputs = std::unordered_set<Levelized*>(),
+			  std::string _name = ""
+	);
 
 	/*
 	 * Calculate and return the input level.

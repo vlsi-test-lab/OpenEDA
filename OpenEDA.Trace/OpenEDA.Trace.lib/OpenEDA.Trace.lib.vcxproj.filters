@@ -18,15 +18,15 @@
     <ClInclude Include="..\includes\Flagged.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\Trace.h">
+    <ClInclude Include="..\includes\TraceStructures.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\TraceStructures.hpp">
+    <ClInclude Include="..\includes\Tracable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Trace.cpp">
+    <ClCompile Include="..\src\Tracable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -60,7 +60,7 @@ public:
 	 */
 	std::vector<Value<T>> applyStimulus(Circuit * _circuit, 
 										std::vector<Value<T>> _stimulus, 
-										EventQueue _simulationQueue = _simulationQueue(),
+										EventQueue<T> _simulationQueue = _simulationQueue(),
 										std::vector<SimulationNode<T>*> _inputs = std::vector<SimulationNode<T>*>());
 
 protected:

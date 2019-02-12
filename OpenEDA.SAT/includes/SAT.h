@@ -14,7 +14,7 @@
 #include <ctime>
 
 #include "Simulator.h"
-#include "Combination.hpp"
+#include "Combination.h"
 #include "SATStructures.hpp"
 
 //Forward declaration

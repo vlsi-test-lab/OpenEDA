@@ -128,8 +128,11 @@ Value<T> Valued<T>::value() const {
 }
 
 template<class T>
-Value<T> Valued<T>::value(Value<T> _value) {
-	this->value_ = _value;
+Value<T> Valued<T>::value(std::vector<Value<T>> _value) {
+	if (_value.size() != 1) {
+		throw "Cannot set value: one Value should be given.";
+	}
+	this->value_ = _value.at(0);
 	return this->value_;
 }
 

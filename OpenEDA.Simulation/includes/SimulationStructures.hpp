@@ -12,9 +12,8 @@
 #define SimulationStructures_h
 
 #include "Value.h"
-#include "Line.h"
+#include "Level.h"
 #include "Function.h"
-#include "Node.h"
 #include "EventQueue.h"
 #include "SimulationNet.hpp"
 
@@ -25,15 +24,15 @@
  *
  * A BinaryLine is capible of holding a Value.
  *
- * @param _T The underlying primitive to implement in Simulation (bool, char, etc.)
+ * @param _primitive The underlying primitive to implement in Simulation (bool, char, etc.)
  */
-template <class _T>
-class SimulationLine : public Valued<_T>, public virtual Line {
+template <class _primitive>
+class SimulationLine : public Evented<_primitive> {
 public:
 	/*
 	 * Create a simulation line with a "UNDEF" name.
 	 */
-	SimulationLine() : Line(nullptr, nullptr, nullptr, std::unordered_set<Line*>(), "UNDEF") {
+	SimulationLine() : Evented<_primitive>() {
 	};
 
 	/*
@@ -41,7 +40,15 @@ public:
 	 *
 	 * @param _name The name of the Line
 	 */
-	SimulationLine( std::string _name) : Line(nullptr, nullptr, nullptr, std::unordered_set<Line*>(), _name) {
+	SimulationLine(
+		std::string _name
+	) : 
+		Evented<_primitive>(
+			std::unordered_set<Evented<_primitive>*>() ,
+			std::unordered_set<Evented<_primitive>*>(),
+			_name
+		) 
+	{
 	};
 };
 
@@ -49,15 +56,15 @@ public:
 /*
  * A Node which contains all parts needed for event-based simulation.
 
- * @param _T The underlying primitive to implement in Simulation (bool, char, etc.)
+ * @param _primitive The underlying primitive to implement in Simulation (bool, char, etc.)
  */
-template <class _T>
-class SimulationNode : virtual public Functioned<_T>, virtual public Node, public Evented {
+template <class _primitive>
+class SimulationNode : public Functioned<_primitive>, public Evented<_primitive> {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.
 	 */
-	SimulationNode() : Node() {
+	SimulationNode() : Evented<_primitive>() {
 		this->function_ = new BooleanFunction("copy");
 	}
 
@@ -68,41 +75,19 @@ public:
 	 * @param _inputs Input lines to the given node.
 	 * @param _outputs Output lines to the given node.
 	 */
-	SimulationNode(Function<_T>* _function, std::unordered_set<Line*> _inputs, std::unordered_set<Line*> _outputs) : Node(_inputs, _outputs) {
+	SimulationNode(
+		Function<_primitive>* _function, 
+		std::unordered_set<SimulationLine<_primitive>*> _inputs, 
+		std::unordered_set<SimulationLine<_primitive>*> _outputs) :
+		Evented<_primitive>(
+			std::unordered_set<Evented<_primitive>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Evented<_primitive>*>(_outputs.begin(), _outputs.end())
+		) 
+	{
 		this->function(_function);
 	}
 
-	/*
-	 * Evaulate this Node's output value and return new simulation events.
-	 *
-	 * If the Node's new output value is different than it was before (i.e., if 
-	 * the output Line's value is different than the Node's evaluated Value), 
-	 * the output Line (and all Lines driven by the Line) will have its Value
-	 * updated. All nodes which need to be re-evaluated (all nodes driven by this
-	 * node) and their level will be returned.
-	 *
-	 * If the value does not change, then an empty list will be returned.
-	 *
-	 * @return New events (and their priority) created by activating this event.
-	 */
-	virtual std::set<std::pair<size_t, Evented*>> go() {
-		SimulationLine<_T>* outputLine = dynamic_cast<SimulationLine<_T>*>(*(this->Levelized::outputs().begin())); //NOTE: do I NEED the "Levelized"?
-		Value<_T> oldValue = outputLine->value();
-		Value<_T> newValue = this->evaluate();
-		std::set<std::pair<size_t, Evented*>> toReturn;
-		if (Value<_T>::different(oldValue, newValue)) { //Value changed, so change line values and update the queue.
-			SimulationNet<_T> net(outputLine);
-			net.value(newValue);
-			for (SimulationNode<_T>* fanoutNode : net.fanoutNodes()) {
-				toReturn.emplace(
-					std::pair<size_t, SimulationNode<_T>*>(
-						fanoutNode->inputLevelConst(), fanoutNode
-					)
-				);
-			}
-		}
-		return toReturn; //May be empty if nothing is added.
-	}
+
 
 };
 

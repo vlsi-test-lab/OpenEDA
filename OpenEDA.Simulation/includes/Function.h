@@ -162,7 +162,7 @@ public:
  * Function.
  */
 template <class T>
-class Functioned : Connecting {
+class Functioned : public Valued<T>  {
 public:
 	/*
 	 * The default Functioned object is connected no nothing and has no (nullptr) function.
@@ -176,8 +176,7 @@ public:
 	 * @param _inputs The input Connecting objects of this object.
 	 * @param _outputs The output Connecting objects of this object.
 	 */
-	Functioned(Function<T>* _function, std::unordered_set<Connecting*> _inputs,
-			   std::unordered_set<Connecting*> _outputs);
+	Functioned(Function<T>* _function);
 
 	/*
 	 * Delete this Functioned object.
@@ -187,15 +186,25 @@ public:
 	~Functioned();
 
 	/*
-	 * Evaluate this object's Function using values.
+	 * Return the last evaulation of this Function.
 	 *
-	 * @param _values The Values to evaluate using this object's function.
-	 * @return The evaluated value of this object.
+	 * @return The last Value created by this Function.
 	 */
-	virtual Value<T> evaluate();
+//DELETE note needed: function is same as inherited.	virtual Value<T> value() const;
 
 	/*
-	 * Rreturns this object's Function.
+	 * Evaluate this function.
+	 *
+	 * The given vector will be passed to this object's Function. The value held
+	 * by this function will also be set.
+	 *
+	 * @param _value The vector to evaluate.
+	 * @return The output of the function.
+	 */
+	virtual Value<T> value(std::vector<Value<T>> _value);
+
+	/*
+	 * Returns this object's Function.
 	 *
 	 * @return This object's Function.
 	 */

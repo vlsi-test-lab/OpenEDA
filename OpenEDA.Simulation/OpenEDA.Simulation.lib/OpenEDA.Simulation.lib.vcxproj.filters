@@ -36,6 +36,9 @@
     <ClInclude Include="..\includes\SimulationNet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\Net.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Function.cpp">

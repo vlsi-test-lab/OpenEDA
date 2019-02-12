@@ -60,11 +60,11 @@ Circuit * Parser::Parse(std::string _filePath) {
 	return toReturn;
 }
 
-Line * Parser::newLine(std::string _name) {
+Levelized * Parser::newLine(std::string _name) {
 	return new SimulationLine<bool>(_name);
 }
 
-Node * Parser::newNode(std::string _functionName, std::unordered_set<Line*> _inputs, std::unordered_set<Line*> _outputs) {
+Levelized * Parser::newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs) {
 	Function<bool>* function;
 	if (
 		!_functionName.compare("copy") || 
@@ -76,14 +76,14 @@ Node * Parser::newNode(std::string _functionName, std::unordered_set<Line*> _inp
 	} else {
 		function = new BooleanFunction(_functionName);
 	}
-	Node* newNode = new SimulationNode<bool>(function, _inputs, _outputs);
+	Levelized* newNode = new SimulationNode<bool>(function, _inputs, _outputs);
 	return newNode;
 }
 
-void Parser::addLine(Line * _line) {
+void Parser::addLine(Levelized * _line) {
 	std::string name = _line->name();
 	if (lines_.count(name) == 0) {//Name is not in use yet.
-		lines_[name] = std::set<Line*>({ _line });
+		lines_[name] = std::set<Levelized*>({ _line });
 	} else {
 		lines_.at(name).emplace(_line);
 	}
@@ -104,33 +104,33 @@ size_t Parser::ParseLine(std::string _textLine) {
 	}
 	if (!tokins.at(0).compare("OUTPUT") || !tokins.at(0).compare("INPUT")) { //WE HAVE AN OUTPUT/INPUT
 		std::string name = tokins.at(1);
-		Line* line = this->newLine(name);
+		Levelized* line = this->newLine(name);
 		this->addLine(line);
 		if (!tokins.at(0).compare("OUTPUT")) { //po
-			Node* newNode = this->newNode("po", std::unordered_set<Line*>({ line }), std::unordered_set<Line*>());
+			Levelized* newNode = this->newNode("po", std::unordered_set<Levelized*>({ line }), std::unordered_set<Levelized*>());
 			pos_.emplace(newNode);
 			nodes_.emplace(newNode);
-			line->setOutputNode(newNode);
+			line->addOutput(newNode);
 		} else { //pi
-			Node* newNode = this->newNode("pi", std::unordered_set<Line*>(), std::unordered_set<Line*>({ line }));
+			Levelized* newNode = this->newNode("pi", std::unordered_set<Levelized*>(), std::unordered_set<Levelized*>({ line }));
 			pis_.emplace(newNode);
 			nodes_.emplace(newNode);
-			line->setInputNode(newNode);
+			line->addInput(newNode);
 		}
 		return 1;
 	} else { //WE HAVE A GENERIC NODE
 		std::string nodeFunctionName = tokins.at(1); std::transform(nodeFunctionName.begin(), nodeFunctionName.end(), nodeFunctionName.begin(), (int(*)(int))std::tolower);
-		Line* outputLine = this->newLine(tokins.at(0));
+		Levelized* outputLine = this->newLine(tokins.at(0));
 		this->addLine(outputLine);
-		std::unordered_set<Line*> intputLines;
+		std::unordered_set<Levelized*> intputLines;
 		for (size_t i = 2; i < tokins.size(); ++i) {
 			std::string inputLineName = tokins.at(i);
-			Line* inputLine = this->newLine(inputLineName);
+			Levelized* inputLine = this->newLine(inputLineName);
 			this->addLine(inputLine);
 			intputLines.emplace(inputLine);
 		}
 
-		Node* newNode = this->newNode(nodeFunctionName, intputLines, std::unordered_set<Line*>({ outputLine }));
+		Levelized* newNode = this->newNode(nodeFunctionName, intputLines, std::unordered_set<Levelized*>({ outputLine }));
 		this->nodes_.emplace(newNode);
 
 		return intputLines.size() + 1;
@@ -140,15 +140,15 @@ size_t Parser::ParseLine(std::string _textLine) {
 void Parser::MergeLines() {
 	for (auto it = lines_.begin(); it != lines_.end(); ++it) {
 		std::string lineName = it->first;
-		std::set<Line*> lines = it->second;
-		Line* base = nullptr;
-		for (Line* line : lines) {
+		std::set<Levelized*> lines = it->second;
+		Levelized* base = nullptr;
+		for (Levelized* line : lines) {
 			if (line->outputs().size() == 0) { base = line; lines.erase(line); break; }
 		}
 		if (base == nullptr) { throw "Could not merge lines: there is no base."; }
 		if (lines_.size() == 0) { throw "Not enough lines to do a merge, which should not happen."; }
 		if (lines_.size() == 1) { //Same non-fanout line, so delete.
-			Line* toDelete = *lines.begin();
+			Levelized* toDelete = *lines.begin();
 			base->addOutput(*toDelete->outputs().begin());
 			delete toDelete; //This will automatically delete its connections.
 			continue;

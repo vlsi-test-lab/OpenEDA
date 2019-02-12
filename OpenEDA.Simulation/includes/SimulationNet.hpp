@@ -13,8 +13,8 @@
 #ifndef SimulationNet_h
 #define SimulationNet_h
 
-#include "Net.hpp"
 #include "SimulationStructures.hpp"
+#include "Net.hpp"
 
 //Forward declarations.
 template <class T>

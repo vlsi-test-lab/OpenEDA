@@ -10,38 +10,38 @@
 
 #include "Circuit.h"
 
-Circuit::Circuit(std::unordered_set<Node*> _nodes, std::unordered_set<Node*> _inputs, std::unordered_set<Node*> _outputs) {
+Circuit::Circuit(std::unordered_set<Levelized*> _nodes, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs) {
 	nodes_ = _nodes;
 	pis_ = _inputs;
 	pos_ = _outputs;
-	for (Node* pi : pis_) {
+	for (Levelized* pi : pis_) {
 		pi->inputLevelZero();
 		nodes_.emplace(pi);
 	}
-	for (Node* po : pos_) {
+	for (Levelized* po : pos_) {
 		po->outputLevelZero();
 		nodes_.emplace(po);
 	}
 	
 }
 
-std::unordered_set<Node*> Circuit::nodes() const {
+std::unordered_set<Levelized*> Circuit::nodes() const {
 	return this->nodes_;
 }
 
-std::unordered_set<Node*> Circuit::pis() const {
+std::unordered_set<Levelized*> Circuit::pis() const {
 	return this->pis_;
 }
 
-std::unordered_set<Node*> Circuit::pos() const {
+std::unordered_set<Levelized*> Circuit::pos() const {
 	return this->pos_;
 }
 
-void Circuit::addNode(Node * _node) {
+void Circuit::addNode(Levelized* _node) {
 	this->nodes_.emplace(_node);
 }
 
-Node * Circuit::removeNode(Node * _node) {
+Levelized* Circuit::removeNode(Levelized* _node) {
 	auto iterator = this->nodes_.find(_node);
 	if (iterator == this->nodes_.end()) {
 		throw "Cannot remove node, it does not exist in the circuit.";
@@ -50,13 +50,13 @@ Node * Circuit::removeNode(Node * _node) {
 	return _node;
 }
 
-void Circuit::addPI(Node * _pi) {
+void Circuit::addPI(Levelized* _pi) {
 	this->nodes_.emplace(_pi);
 	this->pis_.emplace(_pi);
 	_pi->inputLevelZero();
 }
 
-Node * Circuit::removePI(Node * _pi) {
+Levelized* Circuit::removePI(Levelized* _pi) {
 	auto iterator = this->nodes_.find(_pi);
 	if (iterator == this->nodes_.end()) {
 		throw "Cannot remove PI, it does not exist in the circuit.";
@@ -69,13 +69,13 @@ Node * Circuit::removePI(Node * _pi) {
 	return _pi;
 }
 
-void Circuit::addPO(Node * _po) {
+void Circuit::addPO(Levelized* _po) {
 	this->nodes_.emplace(_po);
 	this->pos_.emplace(_po);
 	_po->outputLevelZero();
 }
 
-Node * Circuit::removePO(Node * _po) {
+Levelized* Circuit::removePO(Levelized* _po) {
 	auto iterator = this->nodes_.find(_po);
 	if (iterator == this->nodes_.end()) {
 		throw "Cannot remove PO, it does not exist in the circuit.";

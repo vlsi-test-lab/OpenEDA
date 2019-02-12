@@ -98,7 +98,7 @@ float COPLine::calculateObservability(COP * _calling) {
  */
 float manualCOP(COPNode* node, std::vector<float> inputControllabilities) {
 	Function<bool>* func = dynamic_cast<Function<bool>*>(node->function());
-	std::vector<Value<bool>> nodeInputVals = std::vector<Value<bool>>(node->Node::inputs().size(), Value<bool>(false, true, false, true));
+	std::vector<Value<bool>> nodeInputVals = std::vector<Value<bool>>(node->Node::inputs().size(), Value<bool>(false));
 	unsigned long int num0 = 0;
 	unsigned long int num1 = 0;
 	float ret = 1.0;
@@ -186,12 +186,12 @@ float COPNode::calculateObservability(COP * _calling) {
 		return 1.0;
 	}
 	float pPass = 1.0;  //The probability that a signal will pass through the given gate.
-	if (!function->string().compare("and") || !function->string().compare("nand")) {
+	if (function->string() == "and" || function->string() == "nand") {
 		for (Connecting* input : this->Node::inputs()) {
 			COP* cast = dynamic_cast<COP*>(input);
 			pPass *= cast->controllability();
 		}
-	} else if (!function->string().compare("or") || !function->string().compare("nor")) {
+	} else if (function->string() == "or" || function->string() == "nor") {
 		for (Connecting* input : this->Node::inputs()) {
 			COP* cast = dynamic_cast<COP*>(input);
 			pPass *= 1 - cast->controllability();

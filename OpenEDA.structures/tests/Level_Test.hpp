@@ -15,10 +15,9 @@
 
 //int inputLevelConst(void* _obj) const;
 TEST(Levelized_inputLevelConst_Test, TEST01) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1,b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
 	Levelized* l = new Levelized{ a1,b1 };
 	EXPECT_ANY_THROW(int ilevel = l->inputLevelConst(););
 }
@@ -26,10 +25,9 @@ TEST(Levelized_inputLevelConst_Test, TEST01) {
 //int inputLevelConst(void* _obj) const;
 //void inputLevelZero(void* _obj);
 TEST(Levelized_inputLevelConst_Test, TEST02) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
 	Levelized* l = new Levelized{ a1,b1 };
 	l->inputLevelZero();
 	EXPECT_NO_THROW(int ilevel = l->inputLevelConst(););
@@ -39,10 +37,9 @@ TEST(Levelized_inputLevelConst_Test, TEST02) {
 //void inputLevelZero(void* _obj);
 //void inputLevelClear(void* _obj);
 TEST(Levelized_inputLevelConst_Test, TEST03) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
 	Levelized* l = new Levelized{ a1,b1 };
 	l->inputLevelZero();
 	l->inputLevelClear();
@@ -51,10 +48,10 @@ TEST(Levelized_inputLevelConst_Test, TEST03) {
 
 //int outputLevelConst(void* _obj) const;
 TEST(Levelized_outputLevelConst_Test, TEST01) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
+	Levelized* c = new Levelized(a1, b1);
 	Levelized* l = new Levelized{ a1,b1 };
 	EXPECT_ANY_THROW(int ilevel = l->outputLevelConst(););
 }
@@ -62,10 +59,9 @@ TEST(Levelized_outputLevelConst_Test, TEST01) {
 //int outputLevelConst(void* _obj) const;
 //void outputLevelZero(void* _obj);
 TEST(Levelized_outputLevelConst_Test, TEST02) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
 	Levelized* l = new Levelized{ a1,b1 };
 	l->outputLevelZero();
 	EXPECT_NO_THROW(int ilevel = l->outputLevelConst(););
@@ -73,26 +69,26 @@ TEST(Levelized_outputLevelConst_Test, TEST02) {
 
 //int outputLevel(void* _obj);
 TEST(Levelized_outputLevel_Test, TEST01) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	Connecting*e = new Connecting; Connecting*f = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	std::unordered_set<Connecting*> e1 = { e };
-	std::unordered_set<Connecting*> f1 = { f };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	Levelized*e = new Levelized; Levelized*f = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
+	std::unordered_set<Levelized*> e1 = { e };
+	std::unordered_set<Levelized*> f1 = { f };
+	Levelized* c = new Levelized(a1, b1);
 	Levelized* l = new Levelized{ e1,f1 };
 	EXPECT_ANY_THROW(int ilevel = l->outputLevelConst(););
 }
 
 //int inputLevel(void* _obj);
 TEST(Levelized_inputLevel_Test, TEST01) {
-	Connecting*a = new Connecting; Connecting*b = new Connecting;
-	Connecting*e = new Connecting; Connecting*f = new Connecting;
-	std::unordered_set<Connecting*> a1 = { a };
-	std::unordered_set<Connecting*> b1 = { b };
-	std::unordered_set<Connecting*> e1 = { e };
-	std::unordered_set<Connecting*> f1 = { f };
-	Connecting* c = new Connecting(a1, b1);
+	Levelized*a = new Levelized; Levelized*b = new Levelized;
+	Levelized*e = new Levelized; Levelized*f = new Levelized;
+	std::unordered_set<Levelized*> a1 = { a };
+	std::unordered_set<Levelized*> b1 = { b };
+	std::unordered_set<Levelized*> e1 = { e };
+	std::unordered_set<Levelized*> f1 = { f };
+	Levelized* c = new Levelized(a1, b1);
 	Levelized* l = new Levelized{ e1,f1 };
 	EXPECT_ANY_THROW(int ilevel = l->inputLevelConst(););
 }

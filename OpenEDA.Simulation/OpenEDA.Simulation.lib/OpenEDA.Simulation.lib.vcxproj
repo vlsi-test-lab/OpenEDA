@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\EventQueue.h" />
     <ClInclude Include="..\includes\Function.h" />
+    <ClInclude Include="..\includes\Net.hpp" />
     <ClInclude Include="..\includes\SimulationNet.hpp" />
     <ClInclude Include="..\includes\SimulationStructures.hpp" />
     <ClInclude Include="..\includes\Simulator.h" />

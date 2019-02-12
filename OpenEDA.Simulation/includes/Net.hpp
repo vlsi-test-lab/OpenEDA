@@ -13,7 +13,7 @@
 
 #include <set>
 
-#include "Line.h"
+#include "Level.h"
 
 /*
  * A Net is a collection of Lines.
@@ -94,26 +94,47 @@ protected:
 	std::unordered_set<_lineType*> fanouts_;
 };
 
+/*
+ * Find the "root" of a net from a given "Line".
+ */
+template <class _lineType>
+_lineType* root(_lineType* _line) {
+	for (Connecting* input : _line->inputs()) {
+		_lineType* cast = dynamic_cast<_lineType*>(input);
+		if (cast != nullptr) {
+			return root<_lineType>(cast);
+		}
+	}
+	return _line;
+}
 
+/*
+ * Find the "fanouts" of a net from a given "Line" (root)
+ */
+template <class _lineType>
+std::unordered_set<_lineType*> fanouts(_lineType* _line) {
+	std::unordered_set <_lineType*> toReturn;
+	for (Connecting* output : _line->outputs()) {
+		_lineType* cast = dynamic_cast<_lineType*>(output);
+		if (cast != nullptr) {
+			std::unordered_set <_lineType*> toAdd = fanouts<_lineType>(cast);
+			toReturn.insert(toAdd.begin(), toAdd.end());
+		}
+	}
+	return toReturn;
+}
 
 template <class _lineType, class _nodeType>
 inline Net<_lineType, _nodeType>::Net(_lineType * _line) {
-	//Is the Line a root?
-	if (_line->isInputNode() == true) {//yes
-		root_ = _line;
-	}
-	//no: This is a fan-out.
-	root_ = dynamic_cast<_lineType*>(*(_line->inputs().begin()));
-	fanouts_.clear();
-	for (Connecting* line : root_->outputs()) {
-		fanouts_.emplace(dynamic_cast<_lineType*>(line));
-	}//	fanouts_ = convertConnectingToLines(root_->outputs()); // std::unordered_set<Line*>(root_->outputs().begin(), root_->outputs().end()); //May be empty, which implies "sole Line".
+	//Get the root.
+	this->root_ = root<_lineType>(_line);
+	fanouts_ = fanouts(this->root_);
 }
 
 template<class _lineType, class _nodeType>
 inline std::unordered_set<_lineType*> Net<_lineType, _nodeType>::addFanout(_nodeType * _node) {
 	_lineType* newLine = new _lineType();
-	newLine->setOutputNode(_node);
+	newLine->addOutput(_node);
 	return this->addFanout(newLine);
 }
 
@@ -128,9 +149,8 @@ inline std::unordered_set<_lineType*> Net<_lineType, _nodeType>::addFanout(_line
 	}
 	//no: One extra output line needs to be created representing the root Line's "current output".
 	_lineType* newLine = new _lineType();
-	newLine->setOutputNode(static_cast<Node*>(*(this->root_->outputs().begin())));
+	newLine->addOutput(static_cast<_nodeType*>(*(this->root_->outputs().begin())));
 	newLine->addInput(this->root_);
-	this->root_->setOutputNode(nullptr);
 	this->root_->outputs(std::unordered_set<Connecting*>({ newLine, _line }));
 	this->root_->addOutput(_line);
 	this->fanouts_.emplace(newLine); this->fanouts_.emplace(_line);
@@ -156,10 +176,10 @@ inline std::unordered_set<_lineType*> Net<_lineType, _nodeType>::removeFanout(_l
 
 	//Does removing the fanout require removing multiple Lines?
 	if (this->fanouts_.size() == 2) {//yes
-		Node* remainingNode = nullptr;
-		for (Line* fanout : fanouts_) {
+		_nodeType* remainingNode = nullptr;
+		for (_lineType* fanout : fanouts_) {
 			if (fanout != _line) {//keep this fanout's output Node.
-				remainingNode = static_cast<Node*>(*(fanout->outputs().begin()));
+				remainingNode = static_cast<_nodeType*>(*(fanout->outputs().begin()));
 			}
 			delete fanout;
 		}
@@ -180,7 +200,7 @@ inline std::unordered_set<_nodeType*> Net<_lineType, _nodeType>::fanoutNodes() {
 		return std::unordered_set<_nodeType*>({ dynamic_cast<_nodeType*>(*(this->root_->outputs().begin())) });
 	}
 	std::unordered_set<_nodeType*> toReturn;
-	for (Line* fanout : this->fanouts_) {
+	for (_lineType* fanout : this->fanouts_) {
 		toReturn.emplace(dynamic_cast<_nodeType*>(*(fanout->outputs().begin())));
 	}
 	return toReturn;

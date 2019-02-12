@@ -13,6 +13,7 @@
 #define Connection_h
 
 #include <unordered_set>
+#include <string>
 
 class Connecting;
 class Connection;
@@ -40,6 +41,8 @@ class Connecting {
    *
    * By default, when a new connecting object is created, it will connect to
    * nothing.
+   *
+   * The name will be an empty string.
    */
   Connecting();
 
@@ -51,9 +54,12 @@ class Connecting {
    *
    * @param inputs A vector of input Connecting objects.
    * @param outputs A vector of output Connecting objects.
+   * @param (optional) _name Name of the connection (defaults to empty strying).
    */
   Connecting(std::unordered_set<Connecting*> _inputs,
-             std::unordered_set<Connecting*> _outputs);
+             std::unordered_set<Connecting*> _outputs,
+			 std::string _name = ""
+  );
 
   /*
    * Upon destruction, destroy all connections.
@@ -129,6 +135,14 @@ class Connecting {
  */
   virtual void addOutput(Connecting* _add);
 
+  /*
+   * Return the name of this levelized object.
+   *
+   * @return This object's name.
+   */
+  std::string name() const;
+
+
 private:
 
   /**
@@ -140,6 +154,11 @@ private:
    * This vector contains all the output connections.
    */
   std::unordered_set<Connection*> outputs_;
+
+  /*
+   * The name of this connection.
+   */
+  std::string name_;
 
   /**
    * The Connection class is a friend. It is the only class which can add/remove

@@ -11,8 +11,7 @@
 #include"gtest/gtest.h"
 #include"SimulationStructures.hpp"
 #include "EventQueue.h"
-#include"Line.h"
-#include"Node.h"
+
 
 //SimulationLine()
 TEST(SimLine_Constructor_Test, TEST01) {
@@ -38,11 +37,11 @@ TEST(SimNode_Constructor_Test, TEST01) {
 
 //SimulationNode()
 TEST(SimNode_Constructor_Test, TEST02) {
-	std::unordered_set<Line*> empty = {};
-	Line* l1 = new Line(nullptr, nullptr, nullptr, empty, "l1");
-	Line* l2 = new Line(nullptr, nullptr, nullptr, empty, "l2");
-	std::unordered_set<Line*> in_l_n1 = { l1 };
-	std::unordered_set<Line*> o_l_n1 = { l2 };
+	std::unordered_set<SimulationLine<bool>*> empty = {};
+	SimulationLine<bool>* l1 = new SimulationLine<bool>("l1");
+	SimulationLine<bool>* l2 = new SimulationLine<bool>( "l2");
+	std::unordered_set<SimulationLine<bool>*> in_l_n1 = { l1 };
+	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l2 };
 	Function<bool>* func = new BooleanFunction("nand");
 	SimulationNode<bool> sn(func,in_l_n1,o_l_n1);
 	Value<bool> val1(1), val2(1), val3(0), val4(1), val;
@@ -52,26 +51,26 @@ TEST(SimNode_Constructor_Test, TEST02) {
 
 //SimulationNode()
 TEST(Go_Test, TEST01) {
-	std::unordered_set<Line*> empty = {};
-	Line* l1 = new Line(nullptr, nullptr, nullptr, empty, "l1");
-	Line* l2 = new Line(nullptr, nullptr, nullptr, empty, "l2");
-	std::unordered_set<Line*> in_l_n1 = { l1 };
-	std::unordered_set<Line*> o_l_n1 = { l2 };
+	std::unordered_set<SimulationLine<bool>*> empty = {};
+	SimulationLine<bool>* l1 = new SimulationLine<bool>( "l1");
+	SimulationLine<bool>* l2 = new SimulationLine<bool>( "l2");
+	std::unordered_set<SimulationLine<bool>*> in_l_n1 = { l1 };
+	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l2 };
 	Function<bool>* func = new BooleanFunction("nand");
 	SimulationNode<bool> sn(func, in_l_n1, o_l_n1);
 	Value<bool> val1(1), val2(1), val3(0), val4(1), val;
 	std::vector<Value<bool>>vec_val = { val1,val2 };
-	std::set<std::pair<size_t, Evented*>> event_queue = sn.go();
+	std::set<std::pair<size_t, Evented<bool>*>> event_queue = sn.go();
 	EXPECT_TRUE(event_queue.empty());
 }
 
 //SimulationNode()
 TEST(Go_Test, TEST02) {
-	std::unordered_set<Line*> empty = {};
-	Line* l1 = new Line(nullptr, nullptr, nullptr, empty, "l1");
-	Line* l2 = new Line(nullptr, nullptr, nullptr, empty, "l2");
-	std::unordered_set<Line*> in_l_n1 = { l1 };
-	std::unordered_set<Line*> o_l_n1 = { l2 };
+	std::unordered_set<SimulationLine<bool>*> empty = {};
+	SimulationLine<bool>* l1 = new SimulationLine<bool>( "l1");
+	SimulationLine<bool>* l2 = new SimulationLine<bool>( "l2");
+	std::unordered_set<SimulationLine<bool>*> in_l_n1 = { l1 };
+	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l2 };
 	Function<bool>* func = new BooleanFunction("nand");
 	SimulationNode<bool> sn(func, in_l_n1, o_l_n1);
 	Value<bool> val1(1), val2(1), val3(0), val4(1), val;

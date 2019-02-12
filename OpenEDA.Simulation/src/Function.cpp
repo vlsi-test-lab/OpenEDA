@@ -148,7 +148,7 @@ Functioned<T>::Functioned() {
 }
 
 template<class T>
-Functioned<T>::Functioned(Function<T>* _function, std::unordered_set<Connecting*> _inputs, std::unordered_set<Connecting*> _outputs) : Connecting(_inputs, _outputs){
+Functioned<T>::Functioned(Function<T>* _function) {
 	this->function_ = _function;
 }
 
@@ -160,15 +160,12 @@ Functioned<T>::~Functioned() {
 }
 
 template<class T>
-Value<T> Functioned<T>::evaluate() {
-	std::vector<Value<T>> inputValues;
-	std::unordered_set<Connecting*> inputs = this->inputs();
-	for (Connecting* input : inputs) {
-		Valued<T>* valuedCastInput = dynamic_cast<Valued<T>*>(input);
-		Value<T> inputValue = valuedCastInput->value();
-		inputValues.push_back(inputValue);
-	}
-	return this->function_->evaluate(inputValues);
+Value<T> Functioned<T>::value(std::vector<Value<T>> _value) {
+	this->Valued<T>::value(
+		std::vector<Value<T>>(1, this->function_->evaluate(_value))
+	);
+	return this->Valued<T>::value();
+
 }
 
 template<class T>

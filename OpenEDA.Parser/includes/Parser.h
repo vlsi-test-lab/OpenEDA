@@ -20,8 +20,7 @@
 #include <map>
 
 #include "Circuit.h"
-#include "Line.h"
-#include "Node.h"
+#include "Level.h"
 
 /*
  * An object which converts a text file into a Circuit object.
@@ -55,7 +54,7 @@ private:
 	 * @param _name The name of the Line.
 	 * @return The newly created Line.
 	 */
-	virtual Line* newLine(std::string _name);
+	virtual Levelized* newLine(std::string _name);
 
 	/*
 	 * Create a new Node from the given information.
@@ -67,14 +66,14 @@ private:
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 * @return The newly created Node.
 	 */
-	virtual Node* newNode(std::string _functionName, std::unordered_set<Line*> _inputs, std::unordered_set<Line*> _outputs);
+	virtual Levelized* newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs);
 
 	/*
 	 * Adds a Line to the "Line tracking" data structure.
 	 *
 	 * @param _line The Line to add.
 	 */
-	void addLine(Line* _line);
+	void addLine(Levelized* _line);
 
 	/*
 	 * Convert a given line of into corresponding Lines and Nodes.
@@ -95,17 +94,17 @@ private:
 	/*
 	 * A local copy of all PIs, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Node*> pis_;
+	std::unordered_set<Levelized*> pis_;
 
 	/*
 	 * A local copy of all POs, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Node*> pos_;
+	std::unordered_set<Levelized*> pos_;
 
 	/*
 	 * A local copy of all Nodes, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Node*> nodes_;
+	std::unordered_set<Levelized*> nodes_;
 
 	/*
 	 * A data structure used to keep track of (identical) Lines.
@@ -113,7 +112,7 @@ private:
 	 * The map is used to return all Lines matching a given name. The returned
 	 * set is all Lines which match that name.
 	 */
-	std::map<std::string, std::set<Line*>> lines_;
+	std::map<std::string, std::set<Levelized*>> lines_;
 
 	/*
 	 * Clean all local storage (after parsing a file).

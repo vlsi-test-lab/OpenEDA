@@ -22,16 +22,11 @@
     <ClInclude Include="..\includes\Circuit.h" />
     <ClInclude Include="..\includes\Connection.h" />
     <ClInclude Include="..\includes\Level.h" />
-    <ClInclude Include="..\includes\Line.h" />
-    <ClInclude Include="..\includes\Net.hpp" />
-    <ClInclude Include="..\includes\Node.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Circuit.cpp" />
     <ClCompile Include="..\src\Connection.cpp" />
     <ClCompile Include="..\src\Level.cpp" />
-    <ClCompile Include="..\src\Line.cpp" />
-    <ClCompile Include="..\src\Node.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

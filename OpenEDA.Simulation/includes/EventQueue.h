@@ -16,22 +16,48 @@
 #include <unordered_set>
 #include <set>
 
+#include "Value.h"
+#include "Level.h"
+
 /*
  * An object which can be called to do an "event".
+ *
+ * @parameter _primitive The primitive data value simulated.
  */
-class Evented {
+template <class _primitive>
+class Evented : public Valued<_primitive>, public Levelized {
 public:
 	/*
-	 * Activate this evented object.
+	 * Create an object which are connected to other Levelized objects.
 	 *
+	 * @param (optional) _inputs A vector of input Levelized objects.
+	 * @param (optioanl) _outputs A vector of output Levelized objects.
+	 * @param (optional) _name Name of the connection (defaults to empty strying).
+	 */
+	Evented(std::unordered_set<Evented<_primitive>*> _inputs = std::unordered_set<Evented<_primitive>*>(),
+			std::unordered_set<Evented<_primitive>*> _outputs = std::unordered_set<Evented<_primitive>*>(),
+			std::string _name = ""
+	);
+
+	/*
+	 * Activate the event associated with this object and fetch subsequent events.
+	 *
+	 * An optional override of values to base this event on can be given.
+	 *
+	 * @param (optional) _values Values used to evaluate this event.
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	virtual std::set<std::pair<size_t, Evented*>> go() = 0;
+	std::set<std::pair<size_t, Evented<_primitive>*>> go(
+		std::vector<Value<_primitive>> _values = std::vector<Value<_primitive>>()
+	);
 };
 
 /*
  * A queue which contains and manages events.
+ *
+ * @parameter _primitive The primitive data value simulated.
  */
+template <class _primitive>
 class EventQueue {
 public:
 	/*
@@ -45,7 +71,14 @@ public:
 	 * @param The "level" of the Evented object.
 	 * @param The Evented object.
 	 */
-	void add(size_t _level, Evented* _event);
+	void add(size_t _level, Evented<_primitive>* _event);
+
+	/*
+	 * Manually add a list of events to the queue.
+	 *
+	 * @param The events (and their level) to add to the queue.
+	 */
+	void add(std::set<std::pair<size_t, Evented<_primitive>*>> _add);
 
 	/*
 	 * Process all elements in the queue.
@@ -62,7 +95,7 @@ private:
 	 * Each "index" of the vector is a "priority level".
 	 * Each "index entry" is a set of Events.
 	 */
-	std::vector<std::unordered_set<Evented*>> queue_;
+	std::vector<std::unordered_set<Evented<_primitive>*>> queue_;
 
 	/*
 	 * The current maximum level of the queue.

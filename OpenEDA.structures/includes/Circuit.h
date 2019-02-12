@@ -13,7 +13,7 @@
 
 #include <unordered_set>
 
-#include "Node.h"
+#include "Level.h"
 
 /*
  * A representation of a Circuit.
@@ -40,35 +40,35 @@ public:
 	 * @param _inputs The input Nodes of the circuit.
 	 * @param _outputs The output Nodes of the circuit.
 	 */
-	Circuit(std::unordered_set<Node*> _nodes, std::unordered_set <Node*> _inputs, std::unordered_set<Node*> _outputs);
+	Circuit(std::unordered_set<Levelized*> _nodes, std::unordered_set <Levelized*> _inputs, std::unordered_set<Levelized*> _outputs);
 
 	/*
 	 * Return all Nodes in the circuit
 	 *
 	 * @return The set of all nodes in the Circuit.
 	 */
-	std::unordered_set<Node*> nodes() const;
+	std::unordered_set<Levelized*> nodes() const;
 
 	/*
 	 * Return all PIs in the circuit
 	 *
 	 * @return The set of all PIs in the Circuit.
 	 */
-	std::unordered_set<Node*> pis() const;
+	std::unordered_set<Levelized*> pis() const;
 
 	/*
 	 * Return all POs in the circuit.
 	 *
 	 * @return The set of all POs in the Circuit.
 	 */
-	std::unordered_set<Node*> pos() const;
+	std::unordered_set<Levelized*> pos() const;
 
 	/*
 	 * Add a Node to the circuit.
 	 *
 	 * @param _node The Node to add to the circuit.
 	 */
-	void addNode(Node* _node);
+	void addNode(Levelized* _node);
 
 	/*
 	 * Remove a Node from the circuit.
@@ -80,7 +80,7 @@ public:
 	 * @param The node to remove.
 	 * @return The removed Node.
 	 */
-	Node* removeNode(Node* _node);
+	Levelized* removeNode(Levelized* _node);
 
 	/*
 	 * Add the given node as a PI.
@@ -90,7 +90,7 @@ public:
 	 *
 	 * @param _pi PI Node to add.
 	 */
-	void addPI(Node* _pi);
+	void addPI(Levelized* _pi);
 
 	/*
 	 * Remove a PI Node from the circuit.
@@ -102,7 +102,7 @@ public:
 	 * @param The PI (and Node) to remvoe.
 	 * @return The removed PI Node.
 	 */
-	Node* removePI(Node* _pi);
+	Levelized* removePI(Levelized* _pi);
 
 	/*
 	 * Add the given node as a PO.
@@ -112,7 +112,7 @@ public:
 	 *
 	 * @param _po PO Node to add.
 	 */
-	void addPO(Node* _po);
+	void addPO(Levelized* _po);
 
 	/*
 	 * Remove a PO Node from the circuit.
@@ -124,7 +124,7 @@ public:
 	 * @param The PO (and Node) to remvoe.
 	 * @return The removed PO Node.
 	 */
-	Node* removePO(Node* _po);
+	Levelized* removePO(Levelized* _po);
 
 
 
@@ -133,17 +133,17 @@ private:
 	/*
 	 * The set of Nodes in this Circuit.
 	 */
-	std::unordered_set<Node*> nodes_;
+	std::unordered_set<Levelized*> nodes_;
 
 	/*
 	 * The set of PI nodes in this circuit.
 	 */
-	std::unordered_set<Node*> pis_;
+	std::unordered_set<Levelized*> pis_;
 
 	/*
 	 * The set of PO nodes in this circuit.
 	 */
-	std::unordered_set<Node*> pos_;
+	std::unordered_set<Levelized*> pos_;
 
 };
 

@@ -12,6 +12,7 @@
 #define Value_h
 
 #include <limits>
+#include <vector>
 
 /*
  * A simultable value.
@@ -184,24 +185,22 @@ public:
 	Valued(Value<T> _value);
 
 	/*
-	 * Return the Value held by this Valued object.
-	 *
-	 * Note that this is not a constant function, as retrieving the value can
-	 * imply recalculating the value (depending on inheriting implementations).
+	 * Return the Value held by this Valued object (will not recalculate).
 	 *
 	 * @return the Value held by this object.
 	 */
-	virtual Value<T> value() const;
+	Value<T> value() const;
 
 	/*
 	 * Set the Value to the given Value.
 	 *
 	 * Inheriting members may interpret this function as needed.
 	 *
-	 * @param _value The Value to set to.
+	 * @param _value The Value to set to (by default, only the first value will be
+	 *        used. Any vector of size != 1 will throw an error).
 	 * @return The Value after the object is set.
 	 */
-	virtual Value<T> value(Value<T> _value);
+	virtual Value<T> value(std::vector<Value<T>> _value);
 
 private:
 	/*

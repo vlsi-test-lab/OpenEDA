@@ -11,24 +11,24 @@
 #include"gtest/gtest.h"
 #include"SATStructures.hpp"
 
- //SatisfiableNode(Function<_primitive>* _function, std::unordered_set<SimulationLine<_primitive>*> _inputs, std::unordered_set<SimulationLine<_primitive>*> _outputs)
+ //SatisfiableNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
 TEST(SATNode_Constructor_Test, TEST01) {
-	SimulationLine<bool>* sl1 = new SimulationLine<bool>("Test_Line_1");
-	SimulationLine<bool>* sl2 = new SimulationLine<bool>("Test_Line_2");
-	SimulationLine<bool>* sl3 = new SimulationLine<bool>("Test_Line_3");
-	std::unordered_set<SimulationLine<bool>*> sat_in = { sl1, sl2 };
-	std::unordered_set<SimulationLine<bool>*> sat_out = { sl3};
+	TraceLine<bool>* sl1 = new TraceLine<bool>("Test_Line_1");
+	TraceLine<bool>* sl2 = new TraceLine<bool>("Test_Line_2");
+	TraceLine<bool>* sl3 = new TraceLine<bool>("Test_Line_3");
+	std::unordered_set<TraceLine<bool>*> sat_in = { sl1, sl2 };
+	std::unordered_set<TraceLine<bool>*> sat_out = { sl3};
 	Function<bool>* func = new BooleanFunction("nand");
 	EXPECT_NO_THROW(SatisfiableNode<bool> sat(func, sat_in, sat_out););
 }
 
-//SatisfiableNode(Function<_primitive>* _function, std::unordered_set<SimulationLine<_primitive>*> _inputs, std::unordered_set<SimulationLine<_primitive>*> _outputs)
+//SatisfiableNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
 TEST(SATNode_Constructor_Test, TEST02) {
-	SimulationLine<bool>* sl1 = new SimulationLine<bool>("Test_Line_1");
-	SimulationLine<bool>* sl2 = new SimulationLine<bool>("Test_Line_2");
-	SimulationLine<bool>* sl3 = new SimulationLine<bool>("Test_Line_3");
-	std::unordered_set<SimulationLine<bool>*> sat_in = { sl1, sl2 };
-	std::unordered_set<SimulationLine<bool>*> sat_out = { sl3 };
+	TraceLine<bool>* sl1 = new TraceLine<bool>("Test_Line_1");
+	TraceLine<bool>* sl2 = new TraceLine<bool>("Test_Line_2");
+	TraceLine<bool>* sl3 = new TraceLine<bool>("Test_Line_3");
+	std::unordered_set<TraceLine<bool>*> sat_in = { sl1, sl2 };
+	std::unordered_set<TraceLine<bool>*> sat_out = { sl3 };
 	Function<bool>* func = new BooleanFunction("nand");
 	SatisfiableNode<bool> sat(func, sat_in, sat_out);
 }

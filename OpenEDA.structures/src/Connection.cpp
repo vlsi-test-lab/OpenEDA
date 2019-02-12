@@ -33,18 +33,21 @@ Connecting* Connection::input() const { return this->input_; }
 
 Connecting* Connection::output() const { return this->output_; }
 
-Connecting::Connecting() {}
+Connecting::Connecting() {
+	this->name_ = "";
+}
 
 Connecting::Connecting(std::unordered_set<Connecting*> _inputs,
-                       std::unordered_set<Connecting*> _outputs) {
+                       std::unordered_set<Connecting*> _outputs,
+					   std::string _name) {
   for (Connecting* input : _inputs){
     new Connection(input, this); //TODO See next comment.
   }
   for (Connecting* output : _outputs){
     new Connection(this, output); //TODO Can a object currently under construction be modified by another object? If not, then this statement is most likely not valid.
 	//change the position of "output" and "this"
-
   }
+  this->name_ = _name;
 }
 
 Connecting::~Connecting() { 
@@ -123,6 +126,10 @@ void Connecting::addInput(Connecting * _add) {
 
 void Connecting::addOutput(Connecting * _add) {
 	new Connection(this, _add);
+}
+
+std::string Connecting::name() const {
+	return this->name_;
 }
 
 void Connecting::removeInput(Connection * _rmv) {

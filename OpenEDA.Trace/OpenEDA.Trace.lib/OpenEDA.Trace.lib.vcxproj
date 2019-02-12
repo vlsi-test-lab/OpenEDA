@@ -20,11 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\includes\Flagged.hpp" />
-    <ClInclude Include="..\includes\Trace.h" />
+    <ClInclude Include="..\includes\Tracable.h" />
     <ClInclude Include="..\includes\TraceStructures.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Trace.cpp" />
+    <ClCompile Include="..\src\Tracable.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

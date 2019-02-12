@@ -46,8 +46,6 @@
     <ClInclude Include="..\tests\Circuit_Test.hpp" />
     <ClInclude Include="..\tests\Connection_Test.hpp" />
     <ClInclude Include="..\tests\Level_Test.hpp" />
-    <ClInclude Include="..\tests\Line_Test.hpp" />
-    <ClInclude Include="..\tests\Node_Test.hpp" />
     <ClInclude Include="..\tests\Structures.Tests.h" />
   </ItemGroup>
   <ItemGroup>

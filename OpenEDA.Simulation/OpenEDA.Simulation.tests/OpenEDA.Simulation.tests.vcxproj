@@ -51,7 +51,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tests\Function_Test.hpp" />
     <ClInclude Include="..\tests\Simulation.Tests.h" />
+    <ClInclude Include="..\tests\SimulationStructure_Test.hpp" />
+    <ClInclude Include="..\tests\Simulator_Test.hpp" />
+    <ClInclude Include="..\tests\Value_Test.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,7 +14,7 @@
 #include "SimulationStructures.hpp"
 #include "TraceStructures.hpp"
 #include "SAT.h"
-#include "Combination.hpp"
+#include "Combination.h"
 #include "Value.h"
 #include "ValueVectorFunctions.hpp"
 
@@ -38,8 +38,16 @@ public:
 	 * @param _pi (optional) Is the Node a PI (optional, default = false).
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 */
-	SatisfiableNode(Function<_primitive>* _function, std::unordered_set<SimulationLine<_primitive>*> _inputs, std::unordered_set<SimulationLine<_primitive>*> _outputs) : 
-		TraceNode<_primitive>(_function, std::unordered_set<Line*>(_inputs.begin(), _inputs.end()), std::unordered_set<Line*>(_outputs.begin(), _outputs.end())) 
+	SatisfiableNode(
+		Function<_primitive>* _function, 
+		std::unordered_set<TraceLine<_primitive>*> _inputs, 
+		std::unordered_set<TraceLine<_primitive>*> _outputs
+	) : 
+		TraceNode<_primitive>(
+			_function, 
+			std::unordered_set<TraceLine<_primitive>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<TraceLine<_primitive>*>(_outputs.begin(), _outputs.end())
+			) 
 	{
 		std::vector<Value<_primitive>> inputVector(_inputs.size(), Value<_primitive>((_primitive)0));
 		do {
@@ -55,11 +63,11 @@ public:
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	virtual std::set<std::pair<size_t, Evented*>> go() {
+	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go() {
 		if (this->flag() == false) {
-			return this->SimulationNode<_primitive>::go();
+			return this->Evented<_primitive>::go();
 		}
-		return std::set<std::pair<size_t, Evented*>>();
+		return std::set<std::pair<size_t, Evented<_primitive>*>>();
 	}
 
 	/*
@@ -74,9 +82,9 @@ public:
 			return std::unordered_set<Combination<_primitive>*>();
 		}
 		std::vector<Value<_primitive>> inputVector;
-		std::unordered_set<SimulationLine<_primitive>*> lines;
+		std::unordered_set<TraceLine<_primitive>*> lines;
 		for (Connecting* input : this->Node::inputs()) {
-			SimulationLine<_primitive>* cast = dynamic_cast<SimulationLine<_primitive>*>(input);
+			TraceLine<_primitive>* cast = dynamic_cast<TraceLine<_primitive>*>(input);
 			lines.emplace(cast);
 			inputVector.push_back(cast->value());
 		}

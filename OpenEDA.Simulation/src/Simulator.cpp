@@ -12,19 +12,17 @@
 #include <utility> //std::pair
 
 #include "Simulator.h"
-#include "Level.h"
-#include "Line.h"
 #include "EventQueue.h"
 
 
 template<class T>
 std::vector<Value<T>> Simulator<T>::applyStimulus(Circuit * _circuit, 
 												  std::vector<Value<T>> _stimulus, 
-												  EventQueue _simulationQueue,
+												  EventQueue<T> _simulationQueue,
 												  std::vector<SimulationNode<T>*> _inputs) {
 	if (_circuit == nullptr) { throw "No circuit given to apply stimulus to."; }
 	if (_inputs.size() == 0) {//DEL Cannot convert directly from Node* to SimulationNode<T>* _inputs = std::vector<SimulationNode<T>*>(_circuit->pis().begin(), _circuit->pis().end());
-		for (Node* input : _circuit->pis()) {
+		for (Levelized* input : _circuit->pis()) {
 			SimulationNode<T>* cast = dynamic_cast<SimulationNode<T>*>(input); //NOTE: Can this be done wtihout a dynamic_cast? It may require changing the pointer type to be more "strict" or removing virtual inheritence, which in turn may require re-organizing code.
 			_inputs.push_back(cast);
 		}
@@ -33,8 +31,11 @@ std::vector<Value<T>> Simulator<T>::applyStimulus(Circuit * _circuit,
 
 	//Initialize the queue.
 	for (size_t i = 0; i < _stimulus.size(); ++i) {
-		_inputs.at(i)->evaluate();
-		_simulationQueue.add(_inputs.at(i)->inputLevelConst(), _inputs.at(i));
+		Value<T> value = _stimulus.at(i);
+		std::set<std::pair<size_t, Evented<T>*>> events = _inputs.at(i)->go(
+			std::vector<Value<T>>(1, value)
+		);
+		_simulationQueue.add(events);
 	}
 
 	_simulationQueue.process();
@@ -46,9 +47,9 @@ std::vector<Value<T>> Simulator<T>::applyStimulus(Circuit * _circuit,
 template<class T>
 std::vector<Value<T>> Simulator<T>::outputs(Circuit * _circuit) {
 	std::vector<Value<T>> toReturn;;
-	for (Node* output : _circuit->pos()) {
+	for (Levelized* output : _circuit->pos()) {
 		SimulationNode<T>* outputCast = dynamic_cast<SimulationNode<T>*>(output); //NOTE: Can this be done wtihout a dynamic_cast? It may require changing the pointer type to be more "strict" or removing virtual inheritence, which in turn may require re-organizing code.
-		toReturn.push_back(outputCast->evaluate());
+		toReturn.push_back(outputCast->Valued<T>::value());
 	}
 	return toReturn;
 }

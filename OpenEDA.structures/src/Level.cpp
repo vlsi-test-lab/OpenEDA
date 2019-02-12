@@ -12,10 +12,18 @@
 
 #include <vector>
 
-Levelized::Levelized() {
-}
 
-Levelized::Levelized(std::unordered_set<Connecting*> _inputs, std::unordered_set<Connecting*> _outputs) : Connecting(_inputs, _outputs){
+Levelized::Levelized(
+	std::unordered_set<Levelized*> _inputs, 
+	std::unordered_set<Levelized*> _outputs,
+	std::string _name
+) :
+	Connecting(
+		std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+		std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end()),
+		_name
+	)
+{
 
 }
 
@@ -27,7 +35,7 @@ int Levelized::inputLevel() {
 	//Level is not known/does not exist, calculate it.
 	std::vector<int> levels;
 	for (Connecting* input : this->inputs()) {
-		Levelized* castLevelized = static_cast<Levelized*>(input);
+		Levelized* castLevelized = dynamic_cast<Levelized*>(input);
 		levels.push_back(castLevelized->inputLevel());
 	}
 	int ret = this->levelCalculation(levels);
@@ -55,7 +63,7 @@ void Levelized::inputLevelClear() {
 
 	this->inputLevel_ = UNKNOWN_LEVEL;
 	for (Connecting* output : this->outputs()) {
-		Levelized* castLevelized = static_cast<Levelized*>(output);
+		Levelized* castLevelized = dynamic_cast<Levelized*>(output);
 		castLevelized->inputLevelClear();
 	}
 }
@@ -73,7 +81,7 @@ int Levelized::outputLevel() {
 	int ret = UNKNOWN_LEVEL;
 	std::vector<int> levels;
 	for (Connecting* output : this->outputs()) {
-		Levelized* castLevelized = static_cast<Levelized*>(output);
+		Levelized* castLevelized = dynamic_cast<Levelized*>(output);
 		levels.push_back(castLevelized->outputLevel());
 	}
 	ret = this->levelCalculation(levels);
@@ -101,7 +109,7 @@ void Levelized::outputLevelClear() {
 
 	this->outputLevel_ = UNKNOWN_LEVEL;
 	for (Connecting* input : this->inputs()) {
-		Levelized* castLevelized = static_cast<Levelized*>(input);
+		Levelized* castLevelized = dynamic_cast<Levelized*>(input);
 		castLevelized->outputLevelClear();
 	}
 }

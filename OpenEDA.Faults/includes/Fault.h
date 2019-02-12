@@ -20,6 +20,8 @@
 // Forward declaration.
 template <class T>
 class Faulty;
+template <class T>
+class FaultyLine;
 
 /*
  * A modification to a Valued (Faulty) object.
@@ -78,7 +80,7 @@ private:
 	/*
 	 * The location of the Fault.
 	 */
-	FaultyLine<_primitive> * location_;
+	FaultyLine<_primitive>* location_;
 
 	/*
 	 * The Value (when active) of the Fault.
