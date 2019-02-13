@@ -51,6 +51,13 @@ public:
 	Value<_primitive> value() const;
 
 	/*
+	 * Return the loaction of this Fault.
+	 *
+	 * @return The location of this fault.
+	 */
+	FaultyLine<_primitive>* location() const;
+
+	/*
 	 * Activate the Fault.
 	 *
 	 * @return The Value currently on the Faulty object (before activation).

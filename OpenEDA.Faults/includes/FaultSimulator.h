@@ -54,6 +54,20 @@ public:
 										EventQueue<_primitive> _simulationQueue = EventQueue<_primitive>(),
 										std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>());
 
+	/*
+	 * Set the fault list to simulate.
+	 *
+	 * @param _faults The set of faults.
+	 */
+	void setFaults(std::unordered_set<Fault<_primitive>> _faults);
+
+	/*
+	 * Return the list of detected faults.
+	 *
+	 * @return The detected faults.
+	 */
+	std::unordered_set<Fault<_primitive>> detectedFaults();
+
 protected:
 	/*
 	 * All undetected faults.

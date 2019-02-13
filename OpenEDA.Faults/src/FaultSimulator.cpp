@@ -45,3 +45,14 @@ std::vector<Value<_primitive>> FaultSimulator<_primitive>::applyStimulus(Circuit
 	this->Simulator<_primitive>::applyStimulus(_circuit, _stimulus, _simulationQueue, _inputs);
 	return goodOutputs;
 }
+
+template<class _primitive>
+void FaultSimulator<_primitive>::setFaults(std::unordered_set<Fault<_primitive>> _faults) {
+	this->undetectedFaults_ = _faults;
+	this->detectedFaults_.clear();
+}
+
+template<class _primitive>
+std::unordered_set<Fault<_primitive>> FaultSimulator<_primitive>::detectedFaults() {
+	return this->detectedFaults_;
+}

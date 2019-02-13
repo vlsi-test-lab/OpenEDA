@@ -140,7 +140,7 @@ class Connecting {
    *
    * @return This object's name.
    */
-  std::string name() const;
+  virtual std::string name() const;
 
 
 private:

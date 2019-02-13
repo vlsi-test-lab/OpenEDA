@@ -12,6 +12,7 @@
 #define ValueVectorFunctions_h
 
 #include <vector>
+#include <random>
 
 #include "Value.h"
 
@@ -120,6 +121,30 @@ public:
 			}
 		}
 		return false;
+	}
+
+	/*
+	 * Create a random vector with a given (optional) set of weights.
+	 *
+	 * If no weight set is given, "even weights" (i.e., pure random) will be returned.
+	 *
+	 * If the size given does not equal the number of weights, throw an error.
+	 *
+	 * @param _size The size of the vector to return.
+	 * @param (optional) _weights The weight assigned to each input, by default, "50%".
+	 * @return The generated random vector.
+	 */
+	std::vector<Value<_primitive>> random(size_t _size, std::vector<float> _weights = std::vector<float>(_size, 0.5)) {
+		if (_size != _weights.size()) {
+			throw "Cannot generate random vector: incorrect number of weights given";
+		}
+		std::vector<Value<_primitive>> toReturn;
+		static std::default_random_engine e;
+		for (size_t a = 0; a < _weights.size(); a++) {
+			std::bernoulli_distribution b(_weights.at(a));
+			toReturn.push_back(Value<_primitive>(b(e)));
+		}
+		return toReturn;
 	}
 };
 

@@ -87,6 +87,20 @@ public:
 		this->function(_function);
 	}
 
+	/*
+	 * Return the name of the node's output.
+	 *
+	 * Throw an exception if there is no output.
+	 *
+	 * @return This object's name.
+	 */
+	virtual std::string name() const {
+		if (this->outputs().size() == 0) {
+			throw "This node has no output, so no name can be returned";
+		}
+		return (*(this->outputs().begin()))->name();
+	}
+
 
 
 };

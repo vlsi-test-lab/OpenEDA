@@ -23,6 +23,11 @@ Value<_primitive> Fault<_primitive>::value() const {
 }
 
 template<class _primitive>
+FaultyLine<_primitive>* Fault<_primitive>::location() const {
+	return this->location_;
+}
+
+template<class _primitive>
 Value<_primitive> Fault<_primitive>::activate() {
 	Value<_primitive> oldValue = this->location_->value();
 	this->location_->activate(this);
