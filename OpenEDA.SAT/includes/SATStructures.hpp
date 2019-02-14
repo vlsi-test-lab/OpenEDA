@@ -47,7 +47,11 @@ public:
 			_function, 
 			std::unordered_set<TraceLine<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<TraceLine<_primitive>*>(_outputs.begin(), _outputs.end())
-			) 
+			) ,
+		Connecting(
+			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
+		)
 	{
 		std::vector<Value<_primitive>> inputVector(_inputs.size(), Value<_primitive>((_primitive)0));
 		do {

@@ -25,7 +25,7 @@
  * @parameter _primitive The primitive data value simulated.
  */
 template <class _primitive>
-class Evented : public Valued<_primitive>, public Levelized {
+class Evented : public virtual Valued<_primitive>, public Levelized {
 public:
 	/*
 	 * Create an object which are connected to other Levelized objects.

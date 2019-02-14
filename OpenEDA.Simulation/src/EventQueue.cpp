@@ -40,7 +40,7 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 	Value<_primitive> newValue = this->value(_values);
 
 	std::set<std::pair<size_t, Evented<_primitive>*>> toReturn;
-	if (Value<_primitive>::different(oldValue, newValue)) { //Value changed, so change line values and update the queue.
+	if (oldValue != newValue) { //Value changed, so change line values and update the queue.
 		for (Connecting* output : this->outputs()) {
 			Evented<_primitive>* cast = dynamic_cast<Evented<_primitive>*>(output);
 			toReturn.emplace(

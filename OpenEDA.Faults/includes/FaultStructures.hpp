@@ -29,7 +29,7 @@ public:
 	/*
 	 * Create a with a "UNDEF" name.
 	 */
-	FaultyLine() : SimulationLine<_primitive>(), Faulty<_primitive>() {
+	FaultyLine() : SimulationLine<_primitive>(), Faulty<_primitive>(), Connecting("UNDEF") {
 	};
 
 	/*
@@ -37,7 +37,11 @@ public:
 	 *
 	 * @param _name The name of the Line
 	 */
-	FaultyLine(std::string _name) : SimulationLine<_primitive>(_name), Faulty<_primitive>() {
+	FaultyLine(std::string _name) : 
+		SimulationLine<_primitive>(_name), 
+		Faulty<_primitive>(),
+		Connecting(_name) 
+	{
 	};
 };
 

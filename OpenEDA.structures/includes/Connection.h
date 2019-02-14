@@ -62,6 +62,13 @@ class Connecting {
   );
 
   /*
+   * Create a Connecting object with just a name (no connections).
+   *
+   * @param _name Name of the connection (defaults to empty strying).
+   */
+  Connecting(std::string _name);
+
+  /*
    * Upon destruction, destroy all connections.
    *
    * When a Connecting object is destroyed, all Connections will be destroyed.

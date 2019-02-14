@@ -50,6 +50,10 @@ Connecting::Connecting(std::unordered_set<Connecting*> _inputs,
   this->name_ = _name;
 }
 
+Connecting::Connecting(std::string _name) {
+	this->name_ = _name;
+}
+
 Connecting::~Connecting() { 
 	//A copy of inputs/outputs must be created before deleting, since deleting will change the list.
 	std::unordered_set<Connection*> inputs = this->inputs_;

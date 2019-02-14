@@ -12,6 +12,7 @@
 #define Fault_h
 
 #include <set>
+#include <vector>
 
 #include "Value.h"
 #include "EventQueue.h"
@@ -36,12 +37,53 @@ template <class _primitive>
 class Fault : public Evented<_primitive> {
 public:
 	/*
+	 * The default fault has no (nullptr) location and a default value.
+	 */
+	Fault();
+
+	/*
 	 * The given object is stuck at the given Value.
 	 *
 	 * @param _location The location of the Fault.
 	 * @param _value The stuck-at value of the Fault.
 	 */
-	Fault(FaultyLine<_primitive> _location, Value<_primitive> _value);
+	Fault(FaultyLine<_primitive> * _location, Value<_primitive> _value);
+
+	/*
+	 * When a fault is destoryed, nothing will happen: the location will be 
+	 * untouched.
+	 */
+	~Fault();
+
+	/*
+	 * Copy constructor: copy the fault's location and value.
+	 *
+	 * @param _fault The fault to copy.
+	 */
+	Fault(const Fault<_primitive>& _fault);
+
+	/*
+	 * Assignment operator.
+	 *
+	 * @param _fault The fault to assign (copy).
+	 */
+	Fault<_primitive> operator = (const Fault<_primitive> _fault) ;
+
+	/*
+	 * Two faults are equal if they are on the same location and hold the same value.
+	 *
+	 * @param _other The other fault being compared to.
+	 * @return True if both magnitudes are the same and they are both valid.
+	 */
+	bool operator == (const Fault<_primitive>& _other) const;
+
+	/*
+	 * See the overloaded operator "==", as this is the logical opposite.
+
+	 * @param _other The other value being compared to.
+	 * @return True if both magnitudes are opposite or one is not valid.
+	 */
+	bool operator != (const Fault<_primitive>& _other) const;
 
 	/*
 	 * Return the value of this Fault.
@@ -57,33 +99,32 @@ public:
 	 */
 	FaultyLine<_primitive>* location() const;
 
-	/*
-	 * Activate the Fault.
-	 *
-	 * @return The Value currently on the Faulty object (before activation).
-	 */
-	Value<_primitive> activate();
+
 
 	/*
-	 * Deactivate the Fault.
-	 *
-	 * @return The Value of the Faulty object (before deactivation).
-	 */
-	Value<_primitive> deactivate();
-
-	/*
-	 * Activate this Fault and return all output nodes which need to be 
+	 * (De)activate this Fault and return all output nodes which need to be 
 	 * re-evaluated.
-	 *
-	 * It will be presumed that the (de)activation changes the value.
-	 *
-	 * The fault will not be (de)activated.
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
 	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go();
 
 private:
+	/*
+	 * Activate the Fault.
+	 *
+	 * @return True if activating the fault changes the line's value.
+	 */
+	bool activate();
+
+	/*
+	 * Deactivate the Fault.
+	 *
+	 * @return True if deactivating the fault changes the line's value.
+	 */
+	bool deactivate();
+
+
 	/*
 	 * The location of the Fault.
 	 */
@@ -104,7 +145,7 @@ private:
  * @param _primitive The data primitive to simulate.
  */
 template <class _primitive>
-class Faulty : public Valued<_primitive> {
+class Faulty : public virtual Valued<_primitive> {
 public:
 	/*
 	 * Initialize with the "Default" Value, which is not valid.
@@ -120,6 +161,8 @@ public:
 	 */
 	virtual Value<_primitive> value() const;
 
+
+
 	/*
 	 * Set the Value to the given Value.
 	 *
@@ -131,7 +174,7 @@ public:
 	 * @param _value The Value to set to.
 	 * @return The Value after the object is set.
 	 */
-	virtual Value<_primitive> value(Value<_primitive> _value);
+	virtual Value<_primitive> value(std::vector<Value<_primitive>> _values);
 
 	/*
 	 * Activate a given Fault.
@@ -153,6 +196,14 @@ public:
 	 * @return The Value of the object after the Fault is deactivated.
 	 */
 	Value<_primitive> deactivate(Fault<_primitive> _fault);
+
+	/*
+	 * Return true if the given fault is currently active on this line.
+	 *
+	 * @param _fault the Fault to check if active.
+	 * @return True if the fault is currently cative.
+	 */
+	bool isFaultActive(Fault<_primitive> _fault);
 
 private:
 	/*

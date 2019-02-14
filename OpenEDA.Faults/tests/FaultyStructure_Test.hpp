@@ -19,11 +19,13 @@ TEST(FaultyLine_Constructor_Test, TEST01) {
 //FaultyLine();
 TEST(FaultyLine_Constructor_Test, TEST02) {
 	FaultyLine<bool> fl;
-	EXPECT_EQ("UNDEF", fl.name());
+	std::string name = fl.name();
+	EXPECT_EQ("UNDEF", name);
 }
 
 //FaultyLine();
 TEST(FaultyLine_Constructor_Test, TEST03) {
 	FaultyLine<bool> fl("Test_Line");
-	EXPECT_EQ("Test_Line", fl.name());
+	std::string name = fl.name();
+	EXPECT_EQ("Test_Line", name);
 }

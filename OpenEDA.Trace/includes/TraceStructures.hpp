@@ -56,6 +56,10 @@ public:
 			std::unordered_set<Tracable*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<Tracable*>(_outputs.begin(), _outputs.end()),
 			_function->string() == "pi" || _function->string() == "po"
+		) ,
+		Connecting(
+			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
 		)
 	{
 	
@@ -116,7 +120,11 @@ public:
 			std::unordered_set<Tracable*>(), 
 			std::unordered_set<Tracable*>(), 
 			false, 
-			_name)
+			_name
+		) ,
+		Connecting(
+			_name
+		)
 	{ 
 	}
 };

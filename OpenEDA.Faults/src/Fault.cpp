@@ -12,9 +12,48 @@
 #include "SimulationStructures.hpp"
 
 template<class _primitive>
-Fault<_primitive>::Fault(FaultyLine<_primitive> _location, Value<_primitive> _value) {
+Fault<_primitive>::Fault() {
+	this->location_ = nullptr;
+	this->value_ = Value<_primitive>();
+}
+
+template<class _primitive>
+Fault<_primitive>::Fault(FaultyLine<_primitive> * _location, Value<_primitive> _value) {
 	this->location_ = _location;
 	this->value_ = _value;
+}
+
+template<class _primitive>
+Fault<_primitive>::~Fault() {
+}
+
+template<class _primitive>
+Fault<_primitive>::Fault(const Fault<_primitive>& _fault) {
+	this->location_ = _fault.location();
+	this->value_ = _fault.value();
+}
+
+template<class _primitive>
+Fault<_primitive> Fault<_primitive>::operator=(const Fault<_primitive> _fault) {
+	this->location_ = _fault.location();
+	this->value_ = _fault.value();
+	return *this;
+}
+
+template<class _primitive>
+bool Fault<_primitive>::operator==(const Fault<_primitive>& _other) const {
+	if (this->value_ != _other.value()) {
+		return false;
+	}
+	if (this->location_ != _other.location()) {
+		return false;
+	}
+	return true;
+}
+
+template<class _primitive>
+bool Fault<_primitive>::operator!=(const Fault<_primitive>& _other) const {
+	return !(*this == _other);
 }
 
 template<class _primitive>
@@ -28,49 +67,34 @@ FaultyLine<_primitive>* Fault<_primitive>::location() const {
 }
 
 template<class _primitive>
-Value<_primitive> Fault<_primitive>::activate() {
+bool Fault<_primitive>::activate() {
 	Value<_primitive> oldValue = this->location_->value();
-	this->location_->activate(this);
-	return oldValue;
+	Value<_primitive> newValue = this->location_->activate(*this);
+	return oldValue != newValue ;
 }
 
 template<class _primitive>
-Value<_primitive> Fault<_primitive>::deactivate() {
+bool Fault<_primitive>::deactivate() {
 	Value<_primitive> oldValue = this->location_->value();
-	this->location_->deactivate(this);
-	return oldValue;
+	Value<_primitive> newValue = this->location_->deactivate(*this);
+	return oldValue != newValue;
 }
 
 template<class _primitive>
 std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
-	std::set<std::pair<size_t, Evented<_primitive>*>> toReturn;
-
-	SimulationLine<_primitive> line = dynamic_cast<SimulationLine<_primitive>*>(this->location_);
-	line->value(this->value_);
-
-	//Is this a fanout?
-	if (line->isOutputNode() == true) {//yes
-		SimulationNode<_primitive>* output = dynamic_cast<SimulationNode<_primitive>*>(*(line->outputs().begin()));
-		toReturn.emplace(
-			std::pair<size_t, SimulationNode<_primitive>*>(
-				output->inputLevelConst(), output
-			)
-		);
-		return toReturn;
+	bool forwardUpdateCall = false;
+	//Is this fault currently active?
+	if (this->location_->isFaultActive(*this) == true) {
+		forwardUpdateCall = this->deactivate();
+	} else {
+		forwardUpdateCall = this->activate();
 	}
 
-	//no
-	SimulationNet<_primitive> net(line);
-	for (SimulationNode<_primitive>* fanoutNode : net.fanoutNodes()) {
-		toReturn.emplace(
-			std::pair<size_t, SimulationNode<_primitive>*>(
-				fanoutNode->inputLevelConst(), 
-				fanoutNode
-				)
-		);
+	if (forwardUpdateCall == true) {
+		return this->location_->go();
 	}
 
-	return toReturn;
+	return std::set<std::pair<size_t, Evented<_primitive>*>>();
 }
 
 template<class _primitive>
@@ -89,8 +113,8 @@ Value<_primitive> Faulty<_primitive>::value() const {
 }
 
 template<class _primitive>
-Value<_primitive> Faulty<_primitive>::value(Value<_primitive> _value) {
-	this->Valued<_primitive>::value(_value);
+Value<_primitive> Faulty<_primitive>::value(std::vector<Value<_primitive>> _values) {
+	this->Valued<_primitive>::value(_values);
 	return this->value(); //Will redirect to faulty value if needed.
 }
 
@@ -115,3 +139,11 @@ Value<_primitive> Faulty<_primitive>::deactivate(Fault<_primitive> _fault) {
 	this->active_ = false;
 	return this->value();
 }
+
+template<class _primitive>
+bool Faulty<_primitive>::isFaultActive(Fault<_primitive> _fault) {
+	return fault_ == _fault;
+}
+
+template class Fault<bool>;
+template class Faulty<bool>;

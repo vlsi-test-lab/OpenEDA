@@ -32,7 +32,16 @@ public:
 	/*
 	 * Create a simulation line with a "UNDEF" name.
 	 */
-	SimulationLine() : Evented<_primitive>() {
+	SimulationLine() : 
+		Evented<_primitive>(
+			std::unordered_set<Evented<_primitive>*>(),
+			std::unordered_set<Evented<_primitive>*>(),
+			"UNDEF"
+		) ,
+		Connecting(
+			"UNDEF"
+		)
+	{
 	};
 
 	/*
@@ -47,7 +56,10 @@ public:
 			std::unordered_set<Evented<_primitive>*>() ,
 			std::unordered_set<Evented<_primitive>*>(),
 			_name
-		) 
+		) , 
+		Connecting(
+			_name
+		)
 	{
 	};
 };
@@ -82,7 +94,11 @@ public:
 		Evented<_primitive>(
 			std::unordered_set<Evented<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<Evented<_primitive>*>(_outputs.begin(), _outputs.end())
-		) 
+		) ,
+		Connecting(
+			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
+		)
 	{
 		this->function(_function);
 	}
