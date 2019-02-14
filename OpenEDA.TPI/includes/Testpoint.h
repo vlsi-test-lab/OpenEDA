@@ -53,7 +53,7 @@ public:
 	virtual SimulationNode<_primitive>* deactivate() = 0;
 
 
-private:
+protected:
 	/*
 	 * The location of the Testpoint.
 	 *

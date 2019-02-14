@@ -155,9 +155,11 @@
   <ItemGroup>
     <ClInclude Include="..\includes\Testpoint.h" />
     <ClInclude Include="..\includes\Testpoint_control.h" />
+    <ClInclude Include="..\includes\Testpoint_observe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Testpoint_control.cpp" />
+    <ClCompile Include="..\src\Testpoint_observe.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -84,13 +84,14 @@ public:
 	 * Create a Simulation node.
 	 *
 	 * @param _function The function of this node.
-	 * @param _inputs Input lines to the given node.
-	 * @param _outputs Output lines to the given node.
+	 * @param (optional) _inputs Input lines to the given node.
+	 * @param (optional) _outputs Output lines to the given node.
 	 */
 	SimulationNode(
 		Function<_primitive>* _function, 
-		std::unordered_set<SimulationLine<_primitive>*> _inputs, 
-		std::unordered_set<SimulationLine<_primitive>*> _outputs) :
+		std::unordered_set<SimulationLine<_primitive>*> _inputs = std::unordered_set<SimulationLine<_primitive>*>(),
+		std::unordered_set<SimulationLine<_primitive>*> _outputs = std::unordered_set<SimulationLine<_primitive>*>()
+	) :
 		Evented<_primitive>(
 			std::unordered_set<Evented<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<Evented<_primitive>*>(_outputs.begin(), _outputs.end())

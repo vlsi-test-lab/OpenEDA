@@ -162,7 +162,7 @@ public:
  * Function.
  */
 template <class T>
-class Functioned : public Valued<T>  {
+class Functioned : public virtual Valued<T>  {
 public:
 	/*
 	 * The default Functioned object is connected no nothing and has no (nullptr) function.

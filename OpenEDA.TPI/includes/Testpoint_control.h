@@ -28,7 +28,7 @@ public:
 	 * Create a control testpoint with a given constant value.
 	 *
 	 * @param _value The value forced by the testpoint.
-	 * @param _locaiton The locaiton of the testpoint.
+	 * @param _locaiton The location of the testpoint.
 	 */
 	Testpoint_control(Value<_primitive> _value, FaultyLine<_primitive>* _location);
 
