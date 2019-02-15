@@ -80,10 +80,21 @@ public:
 	/*
 	 * See the overloaded operator "==", as this is the logical opposite.
 
-	 * @param _other The other value being compared to.
-	 * @return True if both magnitudes are opposite or one is not valid.
+	 * @param _other The other fault being compared to.
+	 * @return True if the faults are different.
 	 */
 	bool operator != (const Fault<_primitive>& _other) const;
+
+	/*
+	 * Compaitor function (needed for sorted hashes of faults).
+	 *
+	 * The first "priotiry" of the sort is the pointer to the location.
+	 * The second "priotiry" is the value of the fault.
+	 *
+	 * @param _other The other fault being compared to.
+	 */
+	bool operator < (const Fault<_primitive>& _other) const;
+
 
 	/*
 	 * Return the value of this Fault.

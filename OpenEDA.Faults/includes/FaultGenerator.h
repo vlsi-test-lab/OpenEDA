@@ -11,7 +11,7 @@
 #ifndef FaultGenerator_h
 #define FaultGenerator_h
 
-#include <unordered_set>
+#include <set>
 
 #include "Fault.h"
 #include "Circuit.h"
@@ -34,10 +34,10 @@ public:
 	/*
 	 * Return a list of all faults for a given Circuit.
 	 *
-	 * @param _circuit The circuit ot generate Faults for.
+	 * @param _circuit The circuit to generate Faults for.
 	 * @return The list of Faults.
 	 */
-	std::unordered_set<Fault<_primitive>> allFaults(Circuit* _circuit);
+	std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
 
 
 
@@ -48,7 +48,7 @@ private:
 	 * @param _node The Node to generate faults for.
 	 * @return The list of Faults.
 	 */
-	std::unordered_set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
+	std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
 
 
 	/*
@@ -57,7 +57,7 @@ private:
 	 * @param _line The Line to generate faults for.
 	 * @return The list of Faults.
 	 */
-	std::unordered_set<Fault<_primitive>> allFaults(FaultyLine<_primitive>* _line);
+	std::set<Fault<_primitive>> allFaults(FaultyLine<_primitive>* _line);
 };
 
 #endif

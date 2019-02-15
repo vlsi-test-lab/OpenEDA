@@ -57,6 +57,20 @@ bool Fault<_primitive>::operator!=(const Fault<_primitive>& _other) const {
 }
 
 template<class _primitive>
+bool Fault<_primitive>::operator<(const Fault<_primitive>& _other) const {
+	if (this->location_ < _other.location()) {
+		return true;
+	}
+	if (this->location_ > _other.location()) {
+		return false;
+	}
+	if (this->value() < _other.value()) {
+		return true;
+	}
+	return false;
+}
+
+template<class _primitive>
 Value<_primitive> Fault<_primitive>::value() const {
 	return this->value();
 }

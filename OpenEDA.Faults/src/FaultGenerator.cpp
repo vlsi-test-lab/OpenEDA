@@ -10,10 +10,21 @@
 
 #include "FaultGenerator.h"
 
-template<class _primitive>
-std::unordered_set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(SimulationNode<_primitive>* _node) {
+	 template<class _primitive>
+ std::set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(Circuit * _circuit) {
+	 std::set<Fault<_primitive>> toReturn;
+	 for (Levelized* node : _circuit->nodes()) {
+		 SimulationNode<_primitive>* cast = dynamic_cast<SimulationNode<_primitive>*>(node);
+		 std::set<Fault<_primitive>> toAdd = allFaults(cast);
+		 toReturn.insert(toAdd.begin(), toAdd.end());
+	 }
+	 return toReturn;
+ }
+
+ template<class _primitive>
+std::set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(SimulationNode<_primitive>* _node) {
 	//Is this an XOR gate?
-	std::unordered_set<Fault<_primitive>> toReturn;
+	std::set<Fault<_primitive>> toReturn;
 	BooleanFunction* func = dynamic_cast<BooleanFunction*>( _node->function() );
 	if (func->string() == "xor" || func->string() == "xnor") {//yes: generate faults on each input and output.
 		for (Connecting* input : _node->inputs()) {
@@ -30,26 +41,36 @@ std::unordered_set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(Simu
 	//no
 	for (Connecting* input : _node->inputs()) {
 		FaultyLine<_primitive>* line = dynamic_cast<FaultyLine<_primitive>*>(input);
-		std::unordered_set<Fault<_primitive>> toAdd = this->allFaults(line);
+		std::set<Fault<_primitive>> toAdd = this->allFaults(line);
 		toReturn.insert(toAdd.begin(), toAdd.end());
 	}
 	for (Connecting* output : _node->inputs()) {
 		FaultyLine<_primitive>* line = dynamic_cast<FaultyLine<_primitive>*>(output);
-		std::unordered_set<Fault<_primitive>> toAdd = this->allFaults(line);
+		std::set<Fault<_primitive>> toAdd = this->allFaults(line);
 		toReturn.insert(toAdd.begin(), toAdd.end());
 	}
-	return std::unordered_set<Fault<_primitive>>();
+	return std::set<Fault<_primitive>>();
 }
 
 template<class _primitive>
-std::unordered_set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(FaultyLine<_primitive>* _line) {
-	std::unordered_set<Fault<_primitive>> toReturn;
-	if (_line->Line::isInputNode() == true) {
-		SimulationNode<_primitive>* input = dynamic_cast<SimulationNode<_primitive>*>(*(_line->Line::inputs().begin()));
-		if (input->inputLevel() == 0 || _line->Line::isOutputNode() == true) {
-			toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(0)));
-			toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(1)));
-		}
+std::set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(FaultyLine<_primitive>* _line) {
+	std::set<Fault<_primitive>> toReturn;
+	Connecting* input = *(_line->inputs().begin());
+	//Is it a pi / constant (no driver)?
+	if (input->inputs().size() == 0) { //yes
+		toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(0)));
+		toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(1)));
+		return toReturn;
+	} //no
+
+	//Is this a fan-out?
+	if (input->outputs().size() > 1) { //yes
+		toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(0)));
+		toReturn.emplace(Fault<_primitive>(_line, Value<_primitive>(1)));
+		return toReturn;
 	}
-	return toReturn;
+
+	return toReturn; //no faults.
 }
+
+template class FaultGenerator<bool>;
