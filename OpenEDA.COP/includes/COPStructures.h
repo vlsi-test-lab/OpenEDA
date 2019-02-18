@@ -202,6 +202,9 @@ public:
 	{
 	}
 
+
+protected:
+
 	/*
 	 * Call this Node to calculate its controllability.
 	 *
