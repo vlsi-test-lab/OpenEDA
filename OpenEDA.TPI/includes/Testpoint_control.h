@@ -58,7 +58,7 @@ private:
 	/*
 	 * The object which was previously connected to before this TP was activated.
 	 *
-	 * Cann be null.
+	 * Can be null.
 	 */
 	Connecting* oldDriver_;
 

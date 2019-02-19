@@ -155,11 +155,15 @@
   <ItemGroup>
     <ClInclude Include="..\includes\Testpoint.h" />
     <ClInclude Include="..\includes\Testpoint_control.h" />
+    <ClInclude Include="..\includes\Testpoint_invert.h" />
     <ClInclude Include="..\includes\Testpoint_observe.h" />
+    <ClInclude Include="..\includes\TPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Testpoint_control.cpp" />
+    <ClCompile Include="..\src\Testpoint_invert.cpp" />
     <ClCompile Include="..\src\Testpoint_observe.cpp" />
+    <ClCompile Include="..\src\TPI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
