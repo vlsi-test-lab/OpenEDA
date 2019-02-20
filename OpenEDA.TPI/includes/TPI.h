@@ -29,19 +29,19 @@ template <class _primitive>
 class TPI {
 public:
 	/*
-	 * Create a TPI algorithm with a given TP, fault coverage
-	 * (float percentage, 1.0 = 100%), and time limit (in seconds).
+	 * Create a TPI algorithm with a given TP, quality, and time limit (in 
+	 * seconds).
 	 *
 	 * @param (optional) _TPLimit The maximumum allowed TPs to insert. By
 	 *        default, this will be the maximum possible.
-	 * @param (optional) _FCLimit The maximum fault coverage to achieve.
+	 * @param (optional) _qualityLimit The maximum quality to achieve.
 	 *        By default, this is will 100% (1.0f).
 	 * @param (optional) _timeLimit The maximum time (in seconds) to spend
 	 *        on TPI. By default, this will be the "maximum possible time".
 	 */
 	TPI(
-		size_t _TPLimit = numeric_limits<size_t>::max(),
-		float _FCLimit = 1.0,
+		size_t _TPLimit = std::numeric_limits<size_t>::max(),
+		float _qualityLimit = 1.0,
 		size_t _timeLimit = std::numeric_limits<size_t>::max()
 	);
 
@@ -55,40 +55,78 @@ public:
 	 * Provding multiple sets of testpoints allows limits to be set on each
 	 * set. This is given as a "limit-set" pair.
 	 *
+	 * An exception will be thrown if the testpoint limits do not match the
+	 * number of testpoint sets.
+	 *
 	 * @param _testpoints The testpoints to evaluate. This is given as a "set
 	 *        of sets", where each set as a limit assigned to it. This limit
 	 *        designates the maximum number of testpoints to choose from the 
 	 *        attached set.
+	 * @param (optional) _limits The limit to the number of testpoints for each
+	 *        set. If no limits is given, no limit will be given to any set.
 	 */
 	std::set<Testpoint<_primitive>> testpoints(
-		std::set<
-			std::set<
-				std::pair<
-					std::size_t, Testpoint<_primitive>
-				>
-			>
-		>
+		std::vector<std::set<Testpoint<_primitive>>> _testpoints,
+		std::vector<size_t> _limits = std::vector<size_t>
 	);
 
 	/*
-	 * Set the time limit.
+	 * Set the time limit (and reset the timer).
 	 *
 	 * @param The new time limit (in seconds).
 	 */
 	void timeLimit(size_t _timeLimit);
 
+	/*
+	 * Set the testpoint limit.
+	 *
+	 * @param The new testpoint limit.
+	 */
+	void testpointLimit(size_t _testpointLimit);
 
+protected:
+	/*
+	 * Return the "quality" of this testpoint.
+	 *
+	 * The relative measure of this testpoing is irrelevant as long as
+	 * "no quality" (i.e., this testpoint should never be chosen) is a negative
+	 * number.
+	 *
+	 * @param _testpoint The testpoint to measure.
+	 * @return The quality of the testpoint.
+	 */
+	float quality(Testpoint<_primitive> _testpoint) = 0;
 
 private:
+	/*
+	 * For a given set of testpoints, return the best testpoint and its quality.
+	 *
+	 * @param _testpoints the set of testpoints to evaluate.
+	 * @return A pair: the best testpoint and its quality.
+	 */
+	std::pair<Testpoint<_primitive>, float> bestTestpoint(std::set<Testpoint<_primitive>> _testpoints);
+
+	/*
+	 * Reset the timer.
+	 */
+	void resetTimer();
+
+	/*
+	 * Is time up?
+	 *
+	 * @return True if time is up.
+	 */
+	bool timeUp();
+	
 	/*
 	 * The set TP limit
 	 */
 	size_t TPLimit_;
 
 	/*
-	 * The set FC limit
+	 * The set quality limit
 	 */
-	float FCLimit_;
+	float qualityLimit_;
 
 	/*
 	 * The time limit (in seconds).
