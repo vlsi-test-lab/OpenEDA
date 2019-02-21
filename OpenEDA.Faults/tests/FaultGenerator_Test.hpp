@@ -12,6 +12,7 @@
 #include"FaultGenerator.h"
 #include"Parser.h"
 
+#include <iostream>
 
 
 //std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
@@ -27,5 +28,16 @@ TEST(FaultGeneratorTest, TEST02) {
 	Circuit* c = parse.Parse("c17.bench");
 	FaultGenerator<bool> fgen;
 	std::set<Fault<bool>> faults = fgen.allFaults(c);
-	EXPECT_EQ(28,faults.size());
+	for (Fault<bool> fault : faults) {
+		std::string locationName = fault.location()->name();
+		bool value = fault.value().magnitude();
+		std::cout << fault.location();
+		std::cout << "\t";
+		std::cout << locationName ;
+		std::cout << "\t";
+		std::cout << value;
+		std::cout << "\n";
+	}
+	size_t numFaults = faults.size();
+	EXPECT_EQ(24,numFaults);
 }

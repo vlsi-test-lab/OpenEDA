@@ -11,7 +11,7 @@
 #ifndef Parser_h
 #define Parser_h
 
-#include "SimulationStructures.hpp"
+#include "FaultStructures.hpp"
 #include "TraceStructures.hpp"
 
 #include <string>

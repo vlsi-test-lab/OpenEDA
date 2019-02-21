@@ -144,7 +144,7 @@ private:
 	/*
 	 * The Value (when active) of the Fault.
 	 */
-	Value<_primitive> value_;
+//DELETE (stored in the "Valued" portion)	Value<_primitive> value_;
 };
 
 /*

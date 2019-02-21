@@ -51,13 +51,6 @@ private:
 	std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
 
 
-	/*
-	 * Return all Faults associated with a given Line.
-	 *
-	 * @param _line The Line to generate faults for.
-	 * @return The list of Faults.
-	 */
-	std::set<Fault<_primitive>> allFaults(FaultyLine<_primitive>* _line);
 };
 
 #endif

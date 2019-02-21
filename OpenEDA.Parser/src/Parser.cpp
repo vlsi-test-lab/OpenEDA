@@ -61,7 +61,7 @@ Circuit * Parser::Parse(std::string _filePath) {
 }
 
 Levelized * Parser::newLine(std::string _name) {
-	return new SimulationLine<bool>(_name);
+	return new FaultyLine<bool>(_name);
 }
 
 Levelized * Parser::newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs) {
@@ -154,8 +154,8 @@ void Parser::MergeLines() {
 			if (line->outputs().size() == 0) { base = line; lines.erase(line); break; }
 		}
 		if (base == nullptr) { throw "Could not merge lines: there is no base."; }
-		if (lines_.size() == 0) { throw "Not enough lines to do a merge, which should not happen."; }
-		if (lines_.size() == 1) { //Same non-fanout line, so delete.
+		if (lines.size() == 0) { throw "Not enough lines to do a merge, which should not happen."; }
+		if (lines.size() == 1) { //Same non-fanout line, so delete.
 			Levelized* toDelete = *lines.begin();
 			base->addOutput(*toDelete->outputs().begin());
 			delete toDelete; //This will automatically delete its connections.

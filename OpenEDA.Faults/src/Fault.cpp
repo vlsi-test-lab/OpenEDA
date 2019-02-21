@@ -14,13 +14,12 @@
 template<class _primitive>
 Fault<_primitive>::Fault() {
 	this->location_ = nullptr;
-	this->value_ = Value<_primitive>();
 }
 
 template<class _primitive>
 Fault<_primitive>::Fault(FaultyLine<_primitive> * _location, Value<_primitive> _value) {
 	this->location_ = _location;
-	this->value_ = _value;
+	this->Valued<_primitive>::value(std::vector<Value<_primitive>>({ _value }));
 }
 
 template<class _primitive>
@@ -30,19 +29,19 @@ Fault<_primitive>::~Fault() {
 template<class _primitive>
 Fault<_primitive>::Fault(const Fault<_primitive>& _fault) {
 	this->location_ = _fault.location();
-	this->value_ = _fault.value();
+	this->Valued<_primitive>::value(std::vector<Value<_primitive>>({ _fault.value() }));
 }
 
 template<class _primitive>
 Fault<_primitive> Fault<_primitive>::operator=(const Fault<_primitive> _fault) {
 	this->location_ = _fault.location();
-	this->value_ = _fault.value();
+	this->Valued<_primitive>::value(std::vector<Value<_primitive>>({ _fault.value() }));
 	return *this;
 }
 
 template<class _primitive>
 bool Fault<_primitive>::operator==(const Fault<_primitive>& _other) const {
-	if (this->value_ != _other.value()) {
+	if (this->value() != _other.value()) {
 		return false;
 	}
 	if (this->location_ != _other.location()) {
@@ -72,7 +71,7 @@ bool Fault<_primitive>::operator<(const Fault<_primitive>& _other) const {
 
 template<class _primitive>
 Value<_primitive> Fault<_primitive>::value() const {
-	return this->value();
+	return this->Valued<_primitive>::value();
 }
 
 template<class _primitive>

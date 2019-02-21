@@ -74,7 +74,7 @@ class Connecting {
    * When a Connecting object is destroyed, all Connections will be destroyed.
    * This will in turn remove all Connections to input/ouput objects.
    */
-  ~Connecting();
+  virtual ~Connecting();
 
   /**
    * Get all the input Connecting objects.
