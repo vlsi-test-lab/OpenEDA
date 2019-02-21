@@ -37,7 +37,7 @@ public:
 	 * @param _circuit The circuit to generate Faults for.
 	 * @return The list of Faults.
 	 */
-	std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
+	static std::unordered_set<Fault<_primitive>*> allFaults(Circuit* _circuit);
 
 
 
@@ -48,7 +48,7 @@ private:
 	 * @param _node The Node to generate faults for.
 	 * @return The list of Faults.
 	 */
-	std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
+	static std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
 
 
 };

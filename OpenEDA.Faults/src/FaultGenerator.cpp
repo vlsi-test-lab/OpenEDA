@@ -11,14 +11,19 @@
 #include "FaultGenerator.h"
 
 	 template<class _primitive>
- std::set<Fault<_primitive>> FaultGenerator<_primitive>::allFaults(Circuit * _circuit) {
+ std::unordered_set<Fault<_primitive>*> FaultGenerator<_primitive>::allFaults(Circuit * _circuit) {
 	 std::set<Fault<_primitive>> toReturn;
 	 for (Levelized* node : _circuit->nodes()) {
 		 SimulationNode<_primitive>* cast = dynamic_cast<SimulationNode<_primitive>*>(node);
 		 std::set<Fault<_primitive>> toAdd = allFaults(cast);
 		 toReturn.insert(toAdd.begin(), toAdd.end());
 	 }
-	 return toReturn;
+	 //Convert to pointers (previously non-pointers to allow for easy indentical fault removeal).
+	 std::unordered_set<Fault<_primitive>*> pointers;
+	 for (Fault<_primitive> fault : toReturn) {
+		 pointers.emplace(new Fault<_primitive>(fault));
+	 }
+	 return pointers;
  }
 
  template<class _primitive>

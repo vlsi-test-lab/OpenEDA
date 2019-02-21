@@ -17,6 +17,7 @@
 #include <ctime>
 
 #include "Testpoint.h"
+#include "Circuit.h"
 
 /*
  * An algroithm which implements iterative test point insertion (TPI).
@@ -32,6 +33,7 @@ public:
 	 * Create a TPI algorithm with a given TP, quality, and time limit (in 
 	 * seconds).
 	 *
+	 * @param _circuit The circuit to insert TPs into.
 	 * @param (optional) _TPLimit The maximumum allowed TPs to insert. By
 	 *        default, this will be the maximum possible.
 	 * @param (optional) _qualityLimit The maximum quality to achieve.
@@ -40,6 +42,7 @@ public:
 	 *        on TPI. By default, this will be the "maximum possible time".
 	 */
 	TPI(
+		Circuit* _circuit,
 		size_t _TPLimit = std::numeric_limits<size_t>::max(),
 		float _qualityLimit = 1.0,
 		size_t _timeLimit = std::numeric_limits<size_t>::max()
@@ -65,8 +68,8 @@ public:
 	 * @param (optional) _limits The limit to the number of testpoints for each
 	 *        set. If no limits is given, no limit will be given to any set.
 	 */
-	std::set<Testpoint<_primitive>> testpoints(
-		std::vector<std::set<Testpoint<_primitive>>> _testpoints,
+	std::set<Testpoint<_primitive>*> testpoints(
+		std::vector<std::set<Testpoint<_primitive>*>> _testpoints,
 		std::vector<size_t> _limits = std::vector<size_t>
 	);
 
@@ -95,16 +98,43 @@ protected:
 	 * @param _testpoint The testpoint to measure.
 	 * @return The quality of the testpoint.
 	 */
-	float quality(Testpoint<_primitive> _testpoint) = 0;
+	virtual float quality(Testpoint<_primitive>* _testpoint) = 0;
+
+	/*
+	 * The circuit this TPI is attached to
+	 */
+	Circuit* circuit_;
 
 private:
+	/*
+	 * Return the "base" quality (no extra TP fault coverage) to compare other
+	 * testpoints against.
+	 *
+	 * This function will be used to "bestTestpoint" to return final quality.
+	 *
+	 * If no base is needed, have it return "0" always.
+	 *
+	 * @return The base quality"
+	 */
+	virtual float base() = 0;
+
+	/*
+	 * Reset the "base" quality to compare against other testpoints against.
+	 *
+	 * The  input parameter manually sets the value.
+	 *
+	 * @param _base The manually set base value.
+	 * @return The new base quality.
+	 */
+	virtual float base(float _base) = 0;
+
 	/*
 	 * For a given set of testpoints, return the best testpoint and its quality.
 	 *
 	 * @param _testpoints the set of testpoints to evaluate.
 	 * @return A pair: the best testpoint and its quality.
 	 */
-	std::pair<Testpoint<_primitive>, float> bestTestpoint(std::set<Testpoint<_primitive>> _testpoints);
+	std::pair<Testpoint<_primitive>*, float> bestTestpoint(std::set<Testpoint<_primitive>*> _testpoints);
 
 	/*
 	 * Reset the timer.
@@ -118,6 +148,7 @@ private:
 	 */
 	bool timeUp();
 	
+
 	/*
 	 * The set TP limit
 	 */

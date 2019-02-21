@@ -82,14 +82,14 @@ FaultyLine<_primitive>* Fault<_primitive>::location() const {
 template<class _primitive>
 bool Fault<_primitive>::activate() {
 	Value<_primitive> oldValue = this->location_->value();
-	Value<_primitive> newValue = this->location_->activate(*this);
+	Value<_primitive> newValue = this->location_->activate(this);
 	return oldValue != newValue ;
 }
 
 template<class _primitive>
 bool Fault<_primitive>::deactivate() {
 	Value<_primitive> oldValue = this->location_->value();
-	Value<_primitive> newValue = this->location_->deactivate(*this);
+	Value<_primitive> newValue = this->location_->deactivate(this);
 	return oldValue != newValue;
 }
 
@@ -97,7 +97,7 @@ template<class _primitive>
 std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
 	bool forwardUpdateCall = false;
 	//Is this fault currently active?
-	if (this->location_->isFaultActive(*this) == true) {
+	if (this->location_->isFaultActive(this) == true) {
 		forwardUpdateCall = this->deactivate();
 	} else {
 		forwardUpdateCall = this->activate();
@@ -113,6 +113,7 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
 template<class _primitive>
 Faulty<_primitive>::Faulty() {
 	this->active_ = false;
+	this->fault_ = nullptr;
 }
 
 template<class _primitive>
@@ -122,7 +123,7 @@ Value<_primitive> Faulty<_primitive>::value() const {
 		return this->Valued<_primitive>::value();
 	}
 	//no
-	return this->fault_.value();
+	return this->fault_->value();
 }
 
 template<class _primitive>
@@ -132,17 +133,17 @@ Value<_primitive> Faulty<_primitive>::value(std::vector<Value<_primitive>> _valu
 }
 
 template<class _primitive>
-Value<_primitive> Faulty<_primitive>::activate(Fault<_primitive> _fault) {
+Value<_primitive> Faulty<_primitive>::activate(Fault<_primitive>* _fault) {
 	if (this->active_ == true) {
 		throw "Cannot active fault: already active.";
 	}
 	this->active_ = true;
 	this->fault_ = _fault;
-	return this->fault_.value();
+	return this->fault_->value();
 }
 
 template<class _primitive>
-Value<_primitive> Faulty<_primitive>::deactivate(Fault<_primitive> _fault) {
+Value<_primitive> Faulty<_primitive>::deactivate(Fault<_primitive>* _fault) {
 	if (this->active_ == false) {
 		throw "Cannot deactivate fault: no fault is active.";
 	}
@@ -150,11 +151,12 @@ Value<_primitive> Faulty<_primitive>::deactivate(Fault<_primitive> _fault) {
 		throw "Cannot deactiveate fault: incorrect fault.";
 	}
 	this->active_ = false;
+	this->fault_ = nullptr;
 	return this->value();
 }
 
 template<class _primitive>
-bool Faulty<_primitive>::isFaultActive(Fault<_primitive> _fault) {
+bool Faulty<_primitive>::isFaultActive(Fault<_primitive>* _fault) {
 	return fault_ == _fault;
 }
 

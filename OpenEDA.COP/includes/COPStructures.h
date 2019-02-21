@@ -66,7 +66,7 @@ public:
 	 * @param (optional) The object calling to calculate observability.
 	 * @return The observability of the object.
 	 */
-	float observability(COP* _calling);
+	float observability(COP* _calling = nullptr);
 
 	/*
 	 * Manually set the observability of the object.

@@ -11,122 +11,72 @@
 #include"gtest/gtest.h"
 #include"Fault.h"
 
+class FaultTest : public ::testing::Test {
+protected:
+	void SetUp() override {
+		Parser parser;
+		Circuit* c = parser.Parse("c17.bench");
+		FaultGenerator<bool> fgen;
+		std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);
+		faultUnderTest = *(faults.begin());
 
- //Fault();
-TEST(Fault_Constructor_Test, TEST01) {
+	}
+	
+	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
+	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
+	Value<bool> val0 = Value<bool>(0);;
+	Value<bool> val1 = Value<bool>(1);;
+	Fault<bool>* faultUnderTest;
+	Fault<bool> f1 = Fault<bool>(fl1, val0);
+};
+
+TEST_F(FaultTest, Constructors) {
 	//FaultyLine<bool> fl;
 	//Value<bool> val(0);
-	EXPECT_NO_THROW(Fault<bool> f(););
-}
-
-//Fault();
-TEST(Fault_Constructor_Test, TEST02) {
-	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
-	Value<bool> val(0);
-	EXPECT_NO_THROW(Fault<bool>f (fl, val););
-}
-
-//Fault(const Fault<_primitive>& _fault);
-TEST(Fault_Operators_Test, TEST01) {
-	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
-	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
-	Value<bool> val(0);
-	Fault<bool>f1 (fl1, val);
+	EXPECT_NO_THROW(Fault<bool> f());
+	EXPECT_NO_THROW(Fault<bool> f(fl1, val0));
 	Fault<bool> f2(f1);
-	EXPECT_EQ(f1.value(),f2.value());
+	EXPECT_EQ(f1.value(), f2.value()); //Copy constructor
+
 }
 
-//Fault<_primitive> operator = (const Fault<_primitive> _fault) ;
-TEST(Fault_Operators_Test, TEST02) {
-	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
-	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
-	Value<bool> val(0);
-	Fault<bool>f1 (fl1, val);
-	Fault<bool> f2 = f1;
-	EXPECT_EQ(f1.value(), f2.value());
+TEST_F(FaultTest, Overwritten_Operators) {
+	Fault<bool>f2 = f1;
+	EXPECT_EQ(f1.value(), f2.value()); //Assign (copy) constructor
+	EXPECT_TRUE(f1 == f2); //Equal constructor
+	f2 = Fault<bool>(fl1, val1);
+	EXPECT_TRUE(f1 != f2); //Not equal constructor
 }
 
-//bool operator == (const Fault<_primitive>& _other) const;
-TEST(Fault_Operators_Test, TEST03) {
-	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
-	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
-	Value<bool> val(0);
-	Fault<bool>f1(fl1, val);
-	Fault<bool> f2 = f1;
-	int flag = 0;
-	if (f1 == f2)
-		flag = 1;
-	EXPECT_EQ(1, flag);
-}
-
-//bool operator != (const Fault<_primitive>& _other) const;
-TEST(Fault_Operators_Test, TEST04) {
-	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
-	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
-	Value<bool> val1(0);
-	Value<bool> val2(1);
-	Fault<bool>f1(fl1, val1);
-	Fault<bool> f2 (fl2,val1);
-	int flag = 0;
-	if (f1 != f2)
-		flag = 1;
-	EXPECT_EQ(1, flag);
-}
-
-//bool operator != (const Fault<_primitive>& _other) const;
-TEST(Fault_Operators_Test, TEST05) {
-	FaultyLine<bool>* fl1 = new FaultyLine<bool>("Faulty Line 1");
-	FaultyLine<bool>* fl2 = new FaultyLine<bool>("Faulty Line 2");
-	Value<bool> val1(0);
-	Value<bool> val2(1);
-	Fault<bool>f1(fl1, val1);
-	Fault<bool> f2(fl1, val2);
-	int flag = 0;
-	if (f1 != f2)
-		flag = 1;
-	EXPECT_EQ(1, flag);
-}
-
-//Value<_primitive> value() const;
-TEST(Fault_Operators_Test, TEST06) {
-	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
-	Value<bool> val(0);
-	Value<bool> val_check(0);
-	Fault<bool>f(fl, val);
-	EXPECT_EQ(val_check, f.value());
+//value();
+TEST_F(FaultTest, value) {
+	EXPECT_EQ(f1.value(), val0);
 }
 
 //go() const;
-TEST(Fault_Go_Test, TEST01) {
-	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
-	Value<bool> val(0);
-	Fault<bool>f(fl, val);
-	EXPECT_TRUE(f.go().empty());
+TEST_F(FaultTest, go) {
+	EXPECT_NO_THROW(faultUnderTest->go());
 }
+
+class FaultyTest : public ::testing::Test {
+protected:
+	void SetUp() override {
+	}
+
+	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
+	Fault<bool>* f = new Fault<bool>(fl, Value<bool>(0));
+};
+
+
 //Faulty();
-TEST(Faulty_Constructor_Test, TEST01) {
-
-	EXPECT_NO_THROW(Faulty<bool> fauly;);
+TEST_F(FaultyTest, Constructors) {
+	EXPECT_NO_THROW(Faulty<bool> fauly);
 }
 
 //bool isFaultActive(Fault<_primitive> _fault);
-TEST(Faulty_Activate_Test, TEST01) {
-
-	Faulty<bool> faulty;
-	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
-	Value<bool> val(0);
-	Fault<bool>f(fl, val);
-	faulty.activate(f);
-	EXPECT_TRUE(faulty.isFaultActive(f));
-}
-
-//bool isFaultActive(Fault<_primitive> _fault);
-TEST(Faulty_Deactivate_Test, TEST03) {
-
-	Faulty<bool> faulty;
-	FaultyLine<bool>* fl = new FaultyLine<bool>("Faulty Line 1");
-	Value<bool> val(0);
-	Fault<bool>f(fl, val);
-	faulty.deactivate(f);
-	EXPECT_FALSE(faulty.isFaultActive(f));
+TEST_F(FaultyTest, activate_deactivate) {
+	fl->activate(f);
+	EXPECT_TRUE(fl->isFaultActive(f));
+	fl->deactivate(f);
+	EXPECT_FALSE(fl->isFaultActive(f));
 }

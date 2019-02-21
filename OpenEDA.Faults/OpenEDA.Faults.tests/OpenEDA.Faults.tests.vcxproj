@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2efbf4b8-58d3-4f21-bdd3-a86e0b5eb938}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -60,8 +60,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\Faults.Tests.h" />
     <ClInclude Include="..\tests\FaultGenerator_Test.hpp" />
+    <ClInclude Include="..\tests\Faults.Tests.h" />
     <ClInclude Include="..\tests\faultystructure_test.hpp" />
     <ClInclude Include="..\tests\Fault_Test.hpp" />
   </ItemGroup>

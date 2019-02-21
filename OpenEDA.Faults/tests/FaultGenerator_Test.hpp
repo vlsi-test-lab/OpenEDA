@@ -27,11 +27,11 @@ TEST(FaultGeneratorTest, TEST02) {
 	Parser parse;
 	Circuit* c = parse.Parse("c17.bench");
 	FaultGenerator<bool> fgen;
-	std::set<Fault<bool>> faults = fgen.allFaults(c);
-	for (Fault<bool> fault : faults) {
-		std::string locationName = fault.location()->name();
-		bool value = fault.value().magnitude();
-		std::cout << fault.location();
+	std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);
+	for (Fault<bool>* fault : faults) {
+		std::string locationName = fault->location()->name();
+		bool value = fault->value().magnitude();
+		std::cout << fault->location();
 		std::cout << "\t";
 		std::cout << locationName ;
 		std::cout << "\t";

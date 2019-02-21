@@ -195,7 +195,7 @@ public:
 	 * @param The Fault to activate.
 	 * @return The Value of the object after the Fault is activated.
 	 */
-	Value<_primitive> activate(Fault<_primitive> _fault);
+	Value<_primitive> activate(Fault<_primitive>* _fault);
 
 	/*
 	 * Deactivate a given Fault.
@@ -206,7 +206,7 @@ public:
 	 * @param The Fault to deactivate.
 	 * @return The Value of the object after the Fault is deactivated.
 	 */
-	Value<_primitive> deactivate(Fault<_primitive> _fault);
+	Value<_primitive> deactivate(Fault<_primitive>* _fault);
 
 	/*
 	 * Return true if the given fault is currently active on this line.
@@ -214,7 +214,7 @@ public:
 	 * @param _fault the Fault to check if active.
 	 * @return True if the fault is currently cative.
 	 */
-	bool isFaultActive(Fault<_primitive> _fault);
+	bool isFaultActive(Fault<_primitive>* _fault);
 
 private:
 	/*
@@ -225,7 +225,7 @@ private:
 	/*
 	 * What is the currently active fault?
 	 */
-	Fault<_primitive> fault_;
+	Fault<_primitive>* fault_;
 	
 };
 

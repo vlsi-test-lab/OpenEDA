@@ -11,8 +11,8 @@
 #include "TPI.h"
 
 template<class _primitive>
-std::set<Testpoint<_primitive>> TPI<_primitive>::testpoints(
-		std::vector<std::set<Testpoint<_primitive>>> _testpoints,
+std::set<Testpoint<_primitive>*> TPI<_primitive>::testpoints(
+		std::vector<std::set<Testpoint<_primitive>*>> _testpoints,
 		std::vector<size_t> _limits
 ) {
 	this->resetTimer();
@@ -54,6 +54,7 @@ std::set<Testpoint<_primitive>> TPI<_primitive>::testpoints(
 		}
 		inserted.emplace(bestTestpoint);
 		_testpoints.at(bestSet).erase(bestTestpoint);
+		bestTestpoint->activate();
 	}
 
 	return inserted;
@@ -71,16 +72,17 @@ void TPI<_primitive>::testpointLimit(size_t _testpointLimit) {
 }
 
 template<class _primitive>
-std::pair<Testpoint<_primitive>, float> TPI<_primitive>::bestTestpoint(std::set<Testpoint<_primitive>> _testpoints) {
+std::pair<Testpoint<_primitive>*, float> TPI<_primitive>::bestTestpoint(std::set<Testpoint<_primitive>*> _testpoints) {
 	float bestQuality = -1;
-	Testpoint<_primitive> bestTestpoint;
-	for (Testpoint<_primitive> curTestpoint : _testpoints) {
+	Testpoint<_primitive>* bestTestpoint;
+	for (Testpoint<_primitive>* curTestpoint : _testpoints) {
 		float quality = this->quality(curTestpoint);
 		if (quality > bestQuality) {
 			bestQuality = quality;
 			bestTestpoint = curTestpoint;
 		}
 	}
+	this->base(bestQuality);
 	return std::pair<Testpoint<_primitive>, float>(bestTestpoint, bestQuality);
 }
 

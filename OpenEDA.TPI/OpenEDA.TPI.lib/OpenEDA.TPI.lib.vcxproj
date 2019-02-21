@@ -27,7 +27,7 @@
     <SccProvider>SAK</SccProvider>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OpenEDATPIlib</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.COP/includes;$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.COP/includes;$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.COP/includes;$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,6 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.COP/includes;$(ProjectDir)/../../OpenEDA.Faults/includes;$(ProjectDir)/../../OpenEDA.Simulation/includes;$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,17 +155,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\includes\COP_fault_calculator.h" />
     <ClInclude Include="..\includes\Testpoint.h" />
     <ClInclude Include="..\includes\Testpoint_control.h" />
     <ClInclude Include="..\includes\Testpoint_invert.h" />
     <ClInclude Include="..\includes\Testpoint_observe.h" />
     <ClInclude Include="..\includes\TPI.h" />
+    <ClInclude Include="..\includes\TPI_COP.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\COP_fault_calculator.cpp" />
     <ClCompile Include="..\src\Testpoint_control.cpp" />
     <ClCompile Include="..\src\Testpoint_invert.cpp" />
     <ClCompile Include="..\src\Testpoint_observe.cpp" />
     <ClCompile Include="..\src\TPI.cpp" />
+    <ClCompile Include="..\src\TPI_COP.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -30,6 +30,11 @@ template <class _primitive>
 class FaultSimulator : public Simulator<_primitive> {
 public:
 	/*
+	 * On destruction, clear (delete) the fault lists.
+	 */
+	virtual ~FaultSimulator();
+
+	/*
 	 * Apply a given vector of input values to the Circuit.
 	 *
 	 * The number of values provided must be equal the number of inputs
@@ -59,25 +64,25 @@ public:
 	 *
 	 * @param _faults The set of faults.
 	 */
-	void setFaults(std::unordered_set<Fault<_primitive>> _faults);
+	void setFaults(std::unordered_set<Fault<_primitive>*> _faults);
 
 	/*
 	 * Return the list of detected faults.
 	 *
 	 * @return The detected faults.
 	 */
-	std::unordered_set<Fault<_primitive>> detectedFaults();
+	std::unordered_set<Fault<_primitive>*> detectedFaults();
 
 protected:
 	/*
 	 * All undetected faults.
 	 */
-	std::unordered_set<Fault<_primitive>> undetectedFaults_;
+	std::unordered_set<Fault<_primitive>*> undetectedFaults_;
 
 	/*
 	 * All detected faults.
 	 */
-	std::unordered_set<Fault<_primitive>> detectedFaults_;
+	std::unordered_set<Fault<_primitive>*> detectedFaults_;
 
 	/*
 	 * Is the Fault worth simulating, i.e., can it have an impact?
@@ -85,8 +90,13 @@ protected:
 	 * @param The Fault which may (not) have an impact when activated.
 	 * @return True if the fault will have an impact when activated.
 	 */
-	virtual bool hasImpact(Fault<_primitive> _fault);
+	virtual bool hasImpact(Fault<_primitive>* _fault);
 
+private:
+	/*
+	 * Clean all fault lists: delete all faults.
+	 */
+	void clearFaults();
 };
 
 #endif
