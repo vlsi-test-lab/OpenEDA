@@ -18,6 +18,36 @@ Testpoint_control<_primitive>::Testpoint_control(Value<_primitive> _value, Fault
 	this->oldDriver_ = nullptr;
 }
 
+template<class _primitive>
+bool Testpoint_control<_primitive>::operator==(const Testpoint_control<_primitive>& _other) const {
+	if (this->value() != _other.value()) {
+		return false;
+	}
+	if (this->location_ != _other.location()) {
+		return false;
+	}
+	return true;
+}
+
+template<class _primitive>
+bool Testpoint_control<_primitive>::operator!=(const Testpoint_control<_primitive>& _other) const {
+	return !(*this == _other);
+}
+
+template<class _primitive>
+bool Testpoint_control<_primitive>::operator<(const Testpoint_control<_primitive>& _other) const {
+	if (this->location_ < _other.location()) {
+		return true;
+	}
+	if (this->location_ > _other.location()) {
+		return false;
+	}
+	if (this->value() < _other.value()) {
+		return true;
+	}
+	return false;
+}
+
 
 template<class _primitive>
 SimulationNode<_primitive>* Testpoint_control<_primitive>::activate() {
@@ -49,6 +79,11 @@ SimulationNode<_primitive>* Testpoint_control<_primitive>::deactivate() {
 	SimulationNode<_primitive>* toReturn = this->newNode_;
 	this->newNode_ = nullptr;
 	return nullptr;
+}
+
+template<class _primitive>
+Value<_primitive> Testpoint_control<_primitive>::value() const {
+	return this->value_;
 }
 
 template class Testpoint_control<bool>;

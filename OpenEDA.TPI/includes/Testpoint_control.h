@@ -33,6 +33,32 @@ public:
 	Testpoint_control(Value<_primitive> _value, FaultyLine<_primitive>* _location);
 
 	/*
+	 * Two control testpoints are equal if they are on the same location and
+	 * the same value.
+	 *
+	 * @param _other The other Testpoint being compared to.
+	 * @return True if both are on the same location.
+	 */
+	bool operator == (const Testpoint_control<_primitive>& _other) const;
+
+	/*
+	 * See the overloaded operator "==", as this is the logical opposite.
+
+	 * @param _other The other Testpoint being compared to.
+	 * @return True if the Testpoints are different.
+	 */
+	bool operator != (const Testpoint_control<_primitive>& _other) const;
+
+	/*
+	 * Compaitor function (needed for sorted hashes of faults).
+	 *
+	 * The first "priotiry" of the sort is the pointer to the location.
+	 *
+	 * @param _other The other Testpoints being compared to.
+	 */
+	bool operator < (const Testpoint_control<_primitive>& _other) const;
+
+	/*
 	 * Activate the Testpoint by modifying the circuit.
 	 *
 	 * The location will have its input removed and replaced by a constant-value
@@ -48,6 +74,13 @@ public:
 	 * @return A node which must be (but is not yet) deleted.
 	 */
 	virtual SimulationNode<_primitive>* deactivate();
+
+	/*
+	 * The value of this control TP.
+	 *
+	 * @return The value of this control TP.
+	 */
+	Value<_primitive> value() const;
 
 private:
 	/*

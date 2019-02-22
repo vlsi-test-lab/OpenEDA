@@ -160,6 +160,7 @@
     <ClInclude Include="..\includes\Testpoint_control.h" />
     <ClInclude Include="..\includes\Testpoint_invert.h" />
     <ClInclude Include="..\includes\Testpoint_observe.h" />
+    <ClInclude Include="..\includes\TPGenerator.h" />
     <ClInclude Include="..\includes\TPI.h" />
     <ClInclude Include="..\includes\TPI_COP.h" />
   </ItemGroup>
@@ -168,6 +169,7 @@
     <ClCompile Include="..\src\Testpoint_control.cpp" />
     <ClCompile Include="..\src\Testpoint_invert.cpp" />
     <ClCompile Include="..\src\Testpoint_observe.cpp" />
+    <ClCompile Include="..\src\TPGenerator.cpp" />
     <ClCompile Include="..\src\TPI.cpp" />
     <ClCompile Include="..\src\TPI_COP.cpp" />
   </ItemGroup>
