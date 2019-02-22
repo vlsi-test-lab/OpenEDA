@@ -36,7 +36,7 @@ public:
 		std::set<_TPType> toReturn;
 		for (Levelized* node : _circuit->nodes()) {
 			SimulationNode<_primitive>* cast = dynamic_cast<SimulationNode<_primitive>*>(node);
-			std::set<_TPType> toAdd = this->allTPs(cast);
+			std::set<_TPType> toAdd = allTPs(cast);
 			toReturn.insert(toAdd.begin(), toAdd.end());
 		}
 		//Convert to pointers (previously non-pointers to allow for easy indentical fault removeal).
@@ -58,12 +58,12 @@ private:
 		std::set<_TPType> toReturn;
 		for (Connecting* input : _node->inputs()) {
 			FaultyLine<_primitive>* line = dynamic_cast<FaultyLine<_primitive>*>(input);
-			std::set<_TPType> toAdd = this->allTPs(line);
+			std::set<_TPType> toAdd = allTPs(line);
 			toReturn.insert(toAdd.begin(), toAdd.end());
 		}
 		for (Connecting* output : _node->outputs()) {
 			FaultyLine<_primitive>* line = dynamic_cast<FaultyLine<_primitive>*>(output);
-			std::set<_TPType> toAdd = this->allTPs(line);
+			std::set<_TPType> toAdd = allTPs(line);
 			toReturn.insert(toAdd.begin(), toAdd.end());
 		}
 		return toReturn;
@@ -77,7 +77,7 @@ private:
 	 * @param _line The line to make all TPs for.
 	 * @return All TPs on the given line.
 	 */
-	static std::set<_TPType> allTPs(FaultyLine<_primitive>* _node);
+	static std::set<_TPType> allTPs(FaultyLine<_primitive>* _line);
 };
 
 
