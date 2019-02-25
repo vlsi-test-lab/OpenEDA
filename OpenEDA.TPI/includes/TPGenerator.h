@@ -32,7 +32,7 @@ public:
 	 * @param _circuit The circuit to generate all TPs for.
 	 * @return The set of all testpoints.
 	 */
-	static std::unordered_set<Testpoint<_primitive>*> allTPs(Circuit* _circuit) {
+	static std::set<Testpoint<_primitive>*> allTPs(Circuit* _circuit) {
 		std::set<_TPType> toReturn;
 		for (Levelized* node : _circuit->nodes()) {
 			SimulationNode<_primitive>* cast = dynamic_cast<SimulationNode<_primitive>*>(node);
@@ -40,7 +40,7 @@ public:
 			toReturn.insert(toAdd.begin(), toAdd.end());
 		}
 		//Convert to pointers (previously non-pointers to allow for easy indentical fault removeal).
-		std::unordered_set<Testpoint<_primitive>*> pointers;
+		std::set<Testpoint<_primitive>*> pointers;
 		for (_TPType TP : toReturn) {
 			pointers.emplace(new _TPType(TP));
 		}

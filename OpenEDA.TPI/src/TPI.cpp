@@ -11,6 +11,11 @@
 #include "TPI.h"
 
 template<class _primitive>
+TPI<_primitive>::TPI(Circuit * _circuit, size_t _TPLimit, float _qualityLimit, size_t _timeLimit)
+{
+}
+
+template<class _primitive>
 std::set<Testpoint<_primitive>*> TPI<_primitive>::testpoints(
 		std::vector<std::set<Testpoint<_primitive>*>> _testpoints,
 		std::vector<size_t> _limits
@@ -19,7 +24,7 @@ std::set<Testpoint<_primitive>*> TPI<_primitive>::testpoints(
 	size_t curNumberTestpoints = 0;
 	std::vector<size_t> numInserted = std::vector<size_t>(_testpoints.size(), 0);
 	float curQuality = -1;
-	std::set<Testpoint<_primitive>> inserted;
+	std::set<Testpoint<_primitive>*> inserted;
 
 	if (_limits.size() == 0) {
 		_limits = std::vector<size_t>(_testpoints.size(), std::numeric_limits<size_t>::max());
@@ -36,13 +41,13 @@ std::set<Testpoint<_primitive>*> TPI<_primitive>::testpoints(
 		   )
 	{
 		float bestQuality = -1;
-		Testpoint<_primitive> bestTestpoint;
+		Testpoint<_primitive>* bestTestpoint;
 		size_t bestSet = 0;
 		for (size_t i = 0; i < _testpoints.size(); i++) {
 			if (numInserted.at(i) >= _limits.at(i)) { //Skip: set limit reached.
 				continue;
 			}
-			std::pair<Testpoint<_primitive>, float> best = this->bestTestpoint(_testpoints.at(i));
+			std::pair<Testpoint<_primitive>*, float> best = this->bestTestpoint(_testpoints.at(i));
 			if (best.second > bestQuality) {
 				bestQuality = best.second;
 				bestTestpoint = best.first;
@@ -83,7 +88,7 @@ std::pair<Testpoint<_primitive>*, float> TPI<_primitive>::bestTestpoint(std::set
 		}
 	}
 	this->base(bestQuality);
-	return std::pair<Testpoint<_primitive>, float>(bestTestpoint, bestQuality);
+	return std::pair<Testpoint<_primitive>*, float>(bestTestpoint, bestQuality);
 }
 
 template<class _primitive>
@@ -95,3 +100,4 @@ template<class _primitive>
 bool TPI<_primitive>::timeUp() {
 	return clock() > this->endTime_;
 }
+template class TPI<bool>;

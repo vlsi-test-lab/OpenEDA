@@ -98,7 +98,7 @@ private:
 	/*
 	 * The new node created to implement a constant value.
 	 */
-	SimulationNode<_primitive>* newNode_;
+	SimulationNode<_primitive>* newNode_ = nullptr;
 };
 
 #endif
