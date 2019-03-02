@@ -1,8 +1,8 @@
 /**
- * @file FaultSimulator_Test.cpp
+ * @file COPStructures_Tests.cpp
  * @author Joshua Immanuel (jzi0005@tigermail.auburn.edu)
  * @version 0.1
- * @date 2019-02-18
+ * @date 2019-03-01
  *
  * @copyright Copyright (c) 2019
  *
@@ -10,34 +10,23 @@
 
 #include"gtest/gtest.h"
 #include"FaultSimulator.h"
-#include"FaultGenerator.h"
 #include"Parser.h"
-#include"Value.h"
 
-class ApplyStimulusTest : public ::testing::Test {
+
+class FaultSimTest : public ::testing::Test {
 public:
-	
-protected:
-	void SetUp()  {
-		
-		
+	void SetUp() override {
+
 	}
 	Value<bool> val0 = new Value<bool>(0);
 	Value<bool> val1 = new Value<bool>(1);
 	Parser parser;
-	FaultSimulator<bool> fsim;
-	Circuit* c = parser.Parse("c17.bench");
+	Circuit* c = parser.Parse("and.bench");
 	std::vector<Value<bool>> invals0 = { val0,val0,val0,val0,val0 };
 	std::vector<Value<bool>> invals1 = { val1,val1,val1,val1,val1 };
-	
-	
-
 };
 
-//applyStimulus()
-TEST_F(ApplyStimulusTest, TEST01) {
-	
-	std::vector<Value<bool>> outvals = fsim.applyStimulus(c, invals0);
-	
+TEST_F(FaultSimTest, ApplyStimulus01) {
+	FaultSimulator<bool> fsim;
+	EXPECT_ANY_THROW(fsim.applyStimulus(c, invals0););
 }
-
