@@ -12,8 +12,11 @@
 #include "SimulationStructures.hpp"
 #include"Simulator.h"
 
-//std::vector<Value<T>> applyStimulus(Circuit * _circuit, std::vector<Value<T>> _stimulus, std::vector<SimulationNode<T>*> _inputs = std::vector<SimulationNode<T>*>());
-TEST(SimulatorTest, TEST01) {
+class SimulatorTest : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
 	std::unordered_set<SimulationLine<bool>*> empty = {};
 	SimulationLine<bool>* l1 = new SimulationLine<bool>("l1");
 	SimulationLine<bool>* l2 = new SimulationLine<bool>("l2");
@@ -33,7 +36,7 @@ TEST(SimulatorTest, TEST01) {
 	std::unordered_set<SimulationLine<bool>*> inputs = { l1,l2 };
 	std::unordered_set<SimulationLine<bool>*> outputs = { l3 };
 	SimulationNode<bool>* sn = new SimulationNode<bool>(bfunc, inputs, outputs);
-	SimulationNode<bool>* sn1 = new SimulationNode<bool>(bfunc,n1_in, n1_out);
+	SimulationNode<bool>* sn1 = new SimulationNode<bool>(bfunc, n1_in, n1_out);
 	SimulationNode<bool>* sn2 = new SimulationNode<bool>(bfunc, n2_in, n2_out);
 	SimulationNode<bool>* sn3 = new SimulationNode<bool>(bfunc, n3_in, n3_out);
 	SimulationNode<bool>* n1 = new SimulationNode<bool>(copy, n1_in, n1_out);
@@ -43,16 +46,23 @@ TEST(SimulatorTest, TEST01) {
 	std::unordered_set<SimulationNode<bool>*> pis = { sn2 };
 	std::unordered_set<SimulationNode<bool>*> pos = { sn3 };
 	std::vector<SimulationNode<bool>*> spis = { sn2 };
-	Value<bool> val1(1), val2(0), val;
+	Value<bool> val;
+	Value<bool> val1 = new Value<bool>(1);
+	Value<bool> val2 = new Value<bool>(0);
 	std::vector<Value<bool>>vec_val = { val1,val2 };
 	std::vector<Value<bool>>check = { 0 };
 	Circuit* c = new Circuit(
-		std::unordered_set<Levelized*>(nodes.begin(), nodes.end()), 
+		std::unordered_set<Levelized*>(nodes.begin(), nodes.end()),
 		std::unordered_set<Levelized*>(pis.begin(), pis.end()),
 		std::unordered_set<Levelized*>(pos.begin(), pos.end())
 	);
 	Simulator<bool> sim;
 	EventQueue<bool> simulationQueue;
+};
+
+//std::vector<Value<T>> applyStimulus(Circuit * _circuit, std::vector<Value<T>> _stimulus, std::vector<SimulationNode<T>*> _inputs = std::vector<SimulationNode<T>*>());
+TEST_F(SimulatorTest, TEST01) {
+
 	EXPECT_NO_THROW(
 		std::vector<Value<bool>> outs = sim.applyStimulus(
 			c, 
