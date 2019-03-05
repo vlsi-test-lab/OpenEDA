@@ -1,6 +1,14 @@
 #include "gtest/gtest.h"
 #include"Flagged.hpp"
 
+class FlaggedConstructorTest : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
+	Flagged flag;
+};
+
 //Flagged()
 TEST(FlaggedConstructorTest, TEST01) {
 	EXPECT_NO_THROW(Flagged flag;);
@@ -8,8 +16,8 @@ TEST(FlaggedConstructorTest, TEST01) {
 
 //Flagged()
 //flag()
-TEST(FlaggedConstructorTest, TEST02) {
-	Flagged flag;
+TEST_F(FlaggedConstructorTest, TEST02) {
+	
 	EXPECT_FALSE(flag.flag());
 }
 
@@ -20,15 +28,13 @@ TEST(FlaggedConstructorTest, TEST03) {
 
 //Flagged()
 //flag()
-TEST(FlaggedConstructorTest, TEST04) {
-	Flagged flag(true);
+TEST_F(FlaggedConstructorTest, TEST04) {
 	EXPECT_TRUE(flag.flag());
 }
 
 //Flagged()
 //flag()
-TEST(FlaggedConstructorTest, TEST05) {
-	Flagged flag(true);
+TEST_F(FlaggedConstructorTest, TEST05) {
 	EXPECT_TRUE(flag.flag(false));
 	EXPECT_FALSE(flag.flag());
 }
