@@ -62,6 +62,7 @@
   <ItemGroup>
     <ClInclude Include="..\tests\FaultGenerator_Test.hpp" />
     <ClInclude Include="..\tests\Faults.Tests.h" />
+    <ClInclude Include="..\tests\FaultSimulator_Test.hpp" />
     <ClInclude Include="..\tests\faultystructure_test.hpp" />
     <ClInclude Include="..\tests\Fault_Test.hpp" />
   </ItemGroup>
