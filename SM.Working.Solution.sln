@@ -95,6 +95,7 @@ Global
 		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x86.ActiveCfg = Release|Win32
 		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x86.Build.0 = Release|Win32
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Debug|WIN32.Build.0 = Debug|Win32
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Debug|x64.ActiveCfg = Debug|x64
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Debug|x64.Build.0 = Debug|x64
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Debug|x86.ActiveCfg = Debug|Win32
@@ -106,6 +107,7 @@ Global
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Release|x86.ActiveCfg = Release|Win32
 		{CCE5DE2F-5ABF-495D-B20C-DB6EBCC5B33F}.Release|x86.Build.0 = Release|Win32
 		{D48B9F05-3E92-4CD3-9E7E-680F82B0EFA8}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{D48B9F05-3E92-4CD3-9E7E-680F82B0EFA8}.Debug|WIN32.Build.0 = Debug|Win32
 		{D48B9F05-3E92-4CD3-9E7E-680F82B0EFA8}.Debug|x64.ActiveCfg = Debug|x64
 		{D48B9F05-3E92-4CD3-9E7E-680F82B0EFA8}.Debug|x64.Build.0 = Debug|x64
 		{D48B9F05-3E92-4CD3-9E7E-680F82B0EFA8}.Debug|x86.ActiveCfg = Debug|Win32
@@ -140,6 +142,7 @@ Global
 		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x86.ActiveCfg = Release|Win32
 		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x86.Build.0 = Release|Win32
 		{A987D47E-6ED8-4D61-83DC-9FC7F45EA7FE}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{A987D47E-6ED8-4D61-83DC-9FC7F45EA7FE}.Debug|WIN32.Build.0 = Debug|Win32
 		{A987D47E-6ED8-4D61-83DC-9FC7F45EA7FE}.Debug|x64.ActiveCfg = Debug|x64
 		{A987D47E-6ED8-4D61-83DC-9FC7F45EA7FE}.Debug|x64.Build.0 = Debug|x64
 		{A987D47E-6ED8-4D61-83DC-9FC7F45EA7FE}.Debug|x86.ActiveCfg = Debug|Win32
@@ -163,6 +166,7 @@ Global
 		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.ActiveCfg = Release|Win32
 		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.Build.0 = Release|Win32
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Debug|WIN32.Build.0 = Debug|Win32
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Debug|x64.ActiveCfg = Debug|x64
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Debug|x64.Build.0 = Debug|x64
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Debug|x86.ActiveCfg = Debug|Win32
@@ -174,6 +178,7 @@ Global
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Release|x86.ActiveCfg = Release|Win32
 		{736E4B5A-14B9-4930-9E7B-4D0E9058A728}.Release|x86.Build.0 = Release|Win32
 		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|WIN32.Build.0 = Debug|Win32
 		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x64.ActiveCfg = Debug|x64
 		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x64.Build.0 = Debug|x64
 		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x86.ActiveCfg = Debug|Win32
@@ -271,11 +276,11 @@ Global
 		SccProjectUniqueName13 = OpenEDA.COP\\OpenEDA.COP.lib\\OpenEDA.COP.lib.vcxproj
 		SccProjectName13 = OpenEDA.COP/OpenEDA.COP.lib
 		SccLocalPath13 = OpenEDA.COP\\OpenEDA.COP.lib
-		SccProjectUniqueName14 = OpenEDA.SAT\\DELETE.exe\\DELETE.exe.vcxproj
-		SccProjectName14 = OpenEDA.SAT/DELETE.exe
-		SccLocalPath14 = OpenEDA.SAT\\DELETE.exe
-		SccProjectUniqueName15 = OpenEDA.Faults\\OpenEDA.Faults.tests\\OpenEDA.Faults.tests.vcxproj
-		SccProjectName15 = OpenEDA.Faults/OpenEDA.Faults.tests
-		SccLocalPath15 = OpenEDA.Faults\\OpenEDA.Faults.tests
+		SccProjectUniqueName14 = OpenEDA.Faults\\OpenEDA.Faults.tests\\OpenEDA.Faults.tests.vcxproj
+		SccProjectName14 = OpenEDA.Faults/OpenEDA.Faults.tests
+		SccLocalPath14 = OpenEDA.Faults\\OpenEDA.Faults.tests
+		SccProjectUniqueName15 = OpenEDA.SAT\\DELETE.exe\\DELETE.exe.vcxproj
+		SccProjectName15 = OpenEDA.SAT/DELETE.exe
+		SccLocalPath15 = OpenEDA.SAT\\DELETE.exe
 	EndGlobalSection
 EndGlobal
