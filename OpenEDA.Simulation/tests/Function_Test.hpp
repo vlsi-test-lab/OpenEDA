@@ -11,6 +11,33 @@
 #include"gtest/gtest.h"
 #include"Function.h"
 
+class BFuncTest : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
+	Value<bool> val0 = new Value<bool>(0);
+	Value<bool> val1 = new Value<bool>(1);
+	Value<bool> val;
+	std::vector<Value<bool>> val00 = { val0,val0 };
+	std::vector<Value<bool>> val01 = { val0,val1 };
+	std::vector<Value<bool>> val10 = { val1,val0 };
+	std::vector<Value<bool>> val11 = { val1,val1 };
+	std::vector<Value<bool>> val1 = { val1 };
+	std::vector<Value<bool>> val0 = { val0 };
+	std::vector<Value<bool>> val_empty = { };
+	BooleanFunction bfunc;
+	BooleanFunction* and = new BooleanFunction("and");
+	BooleanFunction* nand = new BooleanFunction("nand");
+	BooleanFunction* or = new BooleanFunction("or");
+	BooleanFunction* nor = new BooleanFunction("nor");
+	BooleanFunction* buf = new BooleanFunction("bUf");
+	BooleanFunction* xor = new BooleanFunction("XOR");
+	BooleanFunction* xnor = new BooleanFunction("xnor");
+	BooleanFunction* not = new BooleanFunction("noT");
+
+};
+
 
 //BooleanFunction(std::string _functionString);
 TEST(BFuncConstructorTest, TEST01) {
@@ -36,209 +63,152 @@ TEST(BFuncConstructorTest, TEST03) {
 }
 
 //std::string string() const;
-TEST(StringTest, TEST01) {
-	BooleanFunction bfunc("and");
-	EXPECT_EQ(bfunc.string(), "and");
+TEST_F(BFuncTest, ANDTEST01) {
+	EXPECT_EQ(and->string(), "and");
 }
 
 //std::string string() const;
-TEST(StringTest, TEST02) {
-	BooleanFunction bfunc("AND");
-	EXPECT_EQ(bfunc.string(), "and");
+TEST_F(BFuncTest, STRINGTEST02) {
+	EXPECT_EQ(not->string(), "not");
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTAND01) {
-	Value<bool> val1(1), val2(1), val3(1), val4(1),val;
-	std::vector<Value<bool>>vec_val = {val1,val2,val3,val4};
-	BooleanFunction bfunc("AND");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTAND01) {
+	val = and->evaluate(val11);
 	EXPECT_EQ(1,val.magnitude() );
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTAND02) {
-	Value<bool> val1(1), val2(0), val3(1), val4(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2,val3,val4 };
-	BooleanFunction bfunc("AND");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTAND02) {
+	val = and->evaluate(val00);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTOR01) {
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("or");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTOR01) {
+	val = or->evaluate(val10);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTOR02) {
-	Value<bool> val1(0), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("or");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTOR02) {
+	val = or ->evaluate(val00);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTOR03) {
-	Value<bool> val1(0), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("or");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTOR03) {
+	val = or ->evaluate(val01);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNAND01) {
-	Value<bool> val1(0), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("nand");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNAND01) {
+	val = nand->evaluate(val01);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNAND02) {
-	Value<bool> val1(1), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("nand");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNAND02) {
+	val = nand->evaluate(val11);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNOR01) {
-	Value<bool> val1(1), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("nor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNOR01) {
+	val = nor->evaluate(val11);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNOR02) {
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("nor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNOR02) {
+	val = nor->evaluate(val10);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNOR03) {
-	Value<bool> val1(0), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("nor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNOR03) {
+	val = nor->evaluate(val00);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNOT01) {
-	Value<bool> val1(1), val;
-	std::vector<Value<bool>>vec_val = { val1 };
-	BooleanFunction bfunc("not");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNOT01) {
+	val = not->evaluate(val1);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTNOT02) {
-	Value<bool> val1(0), val;
-	std::vector<Value<bool>>vec_val = { val1 };
-	BooleanFunction bfunc("not");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTNOT02) {
+	val = not->evaluate(val0);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTBUF01) {
-	Value<bool> val1(1), val;
-	std::vector<Value<bool>>vec_val = { val1 };
-	BooleanFunction bfunc("buf");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTBUF01) {
+	val = buf->evaluate(val1);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTBUF02) {
-	Value<bool> val1(0), val;
-	std::vector<Value<bool>>vec_val = { val1 };
-	BooleanFunction bfunc("buf");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTBUF02) {
+	val = buf->evaluate(val0);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, VALIDITYTEST) {
-	Value<bool> val1(0), val;
-	std::vector<Value<bool>>vec_val = { };
-	BooleanFunction bfunc("buf");
-	EXPECT_ANY_THROW(val = bfunc.evaluate(vec_val););
+TEST_F(BFuncTest, VALIDITYTEST) {
+	EXPECT_ANY_THROW(val = buf->evaluate(val_empty););
 	
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXOR01) {
-	Value<bool> val1(1), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXOR01) {
+	val = xor->evaluate(val11);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXOR02) {
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXOR02) {
+	val = xor->evaluate(val10);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXOR03) {
-	Value<bool> val1(0), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXOR03) {
+	val = xor->evaluate(val00);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXNOR01) {
-	Value<bool> val1(1), val2(1), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xnor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXNOR01) {
+	val = xnor->evaluate(val11);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXNOR02) {
-	Value<bool> val1(1), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xnor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXNOR02) {
+	val = xnor->evaluate(val10);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
-TEST(BFuncEvalTest, TESTXNOR03) {
-	Value<bool> val1(0), val2(0), val;
-	std::vector<Value<bool>>vec_val = { val1,val2 };
-	BooleanFunction bfunc("xnor");
-	val = bfunc.evaluate(vec_val);
+TEST_F(BFuncTest, TESTXNOR03) {
+	val = xnor->evaluate(val00);
 	EXPECT_EQ(1, val.magnitude());
 }
+class FunctionedTest : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
+	Functioned<bool>* functed = new Functioned<bool>;
+
+};
 
 //Functioned();
-TEST(FunctionedConstructorTest, TEST01) {
-	Functioned<bool>* functed = new Functioned<bool>;
+TEST_F(FunctionedTest, TEST01) {
+	
 	EXPECT_EQ(functed->function(), nullptr);
 }
 

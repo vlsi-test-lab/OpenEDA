@@ -35,13 +35,13 @@ public:
 
 
 //int inputLevelConst(void* _obj) const;
-TEST_F(LevelTest, TEST01) {
+TEST_F(LevelTest, inputLevelConstTEST01) {
 	EXPECT_ANY_THROW(int ilevel = l->inputLevelConst(););
 }
 
 //int inputLevelConst(void* _obj) const;
 //void inputLevelZero(void* _obj);
-TEST_F(LevelTest, TEST02) {
+TEST_F(LevelTest, inputLevelConstTEST02) {
 	l->inputLevelZero();
 	EXPECT_NO_THROW(int ilevel = l->inputLevelConst(););
 }
@@ -49,7 +49,7 @@ TEST_F(LevelTest, TEST02) {
 //int inputLevelConst(void* _obj) const;
 //void inputLevelZero(void* _obj);
 //void inputLevelClear(void* _obj);
-TEST_F(LevelTest, TEST03) {
+TEST_F(LevelTest, inputLevelConstTEST03) {
 	l->inputLevelZero();
 	l->inputLevelClear();
 	EXPECT_ANY_THROW(int ilevel = l->inputLevelConst(););
