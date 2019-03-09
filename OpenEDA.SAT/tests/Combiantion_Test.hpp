@@ -11,114 +11,89 @@
 #include"gtest/gtest.h"
 #include"Combination.h"
 
+class CombinationTest : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
+	Value<bool> val0 = new Value<bool>(0);
+	Value<bool> val1 = new Value<bool>(1);
+	std::vector<Value<bool>> vals0 = { val0 };
+	std::vector<Value<bool>> vals1 = { val1 };
+	std::vector<Value<bool>> val01 = { val0,val1 };
+	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
+	TraceLine<bool>* sl1 = new TraceLine<bool>("Test_Line_1");
+	TraceLine<bool>* sl2 = new TraceLine<bool>("Test_Line_2");
+	std::unordered_set<TraceLine<bool>*> simline = { sl };
+	std::unordered_set<TraceLine<bool>*> simlines = { sl1,sl2 };
+	Combination<bool>* comb0 = new Combination<bool>(simline, vals0);
+	Combination<bool>* comb1 = new Combination<bool>(simline, vals1);
+	Combination<bool>* comb01 = new Combination<bool>(simline, val01);
+	Combination<bool>* comb0t = new Combination<bool>(simline, vals0, true);
+
+};
+
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Constructor_Test, TEST01) {
+TEST(CombinationTest, ConstructorTEST01) {
 	EXPECT_NO_THROW(Combination<bool> comb;);
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Constructor_Test, TEST02) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = {sl};
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = {val1};
-	EXPECT_NO_THROW(Combination<bool> comb(simlines, values););
+TEST_F(CombinationTest, ConstructorTEST02) {
+
+	EXPECT_NO_THROW(Combination<bool> comb(simline, vals0););
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Constructor_Test, TEST03) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0),val2(1);
-	std::vector<Value<bool>> values = { val1,val2 };
-	EXPECT_ANY_THROW(Combination<bool> comb(simlines, values););
+TEST_F(CombinationTest, ConstructorTEST03) {
+
+	EXPECT_ANY_THROW(Combination<bool> comb(simline, val01););
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Constructor_Test, TEST04) {
-	TraceLine<bool>* sl1 = new TraceLine<bool>("Test_Line_1");
-	TraceLine<bool>* sl2 = new TraceLine<bool>("Test_Line_2");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl1,sl2};
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = { val1 };
-	EXPECT_ANY_THROW(Combination<bool> comb(simlines, values););
+TEST_F(CombinationTest, ConstructorTEST04) {
+	EXPECT_ANY_THROW(Combination<bool> comb(simlines, vals0););
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Constructor_Test, TEST05) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = { val1 };
-	Combination<bool> comb(simlines, values);
-	EXPECT_FALSE(comb.seen());
+TEST_F(CombinationTest, SeenTEST01) {
+
+	EXPECT_FALSE(comb0->seen());
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Seen_Test, TEST01) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = { val1 };
-	Combination<bool> comb(simlines, values, true);
-	EXPECT_TRUE(comb.seen());
+TEST_F(CombinationTest, SeenTEST02) {
+	EXPECT_TRUE(comb0t->seen());
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Values_Test, TEST01) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = { val1 };
-	Combination<bool> comb(simlines, values);
-	std::vector<Value<bool>> val_check = comb.targetValues();
-	EXPECT_TRUE(std::is_permutation(val_check.begin(),val_check.end(),values.begin()));
+TEST_F(CombinationTest, TargetValuesTEST01) {
+
+	std::vector<Value<bool>> val_check = comb0->targetValues();
+	EXPECT_TRUE(std::is_permutation(val_check.begin(),val_check.end(),vals1.begin()));
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Values_Test, TEST02) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0),val2(1);
-	sl->value(std::vector<Value<bool>>(1, val2));
-	std::vector<Value<bool>> values = { val1 };
-	std::vector<Value<bool>> values_test = { val2 };
-	Combination<bool> comb(simlines, values);
-	std::vector<Value<bool>> val_check = comb.currentValues();
-	EXPECT_TRUE(std::is_permutation(val_check.begin(), val_check.end(), values_test.begin()));
+TEST_F(CombinationTest, CurrentValuesTEST01) {
+	sl->value(std::vector<Value<bool>>(1, val1));
+	std::vector<Value<bool>> val_check = comb0->currentValues();
+	EXPECT_TRUE(std::is_permutation(val_check.begin(), val_check.end(), vals1.begin()));
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Lines_Test, TEST01) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0);
-	std::vector<Value<bool>> values = { val1 };
-	Combination<bool> comb(simlines, values);
-	std::unordered_set<TraceLine<bool>*> line_check = comb.lines();
-	EXPECT_TRUE(std::is_permutation(line_check.begin(), line_check.end(), simlines.begin()));
+TEST_F(CombinationTest, LinesTEST01) {
+	std::unordered_set<TraceLine<bool>*> line_check = comb0->lines();
+	EXPECT_TRUE(std::is_permutation(line_check.begin(), line_check.end(), simline.begin()));
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Evaluate_Test, TEST01) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0), val2(1);
-	std::vector<Value<bool>> values = { val1 };
-	std::vector<Value<bool>> values_given = { val1,val2 };
-	Combination<bool> comb(simlines, values_given);
-	std::unordered_set<TraceLine<bool>*> line_check = comb.lines();
-	EXPECT_ANY_THROW(comb.value(values););
+TEST_F(CombinationTest, LinesTEST02) {
+	std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
+	EXPECT_ANY_THROW(comb01->value(vals0););
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(Combination_Evaluate_Test, TEST02) {
-	TraceLine<bool>* sl = new TraceLine<bool>("Test_Line");
-	std::unordered_set<TraceLine<bool>*> simlines = { sl };
-	Value<bool> val1(0), val2(1);
-	std::vector<Value<bool>> values = { val1,val2 };
-	std::vector<Value<bool>> values_given = { val1,val2 };
-	Combination<bool> comb(simlines, values_given);
-	std::unordered_set<TraceLine<bool>*> line_check = comb.lines();
-	EXPECT_NO_THROW(comb.value(values););
+TEST_F(CombinationTest, LinesTEST03) {
+	std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
+	EXPECT_NO_THROW(comb01->value(val01););
 }
