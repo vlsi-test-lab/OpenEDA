@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Faults.lib", "..\OpenEDA.Faults\OpenEDA.Faults.lib\OpenEDA.Faults.lib.vcxproj", "{F74F6A64-FBA4-4985-8339-A7B11239BC3A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Faults.tests", "..\OpenEDA.Faults\OpenEDA.Faults.tests\OpenEDA.Faults.tests.vcxproj", "{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.SAT.lib", "..\OpenEDA.SAT\OpenEDA.SAT.lib\OpenEDA.SAT.lib.vcxproj", "{9E1DA74F-AAC6-4397-A727-9469F2F34916}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.SAT.tests", "..\OpenEDA.SAT\OpenEDA.SAT.tests\OpenEDA.SAT.tests.vcxproj", "{AC6AFF28-8C14-49D4-A40C-23334D76B914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +25,22 @@ Global
 		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x64.Build.0 = Release|x64
 		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.ActiveCfg = Release|Win32
 		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.Build.0 = Release|Win32
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Debug|x64.ActiveCfg = Debug|x64
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Debug|x64.Build.0 = Debug|x64
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Debug|x86.ActiveCfg = Debug|Win32
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Debug|x86.Build.0 = Debug|Win32
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x64.ActiveCfg = Release|x64
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x64.Build.0 = Release|x64
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x86.ActiveCfg = Release|Win32
-		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x86.Build.0 = Release|Win32
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Debug|x64.ActiveCfg = Debug|x64
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Debug|x64.Build.0 = Debug|x64
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Debug|x86.ActiveCfg = Debug|Win32
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Debug|x86.Build.0 = Debug|Win32
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Release|x64.ActiveCfg = Release|x64
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Release|x64.Build.0 = Release|x64
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Release|x86.ActiveCfg = Release|Win32
+		{9E1DA74F-AAC6-4397-A727-9469F2F34916}.Release|x86.Build.0 = Release|Win32
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x64.ActiveCfg = Debug|x64
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x64.Build.0 = Debug|x64
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x86.ActiveCfg = Debug|Win32
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Debug|x86.Build.0 = Debug|Win32
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Release|x64.ActiveCfg = Release|x64
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Release|x64.Build.0 = Release|x64
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Release|x86.ActiveCfg = Release|Win32
+		{AC6AFF28-8C14-49D4-A40C-23334D76B914}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,15 +49,18 @@ Global
 		SolutionGuid = {7D95FB8E-C5D1-471E-90BE-736C028D7249}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://openeda.visualstudio.com/
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = ..\\OpenEDA.Faults\\OpenEDA.Faults.lib\\OpenEDA.Faults.lib.vcxproj
 		SccProjectName1 = ../OpenEDA.Faults/OpenEDA.Faults.lib
 		SccLocalPath1 = ..\\OpenEDA.Faults\\OpenEDA.Faults.lib
-		SccProjectUniqueName2 = ..\\OpenEDA.Faults\\OpenEDA.Faults.tests\\OpenEDA.Faults.tests.vcxproj
-		SccProjectName2 = ../OpenEDA.Faults/OpenEDA.Faults.tests
-		SccLocalPath2 = ..\\OpenEDA.Faults\\OpenEDA.Faults.tests
+		SccProjectUniqueName2 = ..\\OpenEDA.SAT\\OpenEDA.SAT.lib\\OpenEDA.SAT.lib.vcxproj
+		SccProjectName2 = ../OpenEDA.SAT/OpenEDA.SAT.lib
+		SccLocalPath2 = ..\\OpenEDA.SAT\\OpenEDA.SAT.lib
+		SccProjectUniqueName3 = ..\\OpenEDA.SAT\\OpenEDA.SAT.tests\\OpenEDA.SAT.tests.vcxproj
+		SccProjectName3 = ../OpenEDA.SAT/OpenEDA.SAT.tests
+		SccLocalPath3 = ..\\OpenEDA.SAT\\OpenEDA.SAT.tests
 	EndGlobalSection
 EndGlobal
