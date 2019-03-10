@@ -23,8 +23,8 @@ public:
 	std::vector<Value<bool>> val01 = { val0,val1 };
 	std::vector<Value<bool>> val10 = { val1,val0 };
 	std::vector<Value<bool>> val11 = { val1,val1 };
-	std::vector<Value<bool>> val1 = { val1 };
-	std::vector<Value<bool>> val0 = { val0 };
+	std::vector<Value<bool>> vals1 = { val1 };
+	std::vector<Value<bool>> vals0 = { val0 };
 	std::vector<Value<bool>> val_empty = { };
 	BooleanFunction bfunc;
 	BooleanFunction* and = new BooleanFunction("and");
@@ -134,25 +134,25 @@ TEST_F(BFuncTest, TESTNOR03) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTNOT01) {
-	val = not->evaluate(val1);
+	val = not->evaluate(vals1);
 	EXPECT_EQ(0, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTNOT02) {
-	val = not->evaluate(val0);
+	val = not->evaluate(vals0);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTBUF01) {
-	val = buf->evaluate(val1);
+	val = buf->evaluate(vals1);
 	EXPECT_EQ(1, val.magnitude());
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTBUF02) {
-	val = buf->evaluate(val0);
+	val = buf->evaluate(vals0);
 	EXPECT_EQ(0, val.magnitude());
 }
 

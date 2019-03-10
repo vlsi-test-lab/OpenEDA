@@ -60,6 +60,7 @@
     <ClInclude Include="..\tests\Combiantion_Test.hpp" />
     <ClInclude Include="..\tests\SAT.Tests.h" />
     <ClInclude Include="..\tests\SATStructures_Test.hpp" />
+    <ClInclude Include="..\tests\SAT_Test.hpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
