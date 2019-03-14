@@ -1,0 +1,4 @@
+INPUT(1)
+INPUT(2)
+OUTPUT(3)
+3 = AND(1, 2)
