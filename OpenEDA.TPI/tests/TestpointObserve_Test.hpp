@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 /**
  * @file TestpointObserve_Test.cpp
  * @author Joshua Immanuel (jzi0005@tigermail.auburn.edu)
