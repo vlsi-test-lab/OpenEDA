@@ -34,7 +34,7 @@ public:
 };
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
-TEST(CombinationTest, ConstructorTEST01) {
+TEST_F(CombinationTest, ConstructorTEST01) {
 	EXPECT_NO_THROW(Combination<bool> comb;);
 }
 
