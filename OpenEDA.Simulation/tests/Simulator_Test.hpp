@@ -11,12 +11,14 @@
 #include"gtest/gtest.h"
 #include "SimulationStructures.hpp"
 #include"Simulator.h"
+#include"Parser.h"
 
 class SimulatorTest : public ::testing::Test {
 public:
 	void SetUp() override {
 
 	}
+	
 	std::unordered_set<SimulationLine<bool>*> empty = {};
 	SimulationLine<bool>* l1 = new SimulationLine<bool>("l1");
 	SimulationLine<bool>* l2 = new SimulationLine<bool>("l2");
@@ -32,16 +34,12 @@ public:
 	std::unordered_set<SimulationLine<bool>*> n3_in = { l5,l6 };
 	std::unordered_set<SimulationLine<bool>*> n3_out = { l7 };
 	BooleanFunction* bfunc = new BooleanFunction("and");
-	BooleanFunction* copy = new BooleanFunction("copy");
 	std::unordered_set<SimulationLine<bool>*> inputs = { l1,l2 };
 	std::unordered_set<SimulationLine<bool>*> outputs = { l3 };
 	SimulationNode<bool>* sn = new SimulationNode<bool>(bfunc, inputs, outputs);
 	SimulationNode<bool>* sn1 = new SimulationNode<bool>(bfunc, n1_in, n1_out);
 	SimulationNode<bool>* sn2 = new SimulationNode<bool>(bfunc, n2_in, n2_out);
 	SimulationNode<bool>* sn3 = new SimulationNode<bool>(bfunc, n3_in, n3_out);
-	SimulationNode<bool>* n1 = new SimulationNode<bool>(copy, n1_in, n1_out);
-	SimulationNode<bool>* n2 = new SimulationNode<bool>(copy, n2_in, n2_out);
-	SimulationNode<bool>* n3 = new SimulationNode<bool>(copy, n3_in, n3_out);
 	std::unordered_set<SimulationNode<bool>*> nodes = { sn1 };
 	std::unordered_set<SimulationNode<bool>*> pis = { sn2 };
 	std::unordered_set<SimulationNode<bool>*> pos = { sn3 };
@@ -58,6 +56,7 @@ public:
 	);
 	Simulator<bool> sim;
 	EventQueue<bool> simulationQueue;
+	
 };
 
 //std::vector<Value<T>> applyStimulus(Circuit * _circuit, std::vector<Value<T>> _stimulus, std::vector<SimulationNode<T>*> _inputs = std::vector<SimulationNode<T>*>());
