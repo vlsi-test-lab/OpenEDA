@@ -61,13 +61,6 @@ TEST_F(LevelTest, Levelized_outputLevelConst_Test01) {
 	EXPECT_ANY_THROW(int ilevel = l->outputLevelConst(););
 }
 
-//int outputLevelConst(void* _obj) const;
-//void outputLevelZero(void* _obj);
-TEST_F(LevelTest, Levelized_outputLevelConst_Test02) {
-
-	EXPECT_NO_THROW(int ilevel = l->outputLevelConst(););
-}
-
 //int outputLevel(void* _obj);
 TEST_F(LevelTest, Levelized_outputLevel_Test) {
 

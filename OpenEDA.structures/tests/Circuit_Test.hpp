@@ -70,7 +70,7 @@ TEST_F(Circuit_Test, TEST02) {
 TEST_F(Circuit_Test, TEST03) {
 
 	c->addNode(n4);
-	std::unordered_set<Levelized*> check = { n4,n1 };
+	std::unordered_set<Levelized*> check = { n4,n1,n2,n3 };
 	EXPECT_TRUE(std::is_permutation(check.begin(), check.end(), c->nodes().begin()));
 }
 
@@ -84,7 +84,7 @@ TEST_F(Circuit_Test, TEST04) {
 TEST_F(Circuit_Test, TEST05) {
 
 	c->removeNode(n1);
-	EXPECT_TRUE(c->nodes().empty());
+	EXPECT_FALSE(c->nodes().empty());
 }
 
 //void addPI(Levelized* _node);

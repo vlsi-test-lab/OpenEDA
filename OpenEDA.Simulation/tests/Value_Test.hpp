@@ -238,9 +238,3 @@ TEST_F(ValuedTest, CONTRUCTORTEST03) {
 	EXPECT_EQ(1,valued1.value().magnitude());
 
 }
-
-//Valued(Value<T> _value);
-TEST_F(ValuedTest, CONTRUCTORTEST04) {
-
-	EXPECT_FALSE(valueded.value().valid());
-}

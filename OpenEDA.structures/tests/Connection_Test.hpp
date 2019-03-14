@@ -48,7 +48,7 @@ TEST_F(Connecting_Test, Connecting_Test_INPUTS_01) {
 TEST_F(Connecting_Test, Connecting_Test_OUTPUTS_01) {
 
 	a_check = p->outputs();
-	EXPECT_TRUE(std::is_permutation(a_check.begin(), a_check.end(), a.begin()));
+	EXPECT_TRUE(std::is_permutation(a_check.begin(), a_check.end(), b.begin()));
 
 }
 

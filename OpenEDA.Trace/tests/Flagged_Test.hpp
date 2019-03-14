@@ -29,12 +29,12 @@ TEST_F(FlaggedConstructorTest, TEST03) {
 //Flagged()
 //flag()
 TEST_F(FlaggedConstructorTest, TEST04) {
-	EXPECT_TRUE(flag.flag());
+	EXPECT_FALSE(flag.flag());
 }
 
 //Flagged()
 //flag()
 TEST_F(FlaggedConstructorTest, TEST05) {
-	EXPECT_TRUE(flag.flag(false));
-	EXPECT_FALSE(flag.flag());
+	EXPECT_FALSE(flag.flag(true));
+	EXPECT_TRUE(flag.flag());
 }

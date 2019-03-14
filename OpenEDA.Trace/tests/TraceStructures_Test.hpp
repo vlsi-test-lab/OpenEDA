@@ -6,22 +6,26 @@ public:
 	void SetUp() override {
 
 	}
-	TraceNode<bool> tr;
+	TraceNode<bool>* tr = new TraceNode<bool>;
+	void TearDown()
+	{
+		delete tr;
+	}
 };
 
 //TraceNode()
-TEST(TraceStructuresTest, TEST01) {
-	EXPECT_NO_THROW(TraceNode<bool> tr;);
+TEST_F(TraceStructuresTest, TEST01) {
+	EXPECT_NO_THROW(TraceNode<bool>* trnode = new TraceNode<bool>(););
 }
 
 //TraceNode()
 TEST_F(TraceStructuresTest, TEST02) {
 	
-	EXPECT_FALSE(tr.flag());
+	EXPECT_FALSE(tr->flag());
 }
 
 //TraceNode()
 TEST_F(TraceStructuresTest, TEST03) {
-	EXPECT_FALSE(tr.flag(true));
-	EXPECT_TRUE(tr.flag());
+	EXPECT_FALSE(tr->flag(true));
+	EXPECT_TRUE(tr->flag());
 }
