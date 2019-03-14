@@ -10,7 +10,7 @@ public:
 };
 
 //Flagged()
-TEST(FlaggedConstructorTest, TEST01) {
+TEST_F(FlaggedConstructorTest, TEST01) {
 	EXPECT_NO_THROW(Flagged flag;);
 }
 
@@ -22,7 +22,7 @@ TEST_F(FlaggedConstructorTest, TEST02) {
 }
 
 //Flagged()
-TEST(FlaggedConstructorTest, TEST03) {
+TEST_F(FlaggedConstructorTest, TEST03) {
 	EXPECT_NO_THROW(Flagged flag(true););
 }
 

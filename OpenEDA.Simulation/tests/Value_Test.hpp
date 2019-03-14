@@ -16,11 +16,12 @@ public:
 	void SetUp() override {
 
 	}
-	Value<bool> val0 = new Value<bool>(0);
-	Value<bool> val1 = new Value<bool>(1);
-	Value<bool> val0_iv = new Value<bool>(0,false);
-	Value<bool> val1_iv = new Value<bool>(1,false);
+	Value<bool> val0 = new Value<bool>(false,true);
+	Value<bool> val1 = new Value<bool>(true,true);
+	Value<bool> val0_iv = new Value<bool>(false,false);
+	Value<bool> val1_iv = new Value<bool>(true,false);
 	Value<bool> val;
+	
 };
 
 //Value();
@@ -40,7 +41,7 @@ TEST_F(ValueTest, ConstructorTest01) {
 //T max() const;
 TEST_F(ValueTest, ConstructorTest02) {
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_EQ(std::numeric_limits<bool>::min(), val.min());
 	EXPECT_EQ(std::numeric_limits<bool>::max(), val.max());
 }
@@ -49,7 +50,7 @@ TEST_F(ValueTest, ConstructorTest02) {
 TEST_F(ValueTest, EQTEST01) {
 	
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_TRUE(val1==val1);
 }
 
@@ -57,8 +58,8 @@ TEST_F(ValueTest, EQTEST01) {
 TEST_F(ValueTest, EQTEST02) {
 	ASSERT_TRUE(val1.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(1, val1.magnitude());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_FALSE(val1 == val0);
 }
 
@@ -66,15 +67,15 @@ TEST_F(ValueTest, EQTEST02) {
 TEST_F(ValueTest, EQTEST03) {
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0_iv.magnitude());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0_iv.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_FALSE(val0_iv == val0);
 }
 
 //bool operator != (const Value<T>& _other) const;
 TEST_F(ValueTest, NETEST01) {
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_FALSE(val0 != val0);
 }
 
@@ -82,8 +83,8 @@ TEST_F(ValueTest, NETEST01) {
 TEST_F(ValueTest, NETEST02) {
 	ASSERT_TRUE(val1.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(1, val1.magnitude());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_TRUE(val1 != val0);
 }
 
@@ -91,15 +92,15 @@ TEST_F(ValueTest, NETEST02) {
 TEST_F(ValueTest, NETEST03) {
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val1_iv.magnitude());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val1_iv.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_TRUE(val0_iv != val0);
 }
 
 //bool operator < (const Value<T>& _other) const;
 TEST_F(ValueTest, LTTEST01) {
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_FALSE(val0 < val0);
 }
 
@@ -107,8 +108,8 @@ TEST_F(ValueTest, LTTEST01) {
 TEST_F(ValueTest, LTTEST02) {
 	ASSERT_TRUE(val0.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
-	EXPECT_EQ(1, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
 	EXPECT_TRUE(val0 < val1);
 }
 
@@ -116,56 +117,56 @@ TEST_F(ValueTest, LTTEST02) {
 TEST_F(ValueTest, LTTEST03) {
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(0, val0.magnitude());
-	EXPECT_EQ(1, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
 	EXPECT_FALSE(val0_iv < val1);
 }
 
 //static bool different(const Value<T> _value1, const Value<T> _value2);
 TEST_F(ValueTest, DIFFERENTTEST01) {
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_FALSE(val0.different(val0,val0));
 }
 
 //static bool different(const Value<T> _value1, const Value<T> _value2);
 TEST_F(ValueTest, DIFFERENTTEST02) {
-	Value<bool> val1(0), val2(1);
+	Value<bool> val1(false), val2(true);
 	ASSERT_TRUE(val0.valid());
 	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(0, val0.magnitude());
-	EXPECT_EQ(1, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
 	EXPECT_TRUE(val0.different(val0, val1));
 }
 
 //static bool different(const Value<T> _value1, const Value<T> _value2);
 TEST_F(ValueTest, DIFFERENTTEST03) {
-	Value<bool> val1(0, false), val2(1);
+	Value<bool> val1(false, false), val2(true);
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(0, val0_iv.magnitude());
-	EXPECT_EQ(1, val1.magnitude());
+	EXPECT_EQ(false, val0_iv.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
 	EXPECT_TRUE(val1.different(val0_iv, val1));
 }
 
 //T magnitude(T _magnitude) ;
 TEST_F(ValueTest, MagnitudeTEST01) {
-	EXPECT_EQ(1, val1.magnitude());
-	EXPECT_EQ(0, val0.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
 }
 
 //T magnitude(T _magnitude) ;
 TEST_F(ValueTest, MagnitudeTEST02) {
-	EXPECT_EQ(0, val0.magnitude());
-	val0.magnitude(1);
-	EXPECT_EQ(1, val.magnitude());
+	EXPECT_EQ(false, val0.magnitude());
+	val0.magnitude(true);
+	EXPECT_EQ(true, val.magnitude());
 }
 
 //T magnitude(T _magnitude) ;
 TEST_F(ValueTest, MagnitudeTEST03) {
-	EXPECT_EQ(1, val1.magnitude());
-	val1.magnitude(0);
-	EXPECT_EQ(0, val.magnitude());
+	EXPECT_EQ(true, val1.magnitude());
+	val1.magnitude(false);
+	EXPECT_EQ(false, val.magnitude());
 }
 
 
@@ -193,13 +194,13 @@ TEST_F(ValueTest, VALIDTEST03) {
 //bool increment();
 TEST_F(ValueTest, INCREMENTTEST01) {
 	ASSERT_TRUE(val1.increment());
-	EXPECT_EQ(0,val1.magnitude());
+	EXPECT_EQ(false,val1.magnitude());
 }
 
 //bool increment();
 TEST_F(ValueTest, TEST02) {
 	ASSERT_FALSE(val0.increment());
-	EXPECT_EQ(1, val0.magnitude());
+	EXPECT_EQ(true, val0.magnitude());
 }
 
 //unsigned long int cardinality() const;

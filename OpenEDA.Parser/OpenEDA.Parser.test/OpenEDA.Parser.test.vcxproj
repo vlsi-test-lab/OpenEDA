@@ -45,7 +45,7 @@
       <Project>{f74f6a64-fba4-4985-8339-a7b11239bc3a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.SAT\OpenEDA.SAT.lib\OpenEDA.SAT.lib.vcxproj">
-      <Project>{e3b5323b-295d-4000-b9bb-198e8eb27b44}</Project>
+      <Project>{9e1da74f-aac6-4397-a727-9469f2f34916}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.Simulation\OpenEDA.Simulation.lib\OpenEDA.Simulation.lib.vcxproj">
       <Project>{e00aedbf-ca63-4e1f-975a-e8cb144ea7f2}</Project>
@@ -78,7 +78,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.SAT\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
@@ -99,7 +99,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.SAT\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -114,7 +114,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.SAT\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -131,7 +131,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Project_Data\Open EDA 2.0\OpenEDA.SAT\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\tests;C:\Project_Data\Open EDA 2.0\OpenEDA.Trace\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Simulation\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.structures\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Parser\includes;C:\Project_Data\Open EDA 2.0\OpenEDA.Faults\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
