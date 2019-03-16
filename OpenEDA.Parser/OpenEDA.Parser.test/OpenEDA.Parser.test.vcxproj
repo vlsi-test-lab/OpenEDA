@@ -44,9 +44,6 @@
     <ProjectReference Include="..\..\OpenEDA.Faults\OpenEDA.Faults.lib\OpenEDA.Faults.lib.vcxproj">
       <Project>{f74f6a64-fba4-4985-8339-a7b11239bc3a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\OpenEDA.SAT\OpenEDA.SAT.lib\OpenEDA.SAT.lib.vcxproj">
-      <Project>{9e1da74f-aac6-4397-a727-9469f2f34916}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.Simulation\OpenEDA.Simulation.lib\OpenEDA.Simulation.lib.vcxproj">
       <Project>{e00aedbf-ca63-4e1f-975a-e8cb144ea7f2}</Project>
     </ProjectReference>

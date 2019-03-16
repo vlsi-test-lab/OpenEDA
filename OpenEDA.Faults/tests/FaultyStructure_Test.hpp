@@ -8,8 +8,8 @@
  *
  */
 
-#include"gtest/gtest.h"
-#include"Fault.h"
+//#include"gtest/gtest.h"
+#include"FaultStructures.hpp"
 
 class FaultyLineTest : public ::testing::Test {
 public:
@@ -23,7 +23,7 @@ public:
 
  //FaultyLine();
 TEST_F(FaultyLineTest, ConstructorTEST01) {
-	EXPECT_NO_THROW(FaultyLine<bool>fl;);
+	EXPECT_NO_THROW(FaultyLine<bool>flt;);
 }
 
 //FaultyLine();

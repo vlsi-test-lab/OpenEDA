@@ -8,26 +8,31 @@
  *
  */
 
-#include"gtest/gtest.h"
+//#include"gtest/gtest.h"
 #include"FaultGenerator.h"
 #include"Parser.h"
 
 #include <iostream>
+class FaultGeneratorTest : public ::testing::Test {
+public:
+	void SetUp() override {
 
-
-//std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
-TEST(FaultGeneratorTest, TEST01) {
-	Parser parse;
-	Circuit* c = parse.Parse("c17.bench");
-	EXPECT_NO_THROW(FaultGenerator<bool> fgen;);
-}
-
-//std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
-TEST(FaultGeneratorTest, TEST02) {
+	}
 	Parser parse;
 	Circuit* c = parse.Parse("c17.bench");
 	FaultGenerator<bool> fgen;
 	std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);
+	size_t numFaults = faults.size();
+};
+
+//std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
+TEST_F(FaultGeneratorTest, TEST01) {
+
+	EXPECT_NO_THROW(FaultGenerator<bool> fgen;);
+}
+
+//std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
+TEST_F(FaultGeneratorTest, TEST02) {
 	for (Fault<bool>* fault : faults) {
 		std::string locationName = fault->location()->name();
 		bool value = fault->value().magnitude();
@@ -38,6 +43,5 @@ TEST(FaultGeneratorTest, TEST02) {
 		std::cout << value;
 		std::cout << "\n";
 	}
-	size_t numFaults = faults.size();
 	EXPECT_EQ(24,numFaults);
 }

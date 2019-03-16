@@ -8,7 +8,7 @@
  *
  */
 
-#include"gtest/gtest.h"
+//#include"gtest/gtest.h"
 #include"FaultSimulator.h"
 #include"FaultGenerator.h"
 #include"Parser.h"
