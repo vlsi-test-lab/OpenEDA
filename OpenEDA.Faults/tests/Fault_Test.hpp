@@ -8,7 +8,7 @@
  *
  */
 
-//#include"gtest/gtest.h"
+#include"gtest/gtest.h"
 #include"Fault.h"
 
 class FaultTest : public ::testing::Test {

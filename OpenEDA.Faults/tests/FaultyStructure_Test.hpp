@@ -8,7 +8,7 @@
  *
  */
 
-//#include"gtest/gtest.h"
+#include"gtest/gtest.h"
 #include"FaultStructures.hpp"
 
 class FaultyLineTest : public ::testing::Test {
