@@ -75,8 +75,15 @@ public:
 		std::unordered_set <TraceNode<_primitive>*> toReturn;
 		std::unordered_set<Tracable*> flagged;
 		std::unordered_set<Tracable*> endpoints = this->backwards(flagged);
-		_coi = std::unordered_set<TraceNode<_primitive>*>(flagged.begin(), flagged.end());
-		for (Tracable endpoint : endpoints) {
+		_coi.clear();
+		for (Tracable* flaggedElement : flagged) {
+			TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(flaggedElement);
+			if (cast != nullptr) {
+				_coi.emplace(cast);
+			}
+		}
+		//DELETE: replaced by above. _coi = std::unordered_set<TraceNode<_primitive>*>(flagged.begin(), flagged.end());
+		for (Tracable* endpoint : endpoints) {
 			TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(endpoint);
 			if (cast == nullptr) {
 				throw "Big problem: the endpoint of a trace was not a node.";

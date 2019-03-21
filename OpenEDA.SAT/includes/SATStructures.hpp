@@ -87,7 +87,7 @@ public:
 		}
 		std::vector<Value<_primitive>> inputVector;
 		std::unordered_set<TraceLine<_primitive>*> lines;
-		for (Connecting* input : this->Node::inputs()) {
+		for (Connecting* input : this->inputs()) {
 			TraceLine<_primitive>* cast = dynamic_cast<TraceLine<_primitive>*>(input);
 			lines.emplace(cast);
 			inputVector.push_back(cast->value());

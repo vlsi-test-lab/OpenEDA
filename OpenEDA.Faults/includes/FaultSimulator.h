@@ -57,7 +57,8 @@ public:
 	std::vector<Value<_primitive>> applyStimulus(Circuit * _circuit,
 										std::vector<Value<_primitive>> _stimulus,
 										EventQueue<_primitive> _simulationQueue = EventQueue<_primitive>(),
-										std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>());
+										std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>()
+	);
 
 	/*
 	 * Set the fault list to simulate.
