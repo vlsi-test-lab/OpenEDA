@@ -76,6 +76,7 @@ public:
 		std::unordered_set<Levelized*>(pis.begin(), pis.end()),
 		std::unordered_set<Levelized*>(pos.begin(), pos.end())
 	);
+	Circuit* ckt = parser.Parse("c17.bench");
 	std::unordered_set<TraceLine<bool>*> csimlines = { l1,l2 };
 	Combination<bool>* combo01 = new Combination<bool>(csimlines, val01);
 	Combination<bool>* combo11 = new Combination<bool>(csimlines, val11);
@@ -84,23 +85,23 @@ public:
 };
 
 
-TEST_F(SATTest, ConstructorTEST01) {
-	EXPECT_NO_THROW(RestrictedSimulator<bool> rsim;);
-}
-
-TEST_F(SATTest, setActiveTest) {
-	EXPECT_NO_THROW(rsim.setActiveSimulationNodes(satnodes););
-}
-
-TEST_F(SATTest, unssetActiveTest) {
-	rsim.setActiveSimulationNodes(satnodes);
-	EXPECT_NO_THROW(rsim.unssetActiveSimulationNodes(satnodes));
-}
-
-TEST_F(SATTest, SATTEST02) {
-	EXPECT_NO_THROW(obj->satisfy(c,combo01););
-}
-
-TEST_F(SATTest, SATTEST03) {
-	EXPECT_NO_THROW(obj->satisfy(c, combos););
-}
+//TEST_F(SATTest, ConstructorTEST01) {
+//	EXPECT_NO_THROW(RestrictedSimulator<bool> rsim;);
+//}
+//
+//TEST_F(SATTest, setActiveTest) {
+//	EXPECT_NO_THROW(rsim.setActiveSimulationNodes(satnodes););
+//}
+//
+//TEST_F(SATTest, unssetActiveTest) {
+//	rsim.setActiveSimulationNodes(satnodes);
+//	EXPECT_NO_THROW(rsim.unssetActiveSimulationNodes(satnodes));
+//}
+//
+//TEST_F(SATTest, SATTEST02) {
+//	EXPECT_NO_THROW(obj->satisfy(c,combo01););
+//}
+//
+//TEST_F(SATTest, SATTEST03) {
+//	EXPECT_NO_THROW(obj->satisfy(c, combos););
+//}

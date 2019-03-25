@@ -24,7 +24,6 @@ public:
 	std::vector<Value<bool>> vals0 = { val0 };
 	std::vector<Value<bool>> vals1 = { val1 };
 	std::vector<Value<bool>> val01 = { val0,val1 };
-	Circuit* and = parser.Parse("and.bench");
 	FaultyLine<bool>* loc1 = new FaultyLine<bool>("Fault_Location_1");
 	FaultyLine<bool>* loc2 = new FaultyLine<bool>("Fault_Location_2");
 	Testpoint_observe<bool>* tpobs0 = new Testpoint_observe<bool>( loc1);

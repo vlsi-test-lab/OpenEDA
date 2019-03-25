@@ -29,6 +29,7 @@ public:
 
 };
 
-TEST_F(TPGenTest, ConstructorTEST01) {
-	EXPECT_NO_THROW(tpgen.allTPs(and););
-}
+//allTps is a private function that cannot be tested.
+//TEST_F(TPGenTest, ConstructorTEST01) {
+//	EXPECT_NO_THROW(tpgen.allTPs(and););
+//}

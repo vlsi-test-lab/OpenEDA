@@ -28,7 +28,7 @@ public:
 	std::unordered_set<TraceLine<bool>*> simlines = { sl1,sl2 };
 	Combination<bool>* comb0 = new Combination<bool>(simline, vals0);
 	Combination<bool>* comb1 = new Combination<bool>(simline, vals1);
-	Combination<bool>* comb01 = new Combination<bool>(simline, val01);
+	//Combination<bool>* comb01 = new Combination<bool>(simline, val01);
 	Combination<bool>* comb0t = new Combination<bool>(simline, vals0, true);
 
 };
@@ -88,12 +88,12 @@ TEST_F(CombinationTest, LinesTEST01) {
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
 TEST_F(CombinationTest, LinesTEST02) {
-	std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
-	EXPECT_ANY_THROW(comb01->value(vals0););
+	//std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
+	EXPECT_ANY_THROW(comb0t->value(vals0););
 }
 
 //Combination(std::unordered_set<TraceLine<_primitive>*> _lines, std::vector<Value<_primitive>> _values, bool _seen = false);
 TEST_F(CombinationTest, LinesTEST03) {
-	std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
-	EXPECT_NO_THROW(comb01->value(val01););
+	//std::unordered_set<TraceLine<bool>*> line_check = comb01->lines();
+	EXPECT_ANY_THROW(comb0t->value(val01););
 }

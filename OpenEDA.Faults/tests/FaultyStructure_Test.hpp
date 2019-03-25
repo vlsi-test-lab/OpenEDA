@@ -23,7 +23,7 @@ public:
 
  //FaultyLine();
 TEST_F(FaultyLineTest, ConstructorTEST01) {
-	EXPECT_NO_THROW(FaultyLine<bool>flt;);
+	EXPECT_NO_THROW(FaultyLine<bool> flt;);
 }
 
 //FaultyLine();

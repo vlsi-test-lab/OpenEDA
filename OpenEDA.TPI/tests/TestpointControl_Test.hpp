@@ -26,7 +26,6 @@ public:
 	std::vector<Value<bool>> val01 = { val0,val1 };
 	std::vector<Value<bool>> val11 = { val1,val1 };
 	std::vector<Value<bool>> val00 = { val0,val0 };
-	Circuit* and = parser.Parse("and.bench");
 	FaultyLine<bool>* loc1 = new FaultyLine<bool>("Fault_Location_1");
 	FaultyLine<bool>* loc2 = new FaultyLine<bool>("Fault_Location_2");
 	Testpoint_control<bool>* tpcon0 = new Testpoint_control<bool>(val0,loc1);
@@ -67,6 +66,6 @@ TEST_F(TPControlTest, DeActivateTest01) {
 }
 
 TEST_F(TPControlTest, ValueTest) {
-	EXPECT_EQ(0,tpcon0->value().magnitude());
-	EXPECT_EQ(1, tpcon1->value().magnitude());
+	EXPECT_EQ(false,tpcon0->value().magnitude());
+	EXPECT_EQ(true, tpcon1->value().magnitude());
 }

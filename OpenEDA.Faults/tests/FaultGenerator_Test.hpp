@@ -19,21 +19,21 @@ public:
 
 	}
 	Parser parse;
-	Circuit* c = parse.Parse("c17.bench");
-	FaultGenerator<bool> fgen;
-	std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);
-	size_t numFaults = faults.size();
+	Circuit* ckt = parse.Parse("c17.bench");
+	FaultGenerator<bool>* fgen01;
+	std::unordered_set<Fault<bool>*> faultsz = fgen01->allFaults(ckt);
+	size_t numFaults = faultsz.size();
 };
 
 //std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
 TEST_F(FaultGeneratorTest, TEST01) {
 
-	EXPECT_NO_THROW(FaultGenerator<bool> fgen;);
+	EXPECT_NO_THROW(FaultGenerator<bool>* fgens;);
 }
 
 //std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
 TEST_F(FaultGeneratorTest, TEST02) {
-	for (Fault<bool>* fault : faults) {
+	for (Fault<bool>* fault : faultsz) {
 		std::string locationName = fault->location()->name();
 		bool value = fault->value().magnitude();
 		std::cout << fault->location();

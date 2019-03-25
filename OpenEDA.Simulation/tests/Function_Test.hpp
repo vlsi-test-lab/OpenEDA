@@ -26,7 +26,7 @@ public:
 	std::vector<Value<bool>> vals1 = { val1 };
 	std::vector<Value<bool>> vals0 = { val0 };
 	std::vector<Value<bool>> val_empty = { };
-	BooleanFunction bfunc;
+	//BooleanFunction bfunc;
 	BooleanFunction* and = new BooleanFunction("and");
 	BooleanFunction* nand = new BooleanFunction("nand");
 	BooleanFunction* or = new BooleanFunction("or");

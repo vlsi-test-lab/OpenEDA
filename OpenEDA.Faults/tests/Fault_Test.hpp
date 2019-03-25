@@ -70,7 +70,7 @@ protected:
 
 
 //Faulty();
-TEST_F(FaultyTest, Constructors) {
+TEST_F(FaultyTest, ConstructorsTests) {
 	EXPECT_NO_THROW(Faulty<bool> fauly);
 }
 
