@@ -73,3 +73,5 @@ void FaultSimulator<_primitive>::clearFaults() {
 	}
 	this->undetectedFaults_.clear();
 }
+
+template class FaultSimulator<bool>;
