@@ -113,7 +113,7 @@ public:
 
 
 	/*
-	 * (De)activate this Fault and return all output nodes which need to be 
+	 * (De)activate this Fault and return all output new events which need to be 
 	 * re-evaluated.
 	 *
 	 * @return New events (and their priority) created by activating this event.

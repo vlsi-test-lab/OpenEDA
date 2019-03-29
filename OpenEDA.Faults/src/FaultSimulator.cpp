@@ -36,14 +36,14 @@ std::vector<Value<_primitive>> FaultSimulator<_primitive>::applyStimulus(Circuit
 
 	//Simulate every fault.
 	for (Fault<_primitive>* fault : faults) {
-		fault->activate(); _simulationQueue.add(0, fault);
+		_simulationQueue.add(fault->go()); //NOTE: "Go" will toggle the activation of the fault and return all new events from this (de)activation.
 		this->Simulator<_primitive>::applyStimulus(_circuit, _stimulus, _simulationQueue, _inputs);
 		std::vector<Value<_primitive>> faultyOutputs = this->outputs(_circuit);
 		if (ValueVectorFunction<_primitive>::mismatch(goodOutputs, faultyOutputs)) { //The fault is detected.
 			this->undetectedFaults_.erase(fault);
 			this->detectedFaults_.emplace(fault);
 		}
-		fault->deactivate(); _simulationQueue.add(0, fault);
+		_simulationQueue.add(fault->go()); //NOTE: "Go" will toggle the activation of the fault and return all new events from this (de)activation.
 	}
 
 	//Reset the state of the circuit. //NOTE: is this step needed?
@@ -60,6 +60,13 @@ void FaultSimulator<_primitive>::setFaults(std::unordered_set<Fault<_primitive>*
 template<class _primitive>
 std::unordered_set<Fault<_primitive>*> FaultSimulator<_primitive>::detectedFaults() {
 	return this->detectedFaults_;
+}
+
+template<class _primitive>
+bool FaultSimulator<_primitive>::hasImpact(Fault<_primitive>* _fault) {
+	Value<_primitive> curLineValue = _fault->location()->value();
+	Value<_primitive> faultValue = _fault->value();
+	return curLineValue != faultValue;
 }
 
 template<class _primitive>
