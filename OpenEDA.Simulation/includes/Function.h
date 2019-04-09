@@ -14,6 +14,9 @@
 #include <string>
 #include <vector>
 
+#include <algorithm> //std::transform
+#include <cctype> //std::tolower
+
 #include "Value.h"
 #include "Connection.h"
 
@@ -34,6 +37,7 @@ public:
 	 * @param _name The name of the Function.
 	 */
 	Function(std::string _name) {
+		std::transform(_name.begin(), _name.end(), _name.begin(), (int(*)(int))std::tolower);
 		this->name_ = _name;
 	}
 
