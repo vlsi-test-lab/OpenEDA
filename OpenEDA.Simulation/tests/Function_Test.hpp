@@ -16,8 +16,8 @@ public:
 	void SetUp() override {
 
 	}
-	Value<bool> val0 = new Value<bool>(0);
-	Value<bool> val1 = new Value<bool>(1);
+	Value<bool> val0 =  Value<bool>(0);
+	Value<bool> val1 =  Value<bool>(1);
 	Value<bool> val;
 	std::vector<Value<bool>> val00 = { val0,val0 };
 	std::vector<Value<bool>> val01 = { val0,val1 };
@@ -69,7 +69,7 @@ TEST_F(BFuncTest, ANDTEST01) {
 
 //std::string string() const;
 TEST_F(BFuncTest, STRINGTEST02) {
-	EXPECT_EQ(not->string(), "not");
+	EXPECT_EQ(not->string(), "not");//The string should be completely converted to lowercase.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -80,8 +80,8 @@ TEST_F(BFuncTest, TESTAND01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTAND02) {
-	val = and->evaluate(val00);
-	EXPECT_EQ(0, val.magnitude());
+	val = and->evaluate(val00);//And is evaluated with an input vector of 0,0.
+	EXPECT_EQ(0, val.magnitude());//And with an input vector of 0,0 should return an output of 0.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -92,8 +92,8 @@ TEST_F(BFuncTest, TESTOR01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTOR02) {
-	val = or ->evaluate(val00);
-	EXPECT_EQ(0, val.magnitude());
+	val = or ->evaluate(val00); // Test OR Gate with an input vector 0f 0,0.
+	EXPECT_EQ(0, val.magnitude()); //Should return an output of 0.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -104,8 +104,8 @@ TEST_F(BFuncTest, TESTOR03) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTNAND01) {
-	val = nand->evaluate(val01);
-	EXPECT_EQ(1, val.magnitude());
+	val = nand->evaluate(val01); //Evaluate the NAND Gate with an input vector of 0,1.
+	EXPECT_EQ(1, val.magnitude()); //The expected output should be 1.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -128,8 +128,8 @@ TEST_F(BFuncTest, TESTNOR02) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTNOR03) {
-	val = nor->evaluate(val00);
-	EXPECT_EQ(1, val.magnitude());
+	val = nor->evaluate(val00); //Evaluate the input to the NOR gate with a vector of 0,0.
+	EXPECT_EQ(1, val.magnitude()); //The output should be 1.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -140,8 +140,8 @@ TEST_F(BFuncTest, TESTNOT01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTNOT02) {
-	val = not->evaluate(vals0);
-	EXPECT_EQ(1, val.magnitude());
+	val = not->evaluate(vals0);// Test NOT Gate with an input vector 0f 0.
+	EXPECT_EQ(1, val.magnitude());// Expected output should be 1.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -152,8 +152,8 @@ TEST_F(BFuncTest, TESTBUF01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTBUF02) {
-	val = buf->evaluate(vals0);
-	EXPECT_EQ(0, val.magnitude());
+	val = buf->evaluate(vals0);//Evaluate the Buffer input with a value of zero.
+	EXPECT_EQ(0, val.magnitude());//The output should be zero.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -170,8 +170,8 @@ TEST_F(BFuncTest, TESTXOR01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTXOR02) {
-	val = xor->evaluate(val10);
-	EXPECT_EQ(1, val.magnitude());
+	val = xor->evaluate(val10);////Evaluate the XNOR gate with an input vector of 1,0.
+	EXPECT_EQ(1, val.magnitude());//Expect an output of 1.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
@@ -188,8 +188,8 @@ TEST_F(BFuncTest, TESTXNOR01) {
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
 TEST_F(BFuncTest, TESTXNOR02) {
-	val = xnor->evaluate(val10);
-	EXPECT_EQ(0, val.magnitude());
+	val = xnor->evaluate(val10); //Evaluate the XNOR gate with an input vector of 0,1.
+	EXPECT_EQ(0, val.magnitude());// Expect an output of 0.
 }
 
 //virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;

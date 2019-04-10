@@ -16,10 +16,10 @@ public:
 	void SetUp() override {
 
 	}
-	Value<bool> val0 = new Value<bool>(false,true);
-	Value<bool> val1 = new Value<bool>(true,true);
-	Value<bool> val0_iv = new Value<bool>(false,false);
-	Value<bool> val1_iv = new Value<bool>(true,false);
+	Value<bool> val0 =  Value<bool>(false,true);
+	Value<bool> val1 =  Value<bool>(true,true);
+	Value<bool> val0_iv =  Value<bool>(false,false);
+	Value<bool> val1_iv =  Value<bool>(true,false);
 	Value<bool> val;
 	
 };
@@ -92,7 +92,7 @@ TEST_F(ValueTest, NETEST02) {
 TEST_F(ValueTest, NETEST03) {
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(false, val1_iv.magnitude());
+	EXPECT_EQ(true, val1_iv.magnitude());
 	EXPECT_EQ(false, val0.magnitude());
 	EXPECT_TRUE(val0_iv != val0);
 }
@@ -131,7 +131,7 @@ TEST_F(ValueTest, DIFFERENTTEST01) {
 
 //static bool different(const Value<T> _value1, const Value<T> _value2);
 TEST_F(ValueTest, DIFFERENTTEST02) {
-	Value<bool> val1(false), val2(true);
+	//Value<bool> val1(false), val2(true);
 	ASSERT_TRUE(val0.valid());
 	ASSERT_TRUE(val1.valid());
 	EXPECT_EQ(false, val0.magnitude());
@@ -141,7 +141,7 @@ TEST_F(ValueTest, DIFFERENTTEST02) {
 
 //static bool different(const Value<T> _value1, const Value<T> _value2);
 TEST_F(ValueTest, DIFFERENTTEST03) {
-	Value<bool> val1(false, false), val2(true);
+	//Value<bool> val1(false, false), val2(true);
 	ASSERT_FALSE(val0_iv.valid());
 	ASSERT_TRUE(val1.valid());
 	EXPECT_EQ(false, val0_iv.magnitude());
@@ -159,14 +159,14 @@ TEST_F(ValueTest, MagnitudeTEST01) {
 TEST_F(ValueTest, MagnitudeTEST02) {
 	EXPECT_EQ(false, val0.magnitude());
 	val0.magnitude(true);
-	EXPECT_EQ(true, val.magnitude());
+	EXPECT_EQ(true, val0.magnitude());
 }
 
 //T magnitude(T _magnitude) ;
 TEST_F(ValueTest, MagnitudeTEST03) {
 	EXPECT_EQ(true, val1.magnitude());
 	val1.magnitude(false);
-	EXPECT_EQ(false, val.magnitude());
+	EXPECT_EQ(false, val1.magnitude());
 }
 
 

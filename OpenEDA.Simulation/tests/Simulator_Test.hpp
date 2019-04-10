@@ -45,8 +45,8 @@ public:
 	std::unordered_set<SimulationNode<bool>*> pos = { sn3 };
 	std::vector<SimulationNode<bool>*> spis = { sn2 };
 	Value<bool> val;
-	Value<bool> val1 = new Value<bool>(1);
-	Value<bool> val2 = new Value<bool>(0);
+	Value<bool> val1 = Value<bool>(1);
+	Value<bool> val2 = Value<bool>(0);
 	std::vector<Value<bool>>vec_val = { val1,val2 };
 	std::vector<Value<bool>>check = { 0 };
 	Circuit* c = new Circuit(
@@ -68,5 +68,5 @@ TEST_F(SimulatorTest, TEST01) {
 			vec_val, 
 			simulationQueue, 
 			spis)
-	);
+	); //Apply a vector of values to the circuit.
 }

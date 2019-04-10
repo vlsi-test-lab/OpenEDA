@@ -21,8 +21,8 @@ public:
 
 	}
 	Parser parser;
-	Value<bool> val0 = new Value<bool>(0);
-	Value<bool> val1 = new Value<bool>(1);
+	Value<bool> val0 =  Value<bool>(0);
+	Value<bool> val1 =  Value<bool>(1);
 	std::vector<Value<bool>> vals0 = { val0 };
 	std::vector<Value<bool>> vals1 = { val1 };
 	std::vector<Value<bool>> val01 = { val0,val1 };
