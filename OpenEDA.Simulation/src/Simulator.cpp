@@ -49,7 +49,8 @@ std::vector<Value<T>> Simulator<T>::outputs(Circuit * _circuit) {
 	std::vector<Value<T>> toReturn;;
 	for (Levelized* output : _circuit->pos()) {
 		SimulationNode<T>* outputCast = dynamic_cast<SimulationNode<T>*>(output); //NOTE: Can this be done wtihout a dynamic_cast? It may require changing the pointer type to be more "strict" or removing virtual inheritence, which in turn may require re-organizing code.
-		toReturn.push_back(outputCast->Valued<T>::value());
+		SimulationLine<T>* outputLine = dynamic_cast<SimulationLine<T>*>(*(outputCast->inputs().begin()));
+		toReturn.push_back(outputLine->Valued<T>::value());
 	}
 	return toReturn;
 }

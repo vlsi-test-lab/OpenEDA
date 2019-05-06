@@ -97,11 +97,21 @@ template<class _primitive>
 std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
 	bool forwardUpdateCall = false;
 	//Is this fault currently active?
+	//std::unordered_set<Connecting*> DEBUG_inputs = this->location()->inputs();
+	//unsigned int sizeBefore = DEBUG_inputs.size();
+
 	if (this->location_->isFaultActive(this) == true) {
 		forwardUpdateCall = this->deactivate();
 	} else {
 		forwardUpdateCall = this->activate();
 	}
+
+	//DEBUG_inputs = this->location()->inputs();
+	//unsigned int sizeAfter = DEBUG_inputs.size();
+
+	/*if (sizeBefore != sizeAfter) {
+		int i = 0;
+	}*/
 
 	if (forwardUpdateCall == true) {
 		return this->location_->go();

@@ -35,6 +35,7 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 			);
 		}
 	}
+	std::unordered_set<Connecting*> temp_inps = this->inputs();
 	//SimulationLine<_primitive>* outputLine = dynamic_cast<SimulationLine<_primitive>*>(*(this->Levelized::outputs().begin())); //NOTE: do I NEED the "Levelized"?
 	Value<_primitive> oldValue = this->value();
 	Value<_primitive> newValue = this->value(_values);
@@ -43,9 +44,10 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 	if (oldValue != newValue) { //Value changed, so change line values and update the queue.
 		for (Connecting* output : this->outputs()) {
 			Evented<_primitive>* cast = dynamic_cast<Evented<_primitive>*>(output);
+			size_t eventLevel = cast->inputLevel();
 			toReturn.emplace(
 				std::pair<size_t, Evented<_primitive>*>(
-					cast->inputLevelConst(), cast
+					eventLevel, cast
 					)
 			);
 		}
@@ -61,7 +63,13 @@ EventQueue<_primitive>::EventQueue() {
 template <class _primitive>
 void EventQueue<_primitive>::add(size_t _level, Evented<_primitive> * _event) {
 	if (_level > maxLevel_ || queue_.empty() == true) {
-		this->queue_[_level] = std::unordered_set<Evented<_primitive>*>({ _event });
+		size_t currentM = this->queue_.size();
+		for (size_t i = currentM; i < _level; i++)
+		{
+			this->queue_.push_back(std::unordered_set<Evented<_primitive>*>());
+		}
+		std::unordered_set<Evented<_primitive>*> soham_event =  std::unordered_set<Evented<_primitive>*>({ _event });
+		this->queue_.push_back(soham_event);
 		this->maxLevel_ = _level;
 	} else {
 		this->queue_.at(_level).emplace(_event);
@@ -77,7 +85,7 @@ void EventQueue<_primitive>::add(std::set<std::pair<size_t, Evented<_primitive>*
 
 template <class _primitive>
 void EventQueue<_primitive>::process() {
-	for (size_t currentLevel = 0; currentLevel < maxLevel_; currentLevel++) {
+	for (size_t currentLevel = 0; currentLevel <= maxLevel_; currentLevel++) {
 		std::unordered_set<Evented<_primitive>*> events = this->queue_.at(currentLevel);
 		for (Evented<_primitive>* currentEvent : events) {
 			std::set<std::pair<size_t, Evented<_primitive>*>> newEvents = currentEvent->go();

@@ -24,7 +24,8 @@ Levelized::Levelized(
 		_name
 	)
 {
-
+	this->inputLevel_ = -1;
+	this->outputLevel_ = -1;
 }
 
 int Levelized::inputLevel() {
