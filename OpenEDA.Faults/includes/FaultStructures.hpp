@@ -77,6 +77,10 @@ public:
 			_function,
 			std::unordered_set<SimulationLine<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<SimulationLine<_primitive>*>(_outputs.begin(), _outputs.end())
+		),
+		Connecting(
+			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
 		) {
 	}
 

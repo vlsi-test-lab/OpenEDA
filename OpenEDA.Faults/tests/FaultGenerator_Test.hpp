@@ -44,5 +44,5 @@ TEST_F(FaultGeneratorTest, TEST02) {
 		std::cout << value;
 		std::cout << "\n";
 	}
-	EXPECT_EQ(22,numFaults);
+	EXPECT_EQ(24,numFaults);
 }

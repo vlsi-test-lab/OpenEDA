@@ -260,10 +260,14 @@ size_t Parser<_lineType, _nodeType>::ParseLine(std::string _textLine) {
 		}
 
 		_nodeType* newNode = this->newNode(nodeFunctionName, intputLines, std::unordered_set<_lineType*>({ outputLine }));
-
-		for (_lineType* inputLine : intputLines) {
-			inputLine->addOutput(newNode);
+		if (intputLines.size() != newNode->inputs().size() || newNode->outputs().size() != 1) {
+			throw "Your _nodeType constructor is flawed: it most likely needs to call 'Connecting'.";
 		}
+
+		//If you need the followign code, your _nodeType needs to call "Connecting" in its constructor.
+		//for (_lineType* inputLine : intputLines) {
+		//	inputLine->addOutput(newNode);
+		//}
 
 		this->nodes_.emplace(newNode);
 		
