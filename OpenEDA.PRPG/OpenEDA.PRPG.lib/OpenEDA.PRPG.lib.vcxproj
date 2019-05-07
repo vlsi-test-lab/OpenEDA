@@ -19,30 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\EventQueue.h" />
-    <ClInclude Include="..\includes\Function.h" />
-    <ClInclude Include="..\includes\Net.hpp" />
-    <ClInclude Include="..\includes\SimulationNet.hpp" />
-    <ClInclude Include="..\includes\SimulationStructures.hpp" />
-    <ClInclude Include="..\includes\Simulator.h" />
-    <ClInclude Include="..\includes\Value.h" />
-    <ClInclude Include="..\includes\ValueVectorFunctions.hpp" />
+    <ClInclude Include="..\includes\PRPG.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\EventQueue.cpp" />
-    <ClCompile Include="..\src\Function.cpp" />
-    <ClCompile Include="..\src\Simulator.cpp" />
-    <ClCompile Include="..\src\Value.cpp" />
+    <ClCompile Include="..\includes\PRPG.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}</ProjectGuid>
+    <ProjectGuid>{9A9A0A01-B921-4785-8F71-362FBC508B9B}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
     <SccProvider>SAK</SccProvider>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>OpenEDASimulationlib</RootNamespace>
+    <RootNamespace>OpenEDAPRPGlib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -110,16 +100,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\includes;$(ProjectDir)..\..\OpenEDA.Structures\includes;$(ProjectDir)..\..\OpenEDA.Simulation\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\includes;$(ProjectDir)..\..\OpenEDA.Structures\includes;$(ProjectDir)..\..\OpenEDA.Simulation\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\includes;$(ProjectDir)..\..\OpenEDA.Structures\includes;$(ProjectDir)..\..\OpenEDA.Simulation\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,7 +151,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)/../../OpenEDA.Structures/includes;$(ProjectDir)/../includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\includes;$(ProjectDir)..\..\OpenEDA.Structures\includes;$(ProjectDir)..\..\OpenEDA.Simulation\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

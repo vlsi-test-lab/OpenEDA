@@ -36,6 +36,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.COP.lib", "OpenEDA.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Faults.tests", "OpenEDA.Faults\OpenEDA.Faults.tests\OpenEDA.Faults.tests.vcxproj", "{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.PRPG.lib", "OpenEDA.PRPG\OpenEDA.PRPG.lib\OpenEDA.PRPG.lib.vcxproj", "{9A9A0A01-B921-4785-8F71-362FBC508B9B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.PRPG.tests", "OpenEDA.PRPG\OpenEDA.PRPG.tests\OpenEDA.PRPG.tests.vcxproj", "{C58649F2-A051-4424-87A2-1511F9963A06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|WIN32 = Debug|WIN32
@@ -225,6 +229,30 @@ Global
 		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x64.Build.0 = Release|x64
 		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x86.ActiveCfg = Release|Win32
 		{2EFBF4B8-58D3-4F21-BDD3-A86E0B5EB938}.Release|x86.Build.0 = Release|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|WIN32.Build.0 = Debug|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|x64.ActiveCfg = Debug|x64
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|x64.Build.0 = Debug|x64
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|x86.ActiveCfg = Debug|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Debug|x86.Build.0 = Debug|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|WIN32.ActiveCfg = Release|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|WIN32.Build.0 = Release|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|x64.ActiveCfg = Release|x64
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|x64.Build.0 = Release|x64
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|x86.ActiveCfg = Release|Win32
+		{9A9A0A01-B921-4785-8F71-362FBC508B9B}.Release|x86.Build.0 = Release|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|WIN32.Build.0 = Debug|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|x64.ActiveCfg = Debug|x64
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|x64.Build.0 = Debug|x64
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|x86.ActiveCfg = Debug|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Debug|x86.Build.0 = Debug|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|WIN32.ActiveCfg = Release|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|WIN32.Build.0 = Release|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|x64.ActiveCfg = Release|x64
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|x64.Build.0 = Release|x64
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|x86.ActiveCfg = Release|Win32
+		{C58649F2-A051-4424-87A2-1511F9963A06}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -233,7 +261,7 @@ Global
 		SolutionGuid = {4CBE4484-160C-4B93-93FA-7232B64F31CC}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 18
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://openeda.visualstudio.com/
 		SccLocalPath0 = .
@@ -279,8 +307,14 @@ Global
 		SccProjectUniqueName14 = OpenEDA.Faults\\OpenEDA.Faults.tests\\OpenEDA.Faults.tests.vcxproj
 		SccProjectName14 = OpenEDA.Faults/OpenEDA.Faults.tests
 		SccLocalPath14 = OpenEDA.Faults\\OpenEDA.Faults.tests
-		SccProjectUniqueName15 = OpenEDA.SAT\\DELETE.exe\\DELETE.exe.vcxproj
-		SccProjectName15 = OpenEDA.SAT/DELETE.exe
-		SccLocalPath15 = OpenEDA.SAT\\DELETE.exe
+		SccProjectUniqueName15 = OpenEDA.PRPG\\OpenEDA.PRPG.lib\\OpenEDA.PRPG.lib.vcxproj
+		SccProjectName15 = OpenEDA.PRPG/OpenEDA.PRPG.lib
+		SccLocalPath15 = OpenEDA.PRPG\\OpenEDA.PRPG.lib
+		SccProjectUniqueName16 = OpenEDA.SAT\\DELETE.exe\\DELETE.exe.vcxproj
+		SccProjectName16 = OpenEDA.SAT/DELETE.exe
+		SccLocalPath16 = OpenEDA.SAT\\DELETE.exe
+		SccProjectUniqueName17 = OpenEDA.PRPG\\OpenEDA.PRPG.tests\\OpenEDA.PRPG.tests.vcxproj
+		SccProjectName17 = OpenEDA.PRPG/OpenEDA.PRPG.tests
+		SccLocalPath17 = OpenEDA.PRPG\\OpenEDA.PRPG.tests
 	EndGlobalSection
 EndGlobal

@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <random>
+#include <algorithm> //rotate
 
 #include "Value.h"
 
@@ -134,10 +135,7 @@ public:
 	 * @param (optional) _weights The weight assigned to each input, by default, "50%".
 	 * @return The generated random vector.
 	 */
-	std::vector<Value<_primitive>> random(size_t _size, std::vector<float> _weights = std::vector<float>()) {
-		if (_weights.size() == 0) {
-			_weights = std::vector<float>(_size, 0.5);
-		}
+	static std::vector<Value<_primitive>> random(size_t _size, std::vector<float> _weights = std::vector<float>(_size, 0.5)) {
 		if (_size != _weights.size()) {
 			throw "Cannot generate random vector: incorrect number of weights given";
 		}

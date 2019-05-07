@@ -26,7 +26,8 @@ float COP::controllability() {
 	}
 
 	if (this->inputs().size() == 1) { //This has only one input, so forward the call.
-		COP* cast = dynamic_cast<COP*>((*this->inputs().begin()));
+		Connecting* input = *(this->inputs().begin());
+		COP* cast = dynamic_cast<COP*>(input);
 		this->controllability_ = cast->controllability();
 	} else if (this->inputs().size() == 0) { //We have a problem.
 		throw "Cannot calculate COP CC: no values to calculate from.";
