@@ -50,9 +50,6 @@
     <ClInclude Include="..\tests\Fault_Test.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OpenEDA.Parser\OpenEDA.Parser.lib\OpenEDA.Parser.lib.vcxproj">
-      <Project>{c14bb54b-2ef9-4a17-9ff6-34a182fd5f48}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.Simulation\OpenEDA.Simulation.lib\OpenEDA.Simulation.lib.vcxproj">
       <Project>{e00aedbf-ca63-4e1f-975a-e8cb144ea7f2}</Project>
     </ProjectReference>

@@ -11,9 +11,6 @@
 #ifndef Parser_hpp
 #define Parser_hpp
 
-#include "FaultStructures.hpp"
-#include "TraceStructures.hpp"
-
 #include <string>
 #include <utility> //std::pair
 #include <set>
@@ -41,8 +38,16 @@
   * To add extra information at the time of parsing, change the virtual methods
   * (which create new Nodes and Lines) to create the appropriate type of
   * objects.
+  *
+  * @param _lineType The line type to create during parsing. The line type must
+  *                  have a constructor which takes a string for a name and
+  *                  nothing else.
+  * @param _nodeType The node type to create during parsing. This node type
+  *                  must have a constructor which takes in a Function
+  *                  pointer, a set of _lineTypes for inputs, and a set of 
+  *                  _lineTypes for outputs.
   */
-template <class _lineType>
+template <class _lineType, class _nodeType>
 class Parser {
 public:
 	/*
@@ -60,7 +65,7 @@ private:
 	 * @param _name The name of the Line.
 	 * @return The newly created Line.
 	 */
-	virtual Levelized* newLine(std::string _name);
+	virtual _lineType* newLine(std::string _name);
 
 	/*
 	 * Create a new Node from the given information.
@@ -70,14 +75,14 @@ private:
 	 * @param _outputs Output lines of the given node. It is presumed these will be cast.
 	 * @return The newly created Node.
 	 */
-	virtual Levelized* newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs);
+	virtual _nodeType* newNode(std::string _functionName, std::unordered_set<_lineType*> _inputs, std::unordered_set<_lineType*> _outputs);
 
 	/*
 	 * Adds a Line to the "Line tracking" data structure.
 	 *
 	 * @param _line The Line to add.
 	 */
-	void addLine(Levelized* _line);
+	void addLine(_lineType* _line);
 
 	/*
 	 * Convert a given line of into corresponding Lines and Nodes.
@@ -98,17 +103,17 @@ private:
 	/*
 	 * A local copy of all PIs, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Levelized*> pis_;
+	std::unordered_set<_nodeType*> pis_;
 
 	/*
 	 * A local copy of all POs, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Levelized*> pos_;
+	std::unordered_set<_nodeType*> pos_;
 
 	/*
 	 * A local copy of all Nodes, which will eventually be used to create the Circuit.
 	 */
-	std::unordered_set<Levelized*> nodes_;
+	std::unordered_set<_nodeType*> nodes_;
 
 	/*
 	 * A data structure used to keep track of (identical) Lines.
@@ -116,7 +121,7 @@ private:
 	 * The map is used to return all Lines matching a given name. The returned
 	 * set is all Lines which match that name.
 	 */
-	std::map<std::string, std::set<Levelized*>> lines_;
+	std::map<std::string, std::set<_lineType*>> lines_;
 
 	/*
 	 * Clean all local storage (after parsing a file).
@@ -155,8 +160,8 @@ std::vector<std::string> StringToTokins(const std::string &source, const char *d
 	return results;
 }
 
-template <class _lineType>
-Circuit * Parser<_lineType>::Parse(std::string _filePath) {
+template <class _lineType, class _nodeType>
+Circuit * Parser<_lineType, _nodeType>::Parse(std::string _filePath) {
 	//Open the file.
 	std::string currentLine;
 	std::ifstream file(_filePath);
@@ -167,19 +172,22 @@ Circuit * Parser<_lineType>::Parse(std::string _filePath) {
 	file.close();
 	this->MergeLines();
 
-	Circuit* toReturn = new Circuit(this->nodes_, this->pis_, this->pos_);
+	std::unordered_set<Levelized*> nodes(this->nodes_.begin(), this->nodes_.end());
+	std::unordered_set<Levelized*> pis(this->pis_.begin(), this->pis_.end());
+	std::unordered_set<Levelized*> pos(this->pos_.begin(), this->pos_.end());
+	Circuit* toReturn = new Circuit(nodes, pis, pos);
 	this->Clean();
 
 	return toReturn;
 }
 
-template <class _lineType>
-Levelized * Parser<_lineType>::newLine(std::string _name) {
+template <class _lineType, class _nodeType>
+_lineType * Parser<_lineType, _nodeType>::newLine(std::string _name) {
 	return new _lineType(_name);
 }
 
-template <class _lineType>
-Levelized * Parser<_lineType>::newNode(std::string _functionName, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs) {
+template <class _lineType, class _nodeType>
+_nodeType * Parser<_lineType, _nodeType>::newNode(std::string _functionName, std::unordered_set<_lineType*> _inputs, std::unordered_set<_lineType*> _outputs) {
 	Function<bool>* function;
 	if (
 		!_functionName.compare("copy") ||
@@ -192,31 +200,23 @@ Levelized * Parser<_lineType>::newNode(std::string _functionName, std::unordered
 	else {
 		function = new BooleanFunction(_functionName);
 	}
-	std::unordered_set <SimulationLine<bool>*> inputs;
-	std::unordered_set <SimulationLine<bool>*> outputs;
-	for (Levelized* input : _inputs) {
-		inputs.emplace(dynamic_cast<SimulationLine<bool>*>(input));
-	}
-	for (Levelized* output : _outputs) {
-		outputs.emplace(dynamic_cast<SimulationLine<bool>*>(output));
-	}
-	Levelized* newNode = new SimulationNode<bool>(function, inputs, outputs);
+	_nodeType* newNode = new _nodeType(function, _inputs, _outputs);
 	return newNode;
 }
 
-template <class _lineType>
-void Parser<_lineType>::addLine(Levelized * _line) {
+template <class _lineType, class _nodeType>
+void Parser<_lineType, _nodeType>::addLine(_lineType * _line) {
 	std::string name = _line->name();
 	if (lines_.count(name) == 0) {//Name is not in use yet.
-		lines_[name] = std::set<Levelized*>({ _line });
+		lines_[name] = std::set<_lineType*>({ _line });
 	}
 	else {
 		lines_.at(name).emplace(_line);
 	}
 }
 
-template <class _lineType>
-size_t Parser<_lineType>::ParseLine(std::string _textLine) {
+template <class _lineType, class _nodeType>
+size_t Parser<_lineType, _nodeType>::ParseLine(std::string _textLine) {
 	//Reminder: the line format:
 	//  #comment
 	//  GATE_NAME = PRIMITIVE(INPUT1, INPUT2, ... INPUTX)
@@ -231,16 +231,16 @@ size_t Parser<_lineType>::ParseLine(std::string _textLine) {
 	}
 	if (!tokins.at(0).compare("OUTPUT") || !tokins.at(0).compare("INPUT")) { //WE HAVE AN OUTPUT/INPUT
 		std::string name = tokins.at(1);
-		Levelized* line = this->newLine(name);
+		_lineType* line = this->newLine(name);
 		this->addLine(line);
 		if (!tokins.at(0).compare("OUTPUT")) { //po
-			Levelized* newNode = this->newNode("po", std::unordered_set<Levelized*>({ line }), std::unordered_set<Levelized*>());
+			_nodeType* newNode = this->newNode("po", std::unordered_set<_lineType*>({ line }), std::unordered_set<_lineType*>());
 			pos_.emplace(newNode);
 			nodes_.emplace(newNode);
 			line->addOutput(newNode);
 		}
 		else { //pi
-			Levelized* newNode = this->newNode("pi", std::unordered_set<Levelized*>(), std::unordered_set<Levelized*>({ line }));
+			_nodeType* newNode = this->newNode("pi", std::unordered_set<_lineType*>(), std::unordered_set<_lineType*>({ line }));
 			pis_.emplace(newNode);
 			nodes_.emplace(newNode);
 			line->addInput(newNode);
@@ -249,37 +249,45 @@ size_t Parser<_lineType>::ParseLine(std::string _textLine) {
 	}
 	else { //WE HAVE A GENERIC NODE
 		std::string nodeFunctionName = tokins.at(1); std::transform(nodeFunctionName.begin(), nodeFunctionName.end(), nodeFunctionName.begin(), (int(*)(int))std::tolower);
-		Levelized* outputLine = this->newLine(tokins.at(0));
+		_lineType* outputLine = this->newLine(tokins.at(0));
 		this->addLine(outputLine);
-		std::unordered_set<Levelized*> intputLines;
+		std::unordered_set<_lineType*> intputLines;
 		for (size_t i = 2; i < tokins.size(); ++i) {
 			std::string inputLineName = tokins.at(i);
-			Levelized* inputLine = this->newLine(inputLineName);
+			_lineType* inputLine = this->newLine(inputLineName);
 			this->addLine(inputLine);
 			intputLines.emplace(inputLine);
 		}
 
-		Levelized* newNode = this->newNode(nodeFunctionName, intputLines, std::unordered_set<Levelized*>({ outputLine }));
-		this->nodes_.emplace(newNode);
+		_nodeType* newNode = this->newNode(nodeFunctionName, intputLines, std::unordered_set<_lineType*>({ outputLine }));
 
+		for (_lineType* inputLine : intputLines) {
+			inputLine->addOutput(newNode);
+		}
+
+		this->nodes_.emplace(newNode);
+		
 		return intputLines.size() + 1;
 	}
 }
 
 
-template <class _lineType>
-void Parser<_lineType>::MergeLines() {
+template <class _lineType, class _nodeType>
+void Parser<_lineType, _nodeType>::MergeLines() {
 	for (auto it = lines_.begin(); it != lines_.end(); ++it) {
 		std::string lineName = it->first;
-		std::set<Levelized*> lines = it->second;
-		Levelized* base = nullptr;
-		for (Levelized* line : lines) {
+		std::set<_lineType*> lines = it->second;
+		_lineType* base = nullptr;
+		for (_lineType* line : lines) {
 			if (line->outputs().size() == 0) { base = line; lines.erase(line); break; }
 		}
 		if (base == nullptr) { throw "Could not merge lines: there is no base."; }
 		if (lines.size() == 0) { throw "Not enough lines to do a merge, which should not happen."; }
 		if (lines.size() == 1) { //Same non-fanout line, so delete.
-			Levelized* toDelete = *lines.begin();
+			_lineType* toDelete = *lines.begin();
+			if(toDelete->outputs().size() == 0){//Sanity check, this should not happen
+				throw "Problem: multiple lines have no output.";
+			}
 			base->addOutput(*toDelete->outputs().begin());
 			delete toDelete; //This will automatically delete its connections.
 			continue;
@@ -291,8 +299,8 @@ void Parser<_lineType>::MergeLines() {
 	}
 }
 
-template <class _lineType>
-void Parser<_lineType>::Clean() {
+template <class _lineType, class _nodeType>
+void Parser<_lineType, _nodeType>::Clean() {
 	pis_.clear();
 	pos_.clear();
 	nodes_.clear();

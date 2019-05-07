@@ -45,4 +45,42 @@ public:
 	};
 };
 
+/*
+ * A node which can accept FaultyLines as inputs and outputs.
+ *
+ * NOTE: This structure has no added functionallity.
+ *
+ * @param _primitive The data primitive implemented by values.
+ */
+template <class _primitive>
+class FaultyNode : public virtual SimulationNode<_primitive> {
+public:
+	/*
+	 * Create a node with no inputs, no outputs, and a "copy" function.
+	 */
+	FaultyNode() : SimulationNode<_primitive>() {
+
+	}
+
+	/*
+	 * Create a Boolean node.
+	 *
+	 * @param _function The function of this node.
+	 * @param _inputs Input lines to the given node.
+	 * @param _outputs Output lines to the given node.
+	 */
+	FaultyNode(Function<_primitive>* _function,
+			std::unordered_set<FaultyLine<_primitive>*> _inputs,
+			std::unordered_set<FaultyLine<_primitive>*> _outputs
+	) :
+		SimulationNode(
+			_function,
+			std::unordered_set<SimulationLine<_primitive>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<SimulationLine<_primitive>*>(_outputs.begin(), _outputs.end())
+		) {
+	}
+
+
+};
+
 #endif

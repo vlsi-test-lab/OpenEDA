@@ -9,12 +9,14 @@
  */
 
 #include"gtest/gtest.h"
+#include "FaultStructures.hpp"
+#include "Parser.hpp"
 #include"Fault.h"
 
 class FaultTest : public ::testing::Test {
 protected:
 	void SetUp() override {
-		Parser parser;
+		Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
 		Circuit* c = parser.Parse("c17.bench");
 		FaultGenerator<bool> fgen;
 		std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);
@@ -56,6 +58,12 @@ TEST_F(FaultTest, value) {
 
 //go() const;
 TEST_F(FaultTest, go) {
+	try {
+		EXPECT_NO_THROW(faultUnderTest->go());
+	} catch (const std::exception& exc) {
+		printf("EXCEPTION!\n");
+		std::cout << exc.what();
+	}
 	EXPECT_NO_THROW(faultUnderTest->go());
 }
 

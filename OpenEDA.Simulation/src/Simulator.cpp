@@ -27,7 +27,9 @@ std::vector<Value<T>> Simulator<T>::applyStimulus(Circuit * _circuit,
 			_inputs.push_back(cast);
 		}
 	}
-	if (_stimulus.size() != _inputs.size()) { throw "When applying stimulus, stimulus and inputs do not match in size."; }
+	if (_stimulus.size() != _inputs.size()) { 
+		throw "When applying stimulus, stimulus and inputs do not match in size."; 
+	}
 
 	//Initialize the queue.
 	for (size_t i = 0; i < _stimulus.size(); ++i) {

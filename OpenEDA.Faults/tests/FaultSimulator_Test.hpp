@@ -11,7 +11,7 @@
 #include"gtest/gtest.h"
 #include"FaultSimulator.h"
 #include"FaultGenerator.h"
-#include"Parser.h"
+#include"Parser.hpp"
 
 
 
@@ -22,8 +22,8 @@ public:
 	}
 	Value<bool> val0 = new Value<bool>(0);
 	Value<bool> val1 = new Value<bool>(1);
-	Parser parser;
-	Parser andparser;
+	Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
+	Parser<FaultyLine<bool>, FaultyNode<bool>> andparser;
 	Circuit* c = parser.Parse("c17.bench");
 	//Circuit* ands = andparser.Parse("and.bench");
 	std::vector<Value<bool>> invalid = { val0,val0 };

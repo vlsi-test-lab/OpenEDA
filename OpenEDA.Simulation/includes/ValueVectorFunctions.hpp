@@ -147,6 +147,23 @@ public:
 		}
 		return toReturn;
 	}
+
+	/*
+	 * Shift a vector left.
+	 *
+	 * Vectors will be shifted towards 0, i.e., the LSB will be destroyed
+	 * (returned) and the MSB will become the given value.
+	 *
+	 * @param (reference) _vector The vector to shift left.
+	 * @param _input The new value to shift in as the new MSB.
+	 * @return The previously LSB of the vector.
+	 */
+	static Value<_primitive> shift(std::vector<Value<_primitive>> & _vector, Value<_primitive> _input) {
+		std::rotate(_vector.begin(), _vector.begin() + 1, _vector.end());
+		Value<_primitive> toReturn = _vector.back(); _vector.pop_back();
+		_vector.push_back(_input);
+		return toReturn;
+	}
 };
 
 #endif

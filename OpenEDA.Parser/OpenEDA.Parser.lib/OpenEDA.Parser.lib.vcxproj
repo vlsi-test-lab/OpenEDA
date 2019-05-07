@@ -19,10 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\Parser.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Parser.cpp" />
+    <ClInclude Include="..\includes\Parser.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

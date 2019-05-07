@@ -9,8 +9,9 @@
  */
 
 #include "gtest/gtest.h"
-#include"Parser.h"
-#include"Circuit.h"
+#include "Parser.hpp"
+#include "SimulationStructures.hpp"
+#include "Circuit.h"
 #include <unordered_set>
 
 class ParserTest : public ::testing::Test {
@@ -18,7 +19,7 @@ public:
 	void SetUp() override {
 
 	}
-	Parser parse;
+	Parser<SimulationLine<bool>, SimulationNode<bool>> parse;
 	Circuit* c = parse.Parse("c17.bench");
 	std::unordered_set<Levelized*> nodes = c->nodes();
 	std::unordered_set<Levelized*> pis = c->pis();
@@ -52,4 +53,26 @@ TEST_F(ParserTest, TEST04) {
 TEST_F(ParserTest, TEST05) {
 
 	EXPECT_EQ(2, pos.size());
+}
+
+//Check c17's correctness
+TEST_F(ParserTest, C17TEST) {
+	//1 Each PI should have ONE output and no inputs.
+	for (Levelized* pi : c->pis()) {
+		size_t numInputs = pi->inputs().size();
+		size_t numOutputs = pi->outputs().size();
+		EXPECT_EQ(numInputs, 0);
+		EXPECT_EQ(numOutputs, 1);
+	}
+
+	//2 Each PO has ONE input and NO outputs
+	for (Levelized* po : c->pos()) {
+		EXPECT_EQ(po->inputs().size(), 1);
+		EXPECT_EQ(po->outputs().size(), 0);
+	}
+
+	//3 Each NODE has at MOST ONE output.
+	for (Levelized* node : c->nodes()) {
+		EXPECT_LE(node->outputs().size(), 1);
+	}
 }

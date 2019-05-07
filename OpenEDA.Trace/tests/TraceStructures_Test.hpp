@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
-#include"TraceStructures.hpp"
+#include "TraceStructures.hpp"
 
 class TraceStructuresTest : public ::testing::Test {
 public:
 	void SetUp() override {
 
 	}
-	TraceNode<bool>* tr = new TraceNode<bool>;
+	TraceNode<bool>* tr = new TraceNode<bool>();
 	void TearDown()
 	{
 		delete tr;
@@ -15,7 +15,7 @@ public:
 
 //TraceNode()
 TEST_F(TraceStructuresTest, TEST01) {
-	EXPECT_NO_THROW(TraceNode<bool>* trnode = new TraceNode<bool>(););
+	EXPECT_NO_THROW(new TraceNode<bool>());
 }
 
 //TraceNode()

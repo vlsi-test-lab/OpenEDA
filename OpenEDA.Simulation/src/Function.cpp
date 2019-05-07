@@ -36,6 +36,8 @@
 		function_ = &BooleanFunction::BUF;
 	} else if (_functionString == "buff") {
 		function_ = &BooleanFunction::BUF;
+	} else if (_functionString == "copy") {
+		function_ = &BooleanFunction::BUF;
 	} else if (_functionString == "not") {
 		function_ = &BooleanFunction::NOT;
 	} else {

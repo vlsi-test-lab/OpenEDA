@@ -10,7 +10,8 @@
 
 #include"gtest/gtest.h"
 #include"FaultGenerator.h"
-#include"Parser.h"
+#include "FaultStructures.hpp"
+#include"Parser.hpp"
 
 #include <iostream>
 class FaultGeneratorTest : public ::testing::Test {
@@ -18,7 +19,7 @@ public:
 	void SetUp() override {
 
 	}
-	Parser parse;
+	Parser<FaultyLine<bool>, FaultyNode<bool>> parse;
 	Circuit* ckt = parse.Parse("c17.bench");
 	FaultGenerator<bool>* fgen01;
 	std::unordered_set<Fault<bool>*> faultsz = fgen01->allFaults(ckt);
@@ -43,5 +44,5 @@ TEST_F(FaultGeneratorTest, TEST02) {
 		std::cout << value;
 		std::cout << "\n";
 	}
-	EXPECT_EQ(24,numFaults);
+	EXPECT_EQ(22,numFaults);
 }

@@ -11,14 +11,14 @@
 
 #include"gtest/gtest.h"
 #include"SAT.h"
-#include"Parser.h"
+#include"Parser.hpp"
 
 class SATTest : public ::testing::Test {
 public:
 	void SetUp() override {
 
 	}
-	Parser parser;
+	Parser<TraceLine<bool>, SatisfiableNode<bool>> parser;
 	int time = 10;
 	Value<bool> val0 = new Value<bool>(0);
 	Value<bool> val1 = new Value<bool>(1);

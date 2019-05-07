@@ -32,17 +32,17 @@ TEST(SimLine_Constructor_Test, TEST03) {
 
 //SimulationNode()
 TEST(SimNode_Constructor_Test, TEST01) {
-	EXPECT_NO_THROW(SimulationNode<bool> sn;); //Simulation Node has a default constructor.
+	EXPECT_NO_THROW(SimulationNode<bool> sn()); //Simulation Node has a default constructor.
 }
 
 class SimNode_Test : public ::testing::Test {
 public:
 	void SetUp() override {
-
+		l1->inputLevelZero();
 	}
 	std::unordered_set<SimulationLine<bool>*> empty = {};
-	SimulationLine<bool>* l1 = new SimulationLine<bool>("l1");
-	SimulationLine<bool>* l2 = new SimulationLine<bool>("l2");
+	SimulationLine<bool>* l1 = new SimulationLine<bool>("l1"); 
+	SimulationLine<bool>* l2 = new SimulationLine<bool>("l2"); 
 	std::unordered_set<SimulationLine<bool>*> in_l_n1 = { l1 };
 	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l2 };
 	Function<bool>* func = new BooleanFunction("nand");
@@ -64,7 +64,7 @@ TEST_F(SimNode_Test, TEST01) {
 TEST_F(SimNode_Test, TEST02) {
 
 	std::set<std::pair<size_t, Evented<bool>*>> event_queue = sn->go();
-	EXPECT_TRUE(event_queue.empty()); // The event queue should be empty
+	EXPECT_FALSE(event_queue.empty()); // The event queue should contain one element: the output of the gate to be simulated next.
 }
 
 //SimulationNode()

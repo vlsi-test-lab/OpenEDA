@@ -53,9 +53,6 @@
     <ProjectReference Include="..\..\OpenEDA.Trace\OpenEDA.Trace.lib\OpenEDA.Trace.lib.vcxproj">
       <Project>{1e33aa3b-fc92-40c9-b4d1-9ad82d083648}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OpenEDA.Parser.lib\OpenEDA.Parser.lib.vcxproj">
-      <Project>{c14bb54b-2ef9-4a17-9ff6-34a182fd5f48}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
