@@ -19,30 +19,21 @@ public:
 	void SetUp() override {
 
 	}
-	Parser<FaultyLine<bool>, FaultyNode<bool>> parse;
-	Circuit* ckt = parse.Parse("c17.bench");
-	FaultGenerator<bool>* fgen01;
-	std::unordered_set<Fault<bool>*> faultsz = fgen01->allFaults(ckt);
-	size_t numFaults = faultsz.size();
+	Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
+	Circuit* ckt = parser.Parse("c17.bench");
+	FaultGenerator<bool>* fgen;
+	std::unordered_set<Fault<bool>*> c17faults = fgen->allFaults(ckt);
 };
 
 //std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
-TEST_F(FaultGeneratorTest, TEST01) {
-
-	EXPECT_NO_THROW(FaultGenerator<bool>* fgens;);
-}
-
-//std::set<Fault<_primitive>> allFaults(Circuit* _circuit);
-TEST_F(FaultGeneratorTest, TEST02) {
-	for (Fault<bool>* fault : faultsz) {
+TEST_F(FaultGeneratorTest, c17) {
+	for (Fault<bool>* fault : c17faults) {
 		std::string locationName = fault->location()->name();
 		bool value = fault->value().magnitude();
-		std::cout << fault->location();
-		std::cout << "\t";
 		std::cout << locationName ;
 		std::cout << "\t";
 		std::cout << value;
 		std::cout << "\n";
 	}
-	EXPECT_EQ(24,numFaults);
+	EXPECT_EQ(22,c17faults.size());
 }

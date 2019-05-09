@@ -85,6 +85,9 @@ void EventQueue<_primitive>::add(std::set<std::pair<size_t, Evented<_primitive>*
 
 template <class _primitive>
 void EventQueue<_primitive>::process() {
+	if (this->queue_.size() == 0) {//The loop below does not handle "empty queue" gracefully.
+		return;
+	}
 	for (size_t currentLevel = 0; currentLevel <= maxLevel_; currentLevel++) {
 		std::unordered_set<Evented<_primitive>*> events = this->queue_.at(currentLevel);
 		for (Evented<_primitive>* currentEvent : events) {

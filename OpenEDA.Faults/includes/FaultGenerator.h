@@ -48,7 +48,23 @@ private:
 	 * @param _node The Node to generate faults for.
 	 * @return The list of Faults.
 	 */
-	static std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
+	//DELETE: obsolete. static std::set<Fault<_primitive>> allFaults(SimulationNode<_primitive>* _node);
+
+	/*
+	 * Return all "checkpoints" (in terms of fault generation) in the circuit.
+	 *
+	 * @param _circuit The circuit to get the checkpoints for.
+	 * @return The list of checkpoint lines.
+	 */
+	static std::unordered_set<FaultyLine<_primitive>*> checkpoints(Circuit* _circuit);
+
+	/*
+	 * Return all fan-out objects starting from the given object.
+	 *
+	 * @param _line The object to start tracing forward from.
+	 * @return The set of all fan-out object.
+	 */
+	static std::unordered_set<Connecting*> fanouts(Connecting * _base);
 
 
 };
