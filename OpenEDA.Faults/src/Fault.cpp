@@ -113,8 +113,20 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
 		int i = 0;
 	}*/
 
-	if (forwardUpdateCall == true) {
-		return this->location_->go();
+	if (forwardUpdateCall == true) { //The value changed, and therefore we need to return outputs which (may) need to be re-evaluated.
+		std::set<std::pair<size_t, Evented<_primitive>*>> toReturn;
+		for (Connecting* output : this->location_->outputs()) {
+			Evented<_primitive>* cast = dynamic_cast<Evented<_primitive>*>(output);
+			size_t eventLevel = cast->inputLevel();
+			toReturn.emplace(
+				std::pair<size_t, Evented<_primitive>*>(
+					eventLevel, cast
+					)
+			);
+		}
+		return toReturn;
+		//DELETE: the forwarded call will use the faulty Value compared to itself, and therefore the value will not change:
+		//return this->location_->go();
 	}
 
 	return std::set<std::pair<size_t, Evented<_primitive>*>>();

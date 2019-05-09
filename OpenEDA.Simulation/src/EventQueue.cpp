@@ -23,6 +23,25 @@
  {
  }
 
+ /*
+  * One value may have changed to another (for simulation purposes) if
+  * 1) One is valid and the other is not, or
+  * 2) Both are valid and their magnitude is different.
+  */
+ template<class _primitive>
+ bool changed(Value<_primitive> _a, Value<_primitive> _b) {
+	 if (_a.valid() == false && _b.valid() == false) {
+		 return false;
+	 }
+	 if (_a.valid() != _b.valid()) {
+		 return true;
+	 }
+	 if (_a.magnitude() != _b.magnitude()) {
+		 return true;
+	 }
+	 return false;
+ }
+
  template<class _primitive>
 std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 	std::vector <Value<_primitive>> _values
@@ -37,11 +56,14 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 	}
 	std::unordered_set<Connecting*> temp_inps = this->inputs();
 	//SimulationLine<_primitive>* outputLine = dynamic_cast<SimulationLine<_primitive>*>(*(this->Levelized::outputs().begin())); //NOTE: do I NEED the "Levelized"?
+	//DEBUG
+
 	Value<_primitive> oldValue = this->value();
 	Value<_primitive> newValue = this->value(_values);
 
 	std::set<std::pair<size_t, Evented<_primitive>*>> toReturn;
-	if (oldValue != newValue) { //Value changed, so change line values and update the queue.
+	if (changed(oldValue, newValue) == true) { //Value changed, so change line values and update the queue.
+//DEBUG		printf("C\t%s\t%d->%d\t%d->%d\n", this->name().c_str(), oldValue.valid(), newValue.valid(), oldValue.magnitude(), newValue.magnitude()); //DEBUG
 		for (Connecting* output : this->outputs()) {
 			Evented<_primitive>* cast = dynamic_cast<Evented<_primitive>*>(output);
 			size_t eventLevel = cast->inputLevel();
@@ -52,6 +74,10 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Evented<_primitive>::go(
 			);
 		}
 	}
+	//DEBUG
+	//} else {
+	//	printf("NC\t%s\t%d->%d\t%d->%d\n", this->name().c_str(), oldValue.valid(), newValue.valid(), oldValue.magnitude(), newValue.magnitude()); //DEBUG
+	//}
 	return toReturn; //May be empty if nothing is added.
 }
 

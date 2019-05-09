@@ -18,6 +18,7 @@
 
 #include "Circuit.h"
 #include "Level.h"
+#include "Function.h"
 
 #include <algorithm> //std::transform
 #include <cctype> //std::tolower

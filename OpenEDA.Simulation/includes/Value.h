@@ -86,7 +86,7 @@ public:
 	 * @param _value2 The second Value of the comparison.
 	 * @return (bool) Are the two values (possibly) different
 	 */
-	static bool different(const Value<T> _value1, const Value<T> _value2);
+	static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
 
 	/*
 	 * Return the magnitude of the Value.
@@ -189,7 +189,7 @@ public:
 	 *
 	 * @return the Value held by this object.
 	 */
-	Value<T> value() const;
+	virtual Value<T> value() const;
 
 	/*
 	 * Set the Value to the given Value.

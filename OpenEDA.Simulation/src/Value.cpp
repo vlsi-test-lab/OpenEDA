@@ -54,7 +54,7 @@ bool Value<T>::operator<(const Value<T>& _other) const {
 }
 
 template<class T>
-bool Value<T>::different(const Value<T> _value1, const Value<T> _value2) {
+bool Value<T>::possiblyDifferent(const Value<T> _value1, const Value<T> _value2) {
 	if ((_value1.valid() == false || _value2.valid()) == false) { return true; }
 	if (_value1 != _value2) { return true; }
 	return false;

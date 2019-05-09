@@ -37,6 +37,7 @@ public:
 
 	Value<bool> i = Value<bool>(1);
 	Value<bool> o = Value<bool>(0);
+	Value<bool> x = Value<bool>();
 
 	/*std::vector<Value<bool>> v0 = { o,o,o,o,o };
 	std::vector<Value<bool>> v1 = { o,o,o,o,i };
@@ -84,7 +85,14 @@ public:
 		i,i,i,i,i,i,o,o
 	};
 
-
+	std::vector<Value<bool>> x0 = { x,o,o,i,x };
+	std::vector<Value<bool>> x1 = { x,i,o,i,x };
+	std::vector<Value<bool>> x2 = { o,x,o,o,x };
+	std::vector<Value<bool>> xr0 = { i,i };
+	std::vector<Value<bool>> xr1 = { i,i };
+	std::vector<Value<bool>> xr2 = { o,o };
+	std::vector<std::vector<Value<bool>>> XTestVectors = { x0, x1, x2 };
+	std::vector<std::vector<Value<bool>>> XTestResponses = { xr0, xr1, xr2 };
 
 	Simulator<bool> sim;
 	EventQueue<bool> simulationQueue;
@@ -92,23 +100,52 @@ public:
 };
 
 //std::vector<Value<T>> applyStimulus(Circuit * _circuit, std::vector<Value<T>> _stimulus, std::vector<SimulationNode<T>*> _inputs = std::vector<SimulationNode<T>*>());
-TEST_F(SimulatorTest, TEST01) {
-	std::vector<Value<bool>> inputs = std::vector<Value<bool>>(5, Value<bool>(1));
-	for (size_t i = 0; i < 32; i++) {
-		ValueVectorFunction<bool>::increment(inputs);
-		std::vector<Value<bool>> response;
-		EXPECT_NO_THROW(
-			response = sim.applyStimulus(
-				c,
-				inputs,
-				EventQueue<bool>(),
-				pisOrdered
-			)
-		);
-		Value<bool> exp_22 = ans_22.at(i);
-		Value<bool> exp_23 = ans_23.at(i);
-		EXPECT_EQ(exp_22,response.at(0));
-		EXPECT_EQ(exp_23, response.at(1));
+TEST_F(SimulatorTest, c17_exhaustive) {
+	for (size_t repeat = 0; repeat < 100; repeat++) { //It was found that fails can be intermittent.
+		std::vector<Value<bool>> inputs = std::vector<Value<bool>>(5, Value<bool>(1));
+		for (size_t i = 0; i < 32; i++) {
+			ValueVectorFunction<bool>::increment(inputs);
+			std::vector<Value<bool>> response;
+			EXPECT_NO_THROW(
+				response = sim.applyStimulus(
+					c,
+					inputs,
+					EventQueue<bool>(),
+					pisOrdered
+				)
+			);
+			Value<bool> exp_22 = ans_22.at(i);
+			Value<bool> exp_23 = ans_23.at(i);
+			EXPECT_EQ(exp_22, response.at(0));
+			EXPECT_EQ(exp_23, response.at(1));
+		}
+	}
+}
+
+TEST_F(SimulatorTest, c17_X_states) {
+	for (size_t repeat = 0; repeat < 100; repeat++) { //It was found that fails can be intermittent.
+		for (size_t i = 0; i < XTestVectors.size(); i++) {
+			std::vector<Value<bool>> inputs = XTestVectors.at(i);
+			std::vector<Value<bool>> response;
+			EXPECT_NO_THROW(
+				response = sim.applyStimulus(
+					c,
+					inputs,
+					EventQueue<bool>(),
+					pisOrdered
+				)
+			);
+			std::vector<Value<bool>> expectedResponse = XTestResponses.at(i);
+			for (size_t j = 0; j < response.size(); j++) {
+				Value<bool> exp = expectedResponse.at(j);
+				Value<bool> got = response.at(j);
+				ASSERT_EQ(exp.valid(), got.valid());
+				if (exp.valid() == true) {
+					ASSERT_EQ(exp.magnitude(), got.magnitude());
+				}
+			}
+
+		}
 	}
 
 }

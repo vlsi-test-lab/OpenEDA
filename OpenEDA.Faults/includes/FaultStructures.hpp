@@ -73,7 +73,7 @@ public:
 			std::unordered_set<FaultyLine<_primitive>*> _inputs,
 			std::unordered_set<FaultyLine<_primitive>*> _outputs
 	) :
-		SimulationNode(
+		SimulationNode<_primitive>(
 			_function,
 			std::unordered_set<SimulationLine<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<SimulationLine<_primitive>*>(_outputs.begin(), _outputs.end())

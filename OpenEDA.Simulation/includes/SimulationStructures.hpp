@@ -113,7 +113,7 @@ public:
 	 */
 	virtual std::string name() const {
 		if (this->outputs().size() == 0) {
-			throw "This node has no output, so no name can be returned";
+			return (*(this->inputs().begin()))->name();
 		}
 		return (*(this->outputs().begin()))->name();
 	}

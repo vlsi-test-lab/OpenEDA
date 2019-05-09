@@ -56,7 +56,7 @@ public:
 	std::vector<Value<bool>> v7 = { o,i,i,o,o };
 	std::vector<std::vector<Value<bool>>> testVectors = { v0, v1, v2, v3, v4, v5, v6, v7 };
 	//The expected fault coverages after applying each vector, in terms of number of faults detected.
-	std::vector<size_t> numDetected = {3, 5, 9, 12, 16, 21, 22};
+	std::vector<size_t> numDetected = {3, 5, 9, 12, 16, 17, 21, 22};
 
 	void TearDown()
 	{

@@ -61,7 +61,7 @@ Value<bool> BooleanFunction::AND(std::vector<Value<bool>> i) const {
 			return Value<bool>(false);
 		}
 		if (val.valid() == false) {
-			valid = false; break;
+			valid = false;//We still need to check the rest. A 0 will force the output.
 		}
 	}
 	return Value<bool>(true, valid);
@@ -81,7 +81,7 @@ Value<bool> BooleanFunction::OR(std::vector<Value<bool>> i) const {
 			return Value<bool>(true);
 		}
 		if (val.valid() == false) {
-			valid = false; break;
+			valid = false; //We still need to check the rest. A 1 will force the output.
 		}
 	}
 	return Value<bool>(false, valid);
@@ -99,7 +99,7 @@ Value<bool> BooleanFunction::XOR(std::vector<Value<bool>> i) const {
 	for (auto &val : i) {
 		ret = ret ^ val.magnitude();
 		if (val.valid() == false) {
-			valid = false; break;
+			valid = false; break; //For XOR, there is no reason to check the rest.
 		}
 	}
 	return Value<bool>(ret, valid);

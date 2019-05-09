@@ -64,7 +64,7 @@ TEST_F(SimNode_Test, TEST01) {
 TEST_F(SimNode_Test, TEST02) {
 
 	std::set<std::pair<size_t, Evented<bool>*>> event_queue = sn->go();
-	EXPECT_FALSE(event_queue.empty()); // The event queue should contain one element: the output of the gate to be simulated next.
+	EXPECT_TRUE(event_queue.empty()); //The input values are the same before and after: X
 }
 
 //SimulationNode()
