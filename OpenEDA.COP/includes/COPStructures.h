@@ -171,12 +171,12 @@ protected:
  * Note that no template parameter exists since COP is only defined for binary
  * circuits.
  */
-class COPNode : public virtual SimulationNode<bool>, COP {
+class COPNode : public virtual SimulationNode<bool>, public COP {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.
 	 */
-	COPNode() : SimulationNode<bool>() , COP(true) {
+	COPNode() : SimulationNode<bool>() , COP(true), Connecting() {
 		
 	}
 
@@ -198,7 +198,11 @@ public:
 			std::unordered_set<SimulationLine<bool>*>(_inputs.begin(), _inputs.end()), 
 			std::unordered_set<SimulationLine<bool>*>(_outputs.begin(), _outputs.end())
 		),
-		COP(true) 
+		COP(true),
+		Connecting(
+			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
+		)
 	{
 	}
 

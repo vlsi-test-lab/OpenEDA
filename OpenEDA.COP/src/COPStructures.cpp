@@ -14,8 +14,8 @@
 #include "COPStructures.h"
 
 COP::COP(bool _calculateAlways) {
-	this->controllability_ = 0;
-	this->observability_ = 0;
+	this->controllability_ = -1;
+	this->observability_ = -1;
 	this->calculateAlways_ = _calculateAlways;
 }
 
@@ -25,17 +25,22 @@ float COP::controllability() {
 		return this->controllability_;
 	}
 
-	if (this->inputs().size() == 1) { //This has only one input, so forward the call.
-		Connecting* input = *(this->inputs().begin());
-		COP* cast = dynamic_cast<COP*>(input);
-		this->controllability_ = cast->controllability();
-	} else if (this->inputs().size() == 0) { //We have a problem.
-		throw "Cannot calculate COP CC: no values to calculate from.";
-	} else { //Multiple inputs, calculate as defined.
-		this->controllability_ = this->calculateControllability();
-		if (this->controllability_ < 0) {
-			throw "Cannot calculate COP CC: failure to calculate.";
-		}
+	//DELETE: Flawed and redundant.
+	//if (this->inputs().size() == 1) { //This has only one input, so forward the call.
+	//	Connecting* input = *(this->inputs().begin());
+	//	COP* cast = dynamic_cast<COP*>(input);
+	//	this->controllability_ = cast->controllability();
+	//} else if (this->inputs().size() == 0) { //We have a problem.
+	//	throw "Cannot calculate COP CC: no values to calculate from.";
+	//} else { //Multiple inputs, calculate as defined.
+	//	this->controllability_ = this->calculateControllability();
+	//	if (this->controllability_ < 0) {
+	//		throw "Cannot calculate COP CC: failure to calculate.";
+	//	}
+	//}
+	this->controllability_ = this->calculateControllability();
+	if (this->controllability_ < 0) {
+		throw "Cannot calculate COP CC: failure to calculate.";
 	}
 	return this->controllability_;
 }
@@ -50,22 +55,31 @@ float COP::observability(COP* _calling) {
 		return this->observability_;
 	}
 
-	if (this->outputs().size() == 1) { //This has only one outputs, so forward the call.
-		COP* cast = dynamic_cast<COP*>((*this->outputs().begin()));
-		this->observability_ = cast->observability(this);
-	} else if (this->outputs().size() == 0) { //We have a problem.
-		throw "Cannot calculate COP CO: no values to calculate from.";
-	} else { //Multiple outputs, calculate as defined.
-		float toReturn = this->calculateObservability(_calling);
-		if (toReturn < 0) {
-			throw "Cannot calculate COP CC: failure to calculate.";
-		}
-		if (this->calculateAlways_ == true) {
-			return toReturn;
-		}
-		this->observability_ = toReturn;
+	//DELETE: flawed and redundant.
+	//if (this->outputs().size() == 1) { //This has only one outputs, so forward the call.
+	//	COP* cast = dynamic_cast<COP*>((*this->outputs().begin()));
+	//	this->observability_ = cast->observability(this);
+	//} else if (this->outputs().size() == 0) { //We have a problem.
+	//	throw "Cannot calculate COP CO: no values to calculate from.";
+	//} else { //Multiple outputs, calculate as defined.
+	//	float toReturn = this->calculateObservability(_calling);
+	//	if (toReturn < 0) {
+	//		throw "Cannot calculate COP CC: failure to calculate.";
+	//	}
+	//	if (this->calculateAlways_ == true) {
+	//		return toReturn;
+	//	}
+	//	this->observability_ = toReturn;
+	//}
+	float toReturn = this->calculateObservability(_calling);
+	if (toReturn < 0) {
+		throw "Cannot calculate COP CO: failure to calculate.";
 	}
-	return this->controllability_;
+	if (this->calculateAlways_ == true) {
+		return toReturn;
+	}
+	this->observability_ = toReturn;
+	return this->observability_;
 }
 
 float COP::observability(float _observability) {
@@ -79,23 +93,36 @@ COPLine::COPLine() :
 {
 }
 
-COPLine::COPLine(std::string _name) : 
-	COP(false) ,
-	SimulationLine<bool>(_name) 
+COPLine::COPLine(std::string _name) :
+	COP(false),
+	SimulationLine<bool>(_name),
+	Connecting(_name)
 {
 }
 
 float COPLine::calculateControllability() {
 	COP* cast = dynamic_cast<COP*>(*(this->inputs().begin()));
-	return cast->controllability();
+	float toReturn = cast->controllability();
+	if (toReturn > 1 || toReturn < 0) {
+		throw "CO fail.";
+	}
+	return toReturn;
 }
 
 float COPLine::calculateObservability(COP * _calling) {
-	float toReturn = -1;
+	if (this->outputs().size() == 0) {
+		throw "A line with no outputs cannot calculate its observability.";
+	}
+	float toReturn = 1;
 	for (Connecting* output : this->outputs()) {
 		COP* cast = dynamic_cast<COP*>(output);
 		float other = cast->observability(this);
-		toReturn = other > toReturn ? other : toReturn;
+		toReturn *= (1 - other);
+		//DELETE: flawed. toReturn = other > toReturn ? other : toReturn;
+	}
+	toReturn = 1 - toReturn;
+	if (toReturn > 1 || toReturn < 0) {
+		throw "CO fail.";
 	}
 	return toReturn;
 }
@@ -108,7 +135,7 @@ float manualCOP(COPNode* node, std::vector<float> inputControllabilities) {
 	std::vector<Value<bool>> nodeInputVals = std::vector<Value<bool>>(node->inputs().size(), Value<bool>(false));
 	unsigned long int num0 = 0;
 	unsigned long int num1 = 0;
-	float ret = 1.0;
+	float ret = 0.0;
 	float ret1;
 	do {
 		Value<bool> outVal = func->evaluate(nodeInputVals);
@@ -195,16 +222,29 @@ float COPNode::calculateObservability(COP * _calling) {
 	float pPass = 1.0;  //The probability that a signal will pass through the given gate.
 	if (function->string() == "and" || function->string() == "nand") {
 		for (Connecting* input : this->inputs()) {
+			if (input == _calling) {
+				continue;
+			}
 			COP* cast = dynamic_cast<COP*>(input);
 			pPass *= cast->controllability();
 		}
 	} else if (function->string() == "or" || function->string() == "nor") {
 		for (Connecting* input : this->inputs()) {
+			if (input == _calling) {
+				continue;
+			}
 			COP* cast = dynamic_cast<COP*>(input);
 			pPass *= 1 - cast->controllability();
 		}
 	}
 
+
+
 	COP* outputLine = dynamic_cast<COP*>(*(this->outputs().begin()));
-	return pPass * outputLine->observability(this);
+	float outputObservability = outputLine->observability(this);
+	float toReturn =  pPass * outputObservability;
+	if (toReturn < 0 || toReturn > 1) {
+		throw "Impossible pPass calculation.";
+	}
+	return toReturn;
 }
