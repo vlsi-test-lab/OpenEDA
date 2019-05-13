@@ -37,6 +37,9 @@ Connecting::Connecting() {
 	this->name_ = "";
 }
 
+
+
+
 Connecting::Connecting(std::unordered_set<Connecting*> _inputs,
                        std::unordered_set<Connecting*> _outputs,
 					   std::string _name) {
@@ -77,11 +80,16 @@ std::unordered_set<Connecting*> Connecting::inputs() const {
 std::unordered_set<Connecting*> Connecting::inputs(std::unordered_set<Connecting*> _inputs) {
 	std::unordered_set<Connection*> inputsCopy = this->inputs_;
 	for (Connection* input : inputsCopy) {
-		delete input;
+		//delete input;
+		inputs_.erase(input);//debug
+		
 	}
+	std::unordered_set<Connection*> inputsCopy2;//debug
+	inputsCopy2 = this->inputs_;//debug
 	for (Connecting* input : _inputs) {
 		this->addInput(input);
 	}
+	 inputsCopy2 = this->inputs_;
 	return _inputs;
 }
 
@@ -96,7 +104,8 @@ std::unordered_set<Connecting*> Connecting::outputs() const {
 std::unordered_set<Connecting*> Connecting::outputs(std::unordered_set<Connecting*> _outputs) {
 	std::unordered_set<Connection*> outputsCopy = this->outputs_;
 	for (Connection* output : outputsCopy) {
-		delete output;
+		//delete output;
+		outputs_.erase(output);//debug
 	}
 	for (Connecting* output : _outputs) {
 		this->addOutput(output);

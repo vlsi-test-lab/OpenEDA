@@ -26,6 +26,7 @@
  */
 class Levelized : public virtual Connecting {
 public:
+	
 	/*
 	 * Create an object which are connected to other Levelized objects.
 	 *

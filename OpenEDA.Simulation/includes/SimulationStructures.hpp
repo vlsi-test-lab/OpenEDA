@@ -16,7 +16,6 @@
 #include "Function.h"
 #include "EventQueue.h"
 #include "SimulationNet.hpp"
-
 #include <string>
 
 /*

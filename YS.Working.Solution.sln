@@ -1,0 +1,245 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Structures.lib", "OpenEDA.structures\OpenEDA.Structures.lib\OpenEDA.Structures.lib.vcxproj", "{8C0AC38B-40D1-4F97-9763-FD9251FF2122}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44} = {E3B5323B-295D-4000-B9BB-198E8EB27B44}
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648} = {1E33AA3B-FC92-40C9-B4D1-9AD82D083648}
+		{8EB08747-9683-4954-B8A7-5E2B264A887D} = {8EB08747-9683-4954-B8A7-5E2B264A887D}
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48} = {C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A} = {F74F6A64-FBA4-4985-8339-A7B11239BC3A}
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135} = {53C55390-A3BC-4288-AAEC-BAB6BE900135}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Simulation.lib", "OpenEDA.Simulation\OpenEDA.Simulation.lib\OpenEDA.Simulation.lib.vcxproj", "{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122} = {8C0AC38B-40D1-4F97-9763-FD9251FF2122}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.SAT.lib", "OpenEDA.SAT\OpenEDA.SAT.lib\OpenEDA.SAT.lib.vcxproj", "{E3B5323B-295D-4000-B9BB-198E8EB27B44}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DELETE.exe", "OpenEDA.SAT\DELETE.exe\DELETE.exe.vcxproj", "{BF71B5C0-A9AF-4995-91B2-B55445695421}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Faults.lib", "OpenEDA.Faults\OpenEDA.Faults.lib\OpenEDA.Faults.lib.vcxproj", "{F74F6A64-FBA4-4985-8339-A7B11239BC3A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.TPI.lib", "OpenEDA.TPI\OpenEDA.TPI.lib\OpenEDA.TPI.lib.vcxproj", "{8EB08747-9683-4954-B8A7-5E2B264A887D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.COP.lib", "OpenEDA.COP\OpenEDA.COP.lib\OpenEDA.COP.lib.vcxproj", "{53C55390-A3BC-4288-AAEC-BAB6BE900135}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Trace.lib", "OpenEDA.Trace\OpenEDA.Trace.lib\OpenEDA.Trace.lib.vcxproj", "{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F56906F3-D37E-4552-95A6-082D4C87EC0F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Window", "Window\Window.vcxproj", "{18B7BA76-A3FA-4609-96C5-DC820C22059E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Expand", "Expand\Expand.vcxproj", "{599843AD-443F-4D4D-9953-45004D46DA39}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenEDA.Parser.lib", "OpenEDA.Parser\OpenEDA.Parser.lib\OpenEDA.Parser.lib.vcxproj", "{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "main", "main\main.vcxproj", "{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|WIN32 = Debug|WIN32
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|WIN32 = Release|WIN32
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|WIN32.Build.0 = Debug|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|x64.ActiveCfg = Debug|x64
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|x64.Build.0 = Debug|x64
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|x86.ActiveCfg = Debug|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Debug|x86.Build.0 = Debug|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|WIN32.ActiveCfg = Release|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|WIN32.Build.0 = Release|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|x64.ActiveCfg = Release|x64
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|x64.Build.0 = Release|x64
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|x86.ActiveCfg = Release|Win32
+		{8C0AC38B-40D1-4F97-9763-FD9251FF2122}.Release|x86.Build.0 = Release|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|WIN32.Build.0 = Debug|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|x64.ActiveCfg = Debug|x64
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|x64.Build.0 = Debug|x64
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|x86.ActiveCfg = Debug|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Debug|x86.Build.0 = Debug|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|WIN32.ActiveCfg = Release|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|WIN32.Build.0 = Release|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|x64.ActiveCfg = Release|x64
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|x64.Build.0 = Release|x64
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|x86.ActiveCfg = Release|Win32
+		{E00AEDBF-CA63-4E1F-975A-E8CB144EA7F2}.Release|x86.Build.0 = Release|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|WIN32.Build.0 = Debug|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|x64.ActiveCfg = Debug|x64
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|x64.Build.0 = Debug|x64
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|x86.ActiveCfg = Debug|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Debug|x86.Build.0 = Debug|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|WIN32.ActiveCfg = Release|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|WIN32.Build.0 = Release|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|x64.ActiveCfg = Release|x64
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|x64.Build.0 = Release|x64
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|x86.ActiveCfg = Release|Win32
+		{E3B5323B-295D-4000-B9BB-198E8EB27B44}.Release|x86.Build.0 = Release|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Debug|x64.ActiveCfg = Debug|x64
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Debug|x64.Build.0 = Debug|x64
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Debug|x86.ActiveCfg = Debug|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Debug|x86.Build.0 = Debug|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|WIN32.ActiveCfg = Release|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|WIN32.Build.0 = Release|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x64.ActiveCfg = Release|x64
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x64.Build.0 = Release|x64
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x86.ActiveCfg = Release|Win32
+		{BF71B5C0-A9AF-4995-91B2-B55445695421}.Release|x86.Build.0 = Release|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|WIN32.Build.0 = Debug|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|x64.ActiveCfg = Debug|x64
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|x64.Build.0 = Debug|x64
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|x86.ActiveCfg = Debug|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Debug|x86.Build.0 = Debug|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|WIN32.ActiveCfg = Release|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|WIN32.Build.0 = Release|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x64.ActiveCfg = Release|x64
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x64.Build.0 = Release|x64
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.ActiveCfg = Release|Win32
+		{F74F6A64-FBA4-4985-8339-A7B11239BC3A}.Release|x86.Build.0 = Release|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|WIN32.Build.0 = Debug|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|x64.ActiveCfg = Debug|x64
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|x64.Build.0 = Debug|x64
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|x86.ActiveCfg = Debug|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Debug|x86.Build.0 = Debug|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|WIN32.ActiveCfg = Release|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|WIN32.Build.0 = Release|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|x64.ActiveCfg = Release|x64
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|x64.Build.0 = Release|x64
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|x86.ActiveCfg = Release|Win32
+		{8EB08747-9683-4954-B8A7-5E2B264A887D}.Release|x86.Build.0 = Release|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|WIN32.Build.0 = Debug|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|x64.ActiveCfg = Debug|x64
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|x64.Build.0 = Debug|x64
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|x86.ActiveCfg = Debug|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Debug|x86.Build.0 = Debug|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|WIN32.ActiveCfg = Release|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|WIN32.Build.0 = Release|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|x64.ActiveCfg = Release|x64
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|x64.Build.0 = Release|x64
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|x86.ActiveCfg = Release|Win32
+		{53C55390-A3BC-4288-AAEC-BAB6BE900135}.Release|x86.Build.0 = Release|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|WIN32.Build.0 = Debug|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|x64.ActiveCfg = Debug|x64
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|x64.Build.0 = Debug|x64
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|x86.ActiveCfg = Debug|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Debug|x86.Build.0 = Debug|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|WIN32.ActiveCfg = Release|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|WIN32.Build.0 = Release|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x64.ActiveCfg = Release|x64
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x64.Build.0 = Release|x64
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x86.ActiveCfg = Release|Win32
+		{1E33AA3B-FC92-40C9-B4D1-9AD82D083648}.Release|x86.Build.0 = Release|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|WIN32.Build.0 = Debug|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|x64.ActiveCfg = Debug|x64
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|x64.Build.0 = Debug|x64
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|x86.ActiveCfg = Debug|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Debug|x86.Build.0 = Debug|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|WIN32.ActiveCfg = Release|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|WIN32.Build.0 = Release|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|x64.ActiveCfg = Release|x64
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|x64.Build.0 = Release|x64
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|x86.ActiveCfg = Release|Win32
+		{18B7BA76-A3FA-4609-96C5-DC820C22059E}.Release|x86.Build.0 = Release|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|WIN32.Build.0 = Debug|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|x64.ActiveCfg = Debug|x64
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|x64.Build.0 = Debug|x64
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|x86.ActiveCfg = Debug|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Debug|x86.Build.0 = Debug|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|WIN32.ActiveCfg = Release|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|WIN32.Build.0 = Release|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|x64.ActiveCfg = Release|x64
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|x64.Build.0 = Release|x64
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|x86.ActiveCfg = Release|Win32
+		{599843AD-443F-4D4D-9953-45004D46DA39}.Release|x86.Build.0 = Release|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|WIN32.Build.0 = Debug|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|x64.ActiveCfg = Debug|x64
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|x64.Build.0 = Debug|x64
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|x86.ActiveCfg = Debug|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Debug|x86.Build.0 = Debug|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|WIN32.ActiveCfg = Release|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|WIN32.Build.0 = Release|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|x64.ActiveCfg = Release|x64
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|x64.Build.0 = Release|x64
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|x86.ActiveCfg = Release|Win32
+		{C14BB54B-2EF9-4A17-9FF6-34A182FD5F48}.Release|x86.Build.0 = Release|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|WIN32.ActiveCfg = Debug|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|WIN32.Build.0 = Debug|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|x64.ActiveCfg = Debug|x64
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|x64.Build.0 = Debug|x64
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|x86.ActiveCfg = Debug|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Debug|x86.Build.0 = Debug|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|WIN32.ActiveCfg = Release|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|WIN32.Build.0 = Release|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|x64.ActiveCfg = Release|x64
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|x64.Build.0 = Release|x64
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|x86.ActiveCfg = Release|Win32
+		{2C99D993-7A1B-480C-B01C-1B08D8D7C1EA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CBE4484-160C-4B93-93FA-7232B64F31CC}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 13
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://openeda.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OpenEDA.structures\\OpenEDA.Structures.lib\\OpenEDA.Structures.lib.vcxproj
+		SccProjectName1 = OpenEDA.structures/OpenEDA.Structures.lib
+		SccLocalPath1 = OpenEDA.structures\\OpenEDA.Structures.lib
+		SccProjectUniqueName2 = OpenEDA.Simulation\\OpenEDA.Simulation.lib\\OpenEDA.Simulation.lib.vcxproj
+		SccProjectName2 = OpenEDA.Simulation/OpenEDA.Simulation.lib
+		SccLocalPath2 = OpenEDA.Simulation\\OpenEDA.Simulation.lib
+		SccProjectUniqueName3 = OpenEDA.SAT\\OpenEDA.SAT.lib\\OpenEDA.SAT.lib.vcxproj
+		SccProjectName3 = OpenEDA.SAT/OpenEDA.SAT.lib
+		SccLocalPath3 = OpenEDA.SAT\\OpenEDA.SAT.lib
+		SccProjectUniqueName4 = OpenEDA.Faults\\OpenEDA.Faults.lib\\OpenEDA.Faults.lib.vcxproj
+		SccProjectName4 = OpenEDA.Faults/OpenEDA.Faults.lib
+		SccLocalPath4 = OpenEDA.Faults\\OpenEDA.Faults.lib
+		SccProjectUniqueName5 = OpenEDA.TPI\\OpenEDA.TPI.lib\\OpenEDA.TPI.lib.vcxproj
+		SccProjectName5 = OpenEDA.TPI/OpenEDA.TPI.lib
+		SccLocalPath5 = OpenEDA.TPI\\OpenEDA.TPI.lib
+		SccProjectUniqueName6 = OpenEDA.COP\\OpenEDA.COP.lib\\OpenEDA.COP.lib.vcxproj
+		SccProjectName6 = OpenEDA.COP/OpenEDA.COP.lib
+		SccLocalPath6 = OpenEDA.COP\\OpenEDA.COP.lib
+		SccProjectUniqueName7 = OpenEDA.Trace\\OpenEDA.Trace.lib\\OpenEDA.Trace.lib.vcxproj
+		SccProjectName7 = OpenEDA.Trace/OpenEDA.Trace.lib
+		SccLocalPath7 = OpenEDA.Trace\\OpenEDA.Trace.lib
+		SccProjectUniqueName8 = Window\\Window.vcxproj
+		SccProjectName8 = Window
+		SccLocalPath8 = Window
+		SccProjectUniqueName9 = Expand\\Expand.vcxproj
+		SccProjectName9 = Expand
+		SccLocalPath9 = Expand
+		SccProjectUniqueName10 = OpenEDA.Parser\\OpenEDA.Parser.lib\\OpenEDA.Parser.lib.vcxproj
+		SccProjectName10 = OpenEDA.Parser/OpenEDA.Parser.lib
+		SccLocalPath10 = OpenEDA.Parser\\OpenEDA.Parser.lib
+		SccProjectUniqueName11 = OpenEDA.SAT\\DELETE.exe\\DELETE.exe.vcxproj
+		SccProjectName11 = OpenEDA.SAT/DELETE.exe
+		SccLocalPath11 = OpenEDA.SAT\\DELETE.exe
+		SccProjectUniqueName12 = main\\main.vcxproj
+		SccProjectName12 = main
+		SccLocalPath12 = main
+	EndGlobalSection
+EndGlobal

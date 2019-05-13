@@ -40,7 +40,9 @@
 		function_ = &BooleanFunction::BUF;
 	} else if (_functionString == "not") {
 		function_ = &BooleanFunction::NOT;
-	} else {
+	} 
+	
+	else {
 		throw "Cannot create Boolean function from this string." ;
 	}
 }

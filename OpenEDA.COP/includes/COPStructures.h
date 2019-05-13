@@ -31,6 +31,8 @@ public:
 	 */
 	COP(bool _calculateAlways = true);
 
+	COP(const COP&p);
+
 	/*
 	 * Return the controllablity of the object (and calculate it if necessary).
 	 *
@@ -99,6 +101,7 @@ protected:
 	 */
 	virtual float calculateObservability(COP* _calling = nullptr) = 0;
 
+
 private:
 
 	/*
@@ -115,6 +118,8 @@ private:
 	 * Does this COP object always calculate when called?
 	 */
 	bool calculateAlways_;
+
+	
 };
 
 /*
@@ -190,8 +195,8 @@ public:
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 */
 	COPNode(Function<bool>* _function, 
-			std::unordered_set<COPLine*> _inputs, 
-			std::unordered_set<COPLine*> _outputs
+			std::unordered_set<COPLine*> _inputs=std::unordered_set<COPLine*>(),
+			std::unordered_set<COPLine*> _outputs= std::unordered_set<COPLine*>()
 	) :
 		SimulationNode(
 			_function, 
@@ -204,6 +209,17 @@ public:
 			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
 		)
 	{
+		if (_function->string() == "pi")
+		{
+			this->controllability(0.5);
+			
+			
+		}
+		if (_function->string() == "po")
+		{
+			this->observability(1);
+			
+		}//add more
 	}
 
 
