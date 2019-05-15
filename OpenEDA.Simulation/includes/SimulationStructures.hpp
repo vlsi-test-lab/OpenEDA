@@ -111,10 +111,13 @@ public:
 	 * @return This object's name.
 	 */
 	virtual std::string name() const {
-		if (this->outputs().size() == 0) {
-			return (*(this->inputs().begin()))->name();
+		std::string toReturn = this->function_->string() + " ";
+		if (this->outputs().size() != 0) {
+			toReturn += (*(this->outputs().begin()))->name();
+		} else {
+			toReturn += "UNKOWN";
 		}
-		return (*(this->outputs().begin()))->name();
+		return toReturn;
 	}
 
 

@@ -77,6 +77,78 @@ public:
 	 * @return The observability of the object (after setting).
 	 */
 	float observability(float _observability);
+
+	/*
+	 * Because adding/removing inputs/outputs can change CC&CO values, Connecting
+	 * functions need to be amended. The original Connecting functions will be
+	 * forwarded after CC&CO values are cleared.
+	 */
+
+
+	//DELETE: not needed, as connecting will call "addInput"
+	/*
+	 * Set the inputs of this object to the given objects.
+	 *
+	 * Will clear CCs.
+	 *
+	 * @param  _inputs A set of objects to be input Connections.
+	 * @return A set of all objects which connect to this object through an
+	 *         input Connection.
+	 */
+	//virtual std::unordered_set<Connecting*> inputs(std::unordered_set<Connecting*> _inputs);
+
+	//DELETE: not needed, as connecting will call "addOutput"
+	/*
+	 * Set the outputs of this object to the given objects.
+	 *
+	 * Will clear COs.
+	 *
+	 * @param  _inputs A set of objects to be output Connections.
+	 * @return A set of all objects which connect to this object through an
+	 *         output Connection.
+	 */
+	//virtual std::unordered_set<Connecting*> outputs(std::unordered_set<Connecting*> _outputs);
+
+	//DELETE: Flawed. The "Connection" not "Connecting" functions need to be modified.
+	///*
+	// * Delete the input Connection which connects the given input object.
+	// *
+	// * If the Connection cannot be found, an exception will be thrown.
+	// *
+	// * WIll clear CCs.
+	// *
+	// * @param The input Connecting object to be disconnected.
+	// */
+	//virtual void removeInput(Connecting* _rmv);
+
+	///*
+	// * Delete the output COnnection which connects the given input object.
+	// *
+	// * If the Connection cannot be found, an exception will be thrown.
+	// *
+	// * Will clear COs.
+	// *
+	// * @param The output Connecting object to be disconnected.
+	// */
+	//virtual void removeOutput(Connecting* _rmv);
+
+	///*
+	// * Add a given input Connecting object using a new Connection.
+	// *
+	// * Will clear CCs.
+	// *
+	// * @param Input Connecting object to connect to.
+	// */
+	//virtual void addInput(Connecting* _add);
+
+	///*
+ //  * Add a given output Connecting object using a new Connection.
+ //  *
+ //  * Will clear COs.
+ //  *
+ //  * @param Output Connecting object to connect to.
+ //  */
+	//virtual void addOutput(Connecting* _add);
 	
 protected:
 
@@ -101,8 +173,56 @@ protected:
 	 */
 	virtual float calculateObservability(COP* _calling = nullptr) = 0;
 
+	/*
+	 * Clear this object's observability and any observabilities that rely on this
+	 * object.
+	 */
+	void clearObservability();
+
+	/*
+	 * Clear this object's controllability and any controllabilities that rely on 
+	 * this object.
+	 */
+	void clearControllability();
 
 private:
+
+	/*
+* Delete a given input connection
+*
+* The given input connection will be removed. If it does not exist, an
+* exception will be thrown.
+*
+* @param The input connection to remove.
+*/
+	virtual void removeInputConnection(Connection* _rmv, bool _deleteConnection = true);
+
+	/*
+   * Delete a given output connection
+   *
+   * The given output connection will be removed. If it does not exist, an
+   * exception will be thrown.
+   *
+   * @param The output connection to remove.
+   */
+	virtual void removeOutputConnection(Connection* _rmv, bool _deleteConnection = true);
+
+	/*
+   * Add a given input connection
+   *
+   * @param Input connection to add
+   */
+	virtual void addInputConnection(Connection* _add);
+
+	/*
+	 * Add a given output connection
+	 *
+	 * @param Output connection to add
+	 */
+	virtual void addOutputConnection(Connection* _add);
+
+
+
 
 	/*
 	 * The current controllability value of this object (negative = undefined).
@@ -194,9 +314,10 @@ public:
 	 * @param _pi (optional) Is the Node a PI (optional, default = false).
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 */
-	COPNode(Function<bool>* _function, 
-			std::unordered_set<COPLine*> _inputs=std::unordered_set<COPLine*>(),
-			std::unordered_set<COPLine*> _outputs= std::unordered_set<COPLine*>()
+	COPNode(
+		Function<bool>* _function, 
+			std::unordered_set<COPLine*> _inputs = std::unordered_set<COPLine*>(),
+			std::unordered_set<COPLine*> _outputs = std::unordered_set<COPLine*>()
 	) :
 		SimulationNode(
 			_function, 
@@ -209,17 +330,17 @@ public:
 			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
 		)
 	{
-		if (_function->string() == "pi")
-		{
-			this->controllability(0.5);
-			
-			
-		}
-		if (_function->string() == "po")
-		{
-			this->observability(1);
-			
-		}//add more
+		//if (_function->string() == "pi")
+		//{
+		//	this->controllability(0.5);
+		//	
+		//	
+		//}
+		//if (_function->string() == "po")
+		//{
+		//	this->observability(1);
+		//	
+		//}//add more
 	}
 
 

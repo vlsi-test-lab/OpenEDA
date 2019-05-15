@@ -13,6 +13,7 @@
 #define Testpoint_h
 
 #include "FaultStructures.hpp"
+#include "Value.h"
 
 
 /*
@@ -21,10 +22,15 @@
  * This class is pure virtual. Other methods must define the actions
  * corresponding to activation.
  *
+ * A testpoint is "valued" in the sense that it will return value of its
+ * location (presuming it is active).
+ *
  * @parameter _primitive The data primitive of simulation.
+ * @parameter _nodeType When new needs are created, what kind of node should be created?
+ * @parameter _lineType When new lines are created, what kind of line should be created?
  */
-template <class _primitive>
-class Testpoint {
+template <class _primitive, class _nodeType, class _lineType>
+class Testpoint : virtual public Valued<_primitive> {
 public:
 	/*
 	 * Create a testpoint on a given Line.
@@ -33,8 +39,9 @@ public:
 	 * done.
 	 *
 	 * @param _location The location of the testpoint
+	 * @param (optional) _value The "value" of this testpoint.
 	 */
-	Testpoint(FaultyLine<_primitive>* _location) {
+	Testpoint(_lineType* _location, Value<_primitive> _value = Value<_primitive>()) {
 		this->location_ = _location;
 	}
 
@@ -44,7 +51,9 @@ public:
 	 * @param _other The other Testpoint being compared to.
 	 * @return True if both are on the same location.
 	 */
-	bool operator == (const Testpoint<_primitive>& _other) const;
+	virtual bool operator == (const Testpoint<_primitive, _nodeType, _lineType>& _other) const {
+		return (this->location_ == _other.location());
+	}
 
 	/*
 	 * See the overloaded operator "==", as this is the logical opposite.
@@ -52,7 +61,9 @@ public:
 	 * @param _other The other Testpoint being compared to.
 	 * @return True if the Testpoints are different.
 	 */
-	bool operator != (const Testpoint<_primitive>& _other) const;
+	virtual bool operator != (const Testpoint<_primitive, _nodeType, _lineType>& _other) const {
+		return !(*this == _other);
+	}
 
 	/*
 	 * Compaitor function (needed for sorted hashes of faults).
@@ -61,28 +72,34 @@ public:
 	 *
 	 * @param _other The other Testpoints being compared to.
 	 */
-	bool operator < (const Testpoint<_primitive>& _other) const;
+	virtual bool operator < (const Testpoint<_primitive, _nodeType, _lineType>& _other) const {
+		return (this->location_ < _other.location());
+	}
 
 	/*
 	 * Activate the Testpoint by modifying the circuit.
 	 *
-	 * @return A new node created during activation.
+	 * Lines may be created by this function.
+	 *
+	 * @return A set of new nodes created during activation.
 	 */
-	virtual SimulationNode<_primitive>* activate() = 0;
+	virtual std::unordered_set<_nodeType*> activate() = 0;
 
 	/*
 	 * Deactivate the Testpoint by modifying the circuit.
 	 *
-	 * @return A node which must be (but is not yet) deleted.
+	 * Lines may be deleted by this function.
+	 *
+	 * @return A set of node whichs should be (but was not) deleted.
 	 */
-	virtual SimulationNode<_primitive>* deactivate() = 0;
+	virtual std::unordered_set<_nodeType*> deactivate() = 0;
 
 	/*
 	 * The location of the TP.
 	 *
 	 * @return The location of the TP.
 	 */
-	FaultyLine<_primitive>* location() const {
+	_lineType* location() const {
 		return this->location_;
 	}
 
@@ -93,23 +110,10 @@ protected:
 	 *
 	 * @return The location of the Testpoint.
 	 */
-	FaultyLine<_primitive>* location_;
+	_lineType* location_;
 };
 
 
-template<class _primitive>
-inline bool Testpoint<_primitive>::operator==(const Testpoint<_primitive>& _other) const {
-	return (this->location_ == _other.location());
-}
 
-template<class _primitive>
-inline bool Testpoint<_primitive>::operator!=(const Testpoint<_primitive>& _other) const {
-	return !(*this == _other);
-}
-
-template<class _primitive>
-inline bool Testpoint<_primitive>::operator<(const Testpoint<_primitive>& _other) const {
-	return (this->location_ < _other.location());
-}
 
 #endif

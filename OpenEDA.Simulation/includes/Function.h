@@ -138,8 +138,14 @@ public:
 	 * Create a CopyFunction of a given name.
 	 *
 	 * Typical names will be "const", "pi", "po", etc.
+	 *
+	 * @param Name the name of the  the function
+	 * @param (optional) The constant value of this function. If it is not
+	 *        defined (or an "invalid" value is given), the function will always
+	 *        copy the values given to it. Otherwise, the returned value will
+	 *        always be the value given.
 	 */
-	CopyFunction(std::string _name);
+	CopyFunction(std::string _name, Value<T> _value = Value<T>());
 
 	/*
 	 * Evaluate the Function.

@@ -133,13 +133,16 @@ Value<bool> BooleanFunction::NOT(std::vector<Value<bool>> i) const {
 }
 
 template<class T>
-CopyFunction<T>::CopyFunction(std::string _name) : Function<T>(_name) {
+CopyFunction<T>::CopyFunction(std::string _name, Value<T> _value) : Function<T>(_name) , Valued<T>(_value){
 }
 
 template<class T>
 Value<bool> CopyFunction<T>::evaluate(std::vector<Value<bool>> _vector) const {
-	if (_vector.size() == 0) {
+	if (this->value().valid() == true) {
 		return this->value();
+	}
+	if (_vector.size() == 0) {
+		throw "CopyFunction cannot return a vector with nothing to copy.";
 	}
 	return _vector.at(0);
 }

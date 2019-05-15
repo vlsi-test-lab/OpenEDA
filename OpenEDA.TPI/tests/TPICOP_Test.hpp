@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 /**
  * @file Testpoint_Test.cpp
  * @author Joshua Immanuel (jzi0005@tigermail.auburn.edu)
@@ -12,7 +11,7 @@
 
 #include"gtest/gtest.h"
 #include"TPI_COP.h"
-#include"Parser.h"
+#include"Parser.hpp"
 
 class TPCOPTest : public ::testing::Test {
 public:

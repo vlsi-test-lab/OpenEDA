@@ -42,11 +42,20 @@ void Circuit::addNode(Levelized* _node) {
 }
 
 Levelized* Circuit::removeNode(Levelized* _node) {
-	auto iterator = this->nodes_.find(_node);
-	if (iterator == this->nodes_.end()) {
-		throw "Cannot remove node, it does not exist in the circuit.";
+	//DELETE: obsolete
+	//auto iterator = this->nodes_.find(_node);
+	//if (iterator == this->nodes_.end()) {
+	//	throw "Cannot remove node, it does not exist in the circuit.";
+	//}
+	//this->nodes_.erase(iterator);
+	
+	bool found = this->nodes_.erase(_node);
+	if (found == false) {
+		throw "Could not remove node from circuit: it's not part of the circuit.";
 	}
-	this->nodes_.erase(iterator);
+	this->pis_.erase(_node);
+	this->pos_.erase(_node);
+	
 	return _node;
 }
 
@@ -56,18 +65,19 @@ void Circuit::addPI(Levelized* _pi) {
 	_pi->inputLevelZero();
 }
 
-Levelized* Circuit::removePI(Levelized* _pi) {
-	auto iterator = this->nodes_.find(_pi);
-	if (iterator == this->nodes_.end()) {
-		throw "Cannot remove PI, it does not exist in the circuit.";
-	}
-	iterator = this->pis_.find(_pi);
-	if (iterator == this->pis_.end()) {
-		throw "Cannot remove PI, it is not a PI.";
-	}
-	this->pis_.erase(iterator);	
-	return _pi;
-}
+//DELETE: obsolete
+//Levelized* Circuit::removePI(Levelized* _pi) {
+//	auto iterator = this->nodes_.find(_pi);
+//	if (iterator == this->nodes_.end()) {
+//		throw "Cannot remove PI, it does not exist in the circuit.";
+//	}
+//	iterator = this->pis_.find(_pi);
+//	if (iterator == this->pis_.end()) {
+//		throw "Cannot remove PI, it is not a PI.";
+//	}
+//	this->pis_.erase(iterator);	
+//	return _pi;
+//}
 
 void Circuit::addPO(Levelized* _po) {
 	this->nodes_.emplace(_po);
@@ -75,15 +85,16 @@ void Circuit::addPO(Levelized* _po) {
 	_po->outputLevelZero();
 }
 
-Levelized* Circuit::removePO(Levelized* _po) {
-	auto iterator = this->nodes_.find(_po);
-	if (iterator == this->nodes_.end()) {
-		throw "Cannot remove PO, it does not exist in the circuit.";
-	}
-	iterator = this->pos_.find(_po);
-	if (iterator == this->pos_.end()) {
-		throw "Cannot remove PO, it is not a PO.";
-	}
-	this->pos_.erase(iterator);
-	return _po;
-}
+//DELETE: obsolete
+//Levelized* Circuit::removePO(Levelized* _po) {
+//	auto iterator = this->nodes_.find(_po);
+//	if (iterator == this->nodes_.end()) {
+//		throw "Cannot remove PO, it does not exist in the circuit.";
+//	}
+//	iterator = this->pos_.find(_po);
+//	if (iterator == this->pos_.end()) {
+//		throw "Cannot remove PO, it is not a PO.";
+//	}
+//	this->pos_.erase(iterator);
+//	return _po;
+//}

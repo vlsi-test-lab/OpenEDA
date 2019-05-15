@@ -92,6 +92,7 @@ public:
 	 */
 	void addPI(Levelized* _pi);
 
+	//DELETE: obsolete
 	/*
 	 * Remove a PI Node from the circuit.
 	 *
@@ -102,7 +103,7 @@ public:
 	 * @param The PI (and Node) to remvoe.
 	 * @return The removed PI Node.
 	 */
-	Levelized* removePI(Levelized* _pi);
+	//Levelized* removePI(Levelized* _pi);
 
 	/*
 	 * Add the given node as a PO.
@@ -114,6 +115,7 @@ public:
 	 */
 	void addPO(Levelized* _po);
 
+	//DELETE: obsolete
 	/*
 	 * Remove a PO Node from the circuit.
 	 *
@@ -124,7 +126,7 @@ public:
 	 * @param The PO (and Node) to remvoe.
 	 * @return The removed PO Node.
 	 */
-	Levelized* removePO(Levelized* _po);
+	//Levelized* removePO(Levelized* _po);
 
 
 

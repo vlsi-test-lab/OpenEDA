@@ -106,39 +106,39 @@ TEST_F(Circuit_Test, TEST07) {
 //Levelized* removePI(Levelized* _node);
 TEST_F(Circuit_Test, TEST08) {
 
-	ASSERT_NO_THROW(c->removePI(n2););
+	ASSERT_NO_THROW(c->removeNode(n2););
 	EXPECT_TRUE(c->pis().empty());
 }
 
 //Levelized* removePI(Levelized* _node);
 TEST_F(Circuit_Test, TEST09) {
 
-	EXPECT_ANY_THROW(c->removePI(n4););
+	EXPECT_ANY_THROW(c->removeNode(n4););
 }
 
 //Levelized* removePI(Levelized* _node);
 TEST_F(Circuit_Test, TEST10) {
 
-	EXPECT_ANY_THROW(c->removePI(n1););
+	EXPECT_ANY_THROW(c->removeNode(n1););
 }
 
 //Levelized* removePO(Levelized* _node);
 TEST_F(Circuit_Test, TEST11) {
 
-	ASSERT_NO_THROW(c->removePO(n3););
+	ASSERT_NO_THROW(c->removeNode(n3););
 	EXPECT_TRUE(c->pos().empty());
 }
 
 //Levelized* removePO(Levelized* _node);
 TEST_F(Circuit_Test, TEST12) {
 
-	EXPECT_ANY_THROW(c->removePO(n4););
+	EXPECT_ANY_THROW(c->removeNode(n4););
 }
 
 //Levelized* removePO(Levelized* _node);
 TEST_F(Circuit_Test, TEST13) {
 
-	EXPECT_ANY_THROW(c->removePO(n2););
+	EXPECT_ANY_THROW(c->removeNode(n2););
 }
     
 

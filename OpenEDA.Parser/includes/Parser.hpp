@@ -294,6 +294,8 @@ void Parser<_lineType, _nodeType>::MergeLines() {
 				throw "Problem: multiple lines have no output.";
 			}
 			base->addOutput(*toDelete->outputs().begin());
+			toDelete->outputs(std::unordered_set<Connecting*>()); //This shouldn't be necessary, but was added in order to clear COP values consistently.
+			toDelete->inputs(std::unordered_set<Connecting*>());
 			delete toDelete; //This will automatically delete its connections.
 			continue;
 		}

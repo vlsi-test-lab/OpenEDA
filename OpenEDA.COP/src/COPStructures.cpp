@@ -22,6 +22,7 @@ COP::COP(bool _calculateAlways) {
 
 float COP::controllability() {
 	if (this->controllability_ >= 0) {
+		//DEBUG printf("DBG CC %s (%d outputs) = %f (no calc)\n", this->name().c_str(), this->outputs().size(), this->controllability_);//DEBUG
 		return this->controllability_;
 	}
 
@@ -42,6 +43,7 @@ float COP::controllability() {
 	if (this->controllability_ < 0) {
 		throw "Cannot calculate COP CC: failure to calculate.";
 	}
+	//DEBUG printf("DBG CC %s (%d outputs) = %f (calc)\n", this->name().c_str(), this->outputs().size(), this->controllability_);//DEBUG
 	return this->controllability_;
 }
 
@@ -52,6 +54,7 @@ float COP::controllability(float _controllability) {
 
 float COP::observability(COP* _calling) {
 	if (this->observability_ >= 0) {
+		//DEBUG printf("DBG CO %s (%d outputs) = %f (no calc)\n", this->name().c_str(), this->outputs().size(), this->observability_);//DEBUG
 		return this->observability_;
 	}
 
@@ -75,6 +78,7 @@ float COP::observability(COP* _calling) {
 	if (toReturn < 0) {
 		throw "Cannot calculate COP CO: failure to calculate.";
 	}
+	//DEBUG printf("DBG CO %s (%d outputs) = %f (no calc)\n", this->name().c_str(), this->outputs().size(), toReturn);//DEBUG
 	if (this->calculateAlways_ == true) {
 		return toReturn;
 	}
@@ -85,6 +89,88 @@ float COP::observability(COP* _calling) {
 float COP::observability(float _observability) {
 	this->observability_ = _observability;
 	return this->observability_;
+}
+
+//DELETE: flawed
+//void COP::removeInput(Connecting * _rmv) {
+//	this->clearControllability();
+//	this->Connecting::removeInput(_rmv);
+//}
+//
+//void COP::removeOutput(Connecting * _rmv) {
+//	this->clearObservability();
+//	this->Connecting::removeOutput(_rmv);
+//}
+//
+//void COP::addInput(Connecting * _add) {
+//	this->clearControllability();
+//	this->Connecting::addInput(_add);
+//}
+//
+//void COP::addOutput(Connecting * _add) {
+//	this->clearObservability();
+//	this->Connecting::addOutput(_add);
+//}
+
+void COP::clearObservability() {
+	//DEBUG printf("DBG CO CLEAR %s (%d outputs) ... ", this->name().c_str(), this->outputs().size());//DEBUG
+	if (this->observability_ < 0 && this->calculateAlways_ == false) { //Already cleared
+		//DEBUG printf("STOP: %f %d\n", this->observability_, this->calculateAlways_);//DEBUG
+		return;
+	}
+	this->observability_ = -1;
+	std::unordered_set<Connecting*> inputs = this->inputs();
+	//DEBUG printf("DONE, forward to %d\n", inputs.size());
+	for (Connecting * input : inputs) {
+		COP* cast = dynamic_cast<COP*>(input);
+		if (cast != nullptr) {
+			//A SPECIAL NOTE:
+			//This is one of the few places where casting to a nullptr is allowed. When a node is deleted, it will
+			//call "clear observability/controllability" on itself. The controllability call will lead to clear
+			//observability calls coming back to it, but by this time, the node will no longer be considered "COP"
+			//(since it is in the process of being deconstructed). To avoid this, nullptrs are skipped.
+			cast->clearObservability();
+		}
+	}
+}
+
+void COP::clearControllability() {
+	if (this->controllability_ < 0 && this->calculateAlways_ == false) { //Already cleared
+		return;
+	}
+	//DEBUG printf("DBG CC CLEAR %s (%d outputs)\n", this->name().c_str(), this->outputs().size());//DEBUG
+	this->controllability_ = -1;
+	std::unordered_set<Connecting*> outputs = this->outputs();
+	for (Connecting * output : outputs) {
+		COP* cast = dynamic_cast<COP*>(output);
+		cast->clearControllability();
+	}
+
+	//Change CC can change CO on "parallel" lines (e.g., the lines feeding the
+	//same gate). Because the clearControllability call will always go forward,
+	//the clearObservability call be be done directly here instead of finding
+	//what objects are "in parallel" with this one.
+	this->clearObservability();
+}
+
+void COP::removeInputConnection(Connection * _rmv, bool _deleteConnection) {
+	this->clearControllability();
+	this->Connecting::removeInputConnection(_rmv, _deleteConnection);
+}
+
+void COP::removeOutputConnection(Connection * _rmv, bool _deleteConnection) {
+	this->clearObservability();
+	this->Connecting::removeOutputConnection(_rmv, _deleteConnection);
+}
+
+void COP::addInputConnection(Connection * _add) {
+	this->clearControllability();
+	this->Connecting::addInputConnection(_add);
+}
+
+void COP::addOutputConnection(Connection * _add) {
+	this->clearObservability();
+	this->Connecting::addOutputConnection(_add);
 }
 
 COPLine::COPLine() : 
@@ -101,6 +187,9 @@ COPLine::COPLine(std::string _name) :
 }
 
 float COPLine::calculateControllability() {
+	if (this->inputs().size() != 1) {
+		throw "Cannot calculate COPLine controllability: need exactly 1 input.";
+	}
 	COP* cast = dynamic_cast<COP*>(*(this->inputs().begin()));
 	float toReturn = cast->controllability();
 	if (toReturn > 1 || toReturn < 0) {
@@ -173,9 +262,10 @@ float COPNode::calculateControllability() {
 	//Second, calculate depending on the gate type.
 	float toReturn = 1.0;
 	Function<bool>* function = this->function();
-	if (function->string() == "pi") {
+	std::string functionName = function->string();
+	if (functionName == "pi") {
 		return 0.5;
-	} else if (function->string() == "const") {
+	} else if (functionName == "const") {
 		Value<bool> value = function->evaluate(std::vector<Value<bool>>());
 		if (value.valid() == false) {
 			throw "Cannot calculate COP CC: constant value is not valid.";
@@ -185,17 +275,17 @@ float COPNode::calculateControllability() {
 		}
 		return 1.0;
 	} else if (//The controllability depends on the probability of all 1's?
-		function->string() == "and" ||
-		function->string() == "nand" ||
-		function->string() == "buf" ||
-		function->string() == "not"
+		   functionName == "and" ||
+		   functionName == "nand" ||
+		   functionName == "buf" ||
+		   functionName == "not"
 		) {
 		for (float value : inputControllabilities) {
 			toReturn *= value;
 		}
 	} else if (//The controllability depends on the probability of all 0's?
-		  function->string() == "or" ||
-		  function->string() == "nor"
+		   functionName == "or" ||
+		   functionName == "nor"
 		  ) {
 		for (float value : inputControllabilities) {
 			toReturn *= (1 - value);
@@ -205,9 +295,9 @@ float COPNode::calculateControllability() {
 	}
 
 	if (
-		function->string() == "nand" ||
-		function->string() == "nor" ||
-		function->string() == "not"
+		functionName == "nand" ||
+		functionName == "nor" ||
+		functionName == "not"
 		) {
 		toReturn = 1 - toReturn;
 	}
@@ -218,6 +308,9 @@ float COPNode::calculateObservability(COP * _calling) {
 	Function<bool>* function = this->function();
 	if (function->string() == "po") {
 		return 1.0;
+	}
+	if (function->string() == "const") {
+		return 0.0;
 	}
 	float pPass = 1.0;  //The probability that a signal will pass through the given gate.
 	if (function->string() == "and" || function->string() == "nand") {

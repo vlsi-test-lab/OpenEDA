@@ -20,13 +20,13 @@ Connection::Connection(Connecting * _input, Connecting * _output) {
   if (_input == nullptr || _output == nullptr) { throw "Invalid Connection. Must have a valid input and output."; }
   input_ = _input;
   output_ = _output;
-  input_->addOutput(this);
-  output_->addInput(this);
+  input_->addOutputConnection(this);
+  output_->addInputConnection(this);
 }
 
 Connection::~Connection() { 
-	input_->removeOutput(this); 
-	output_->removeInput(this);
+	input_->removeOutputConnection(this, false); 
+	output_->removeInputConnection(this, false);
 }
 
 Connecting* Connection::input() const { return this->input_; }
@@ -59,14 +59,16 @@ Connecting::Connecting(std::string _name) {
 
 Connecting::~Connecting() { 
 	//A copy of inputs/outputs must be created before deleting, since deleting will change the list.
-	std::unordered_set<Connection*> inputs = this->inputs_;
-	std::unordered_set<Connection*> outputs = this->outputs_;
+	this->inputs(std::unordered_set<Connecting*>());
+	this->outputs(std::unordered_set<Connecting*>());
+	//DELETE: obsolete
+	/*std::unordered_set<Connection*> outputs = this->outputs_;
 	for (Connection* input : inputs){
-		delete input;
+		this->removeInputConnection(input);
 	}
 	for (Connection* output : outputs) {
-		delete output;
-	}
+		this->removeOutputConnection(output);
+	}*/
 }
 
 std::unordered_set<Connecting*> Connecting::inputs() const {
@@ -80,8 +82,7 @@ std::unordered_set<Connecting*> Connecting::inputs() const {
 std::unordered_set<Connecting*> Connecting::inputs(std::unordered_set<Connecting*> _inputs) {
 	std::unordered_set<Connection*> inputsCopy = this->inputs_;
 	for (Connection* input : inputsCopy) {
-		//delete input;
-		inputs_.erase(input);//debug
+		this->removeInputConnection(input);
 		
 	}
 	std::unordered_set<Connection*> inputsCopy2;//debug
@@ -104,8 +105,7 @@ std::unordered_set<Connecting*> Connecting::outputs() const {
 std::unordered_set<Connecting*> Connecting::outputs(std::unordered_set<Connecting*> _outputs) {
 	std::unordered_set<Connection*> outputsCopy = this->outputs_;
 	for (Connection* output : outputsCopy) {
-		//delete output;
-		outputs_.erase(output);//debug
+		this->removeOutputConnection(output);
 	}
 	for (Connecting* output : _outputs) {
 		this->addOutput(output);
@@ -114,23 +114,33 @@ std::unordered_set<Connecting*> Connecting::outputs(std::unordered_set<Connectin
 }
 
 void Connecting::removeInput(Connecting * _rmv) {
-	for (Connection* input : this->inputs_) {
+	bool found = false;
+	std::unordered_set<Connection*> toSearch = this->inputs_;
+	for (Connection* input : toSearch) {
 		if (input->input() == _rmv) {
-			delete input;
-			return;
+			this->removeInputConnection(input);
+			found = true;
+//Could possibly exist twice?			return;
 		}
 	}
-	throw "Input connection cannot be removed: it does not exist.";
+	if (found == false) {
+		throw "Input connection cannot be removed: it does not exist.";
+	}
 }
 
 void Connecting::removeOutput(Connecting * _rmv) {
-	for (Connection* output : this->outputs_) {
+	bool found = false;
+	std::unordered_set<Connection*> toSearch = this->outputs_;
+	for (Connection* output : toSearch) {
 		if (output->output() == _rmv) {
-			delete output;
-			return;
+			this->removeOutputConnection(output);
+			found = true;
+//Could possibly exist twice?			return;
 		}
 	}
-	throw "Output connection cannot be removed: it does not exist.";
+	if (found == false) {
+		throw "Output connection cannot be removed: it does not exist.";
+	}
 }
 
 void Connecting::addInput(Connecting * _add) {
@@ -145,24 +155,32 @@ std::string Connecting::name() const {
 	return this->name_;
 }
 
-void Connecting::removeInput(Connection * _rmv) {
+void Connecting::removeInputConnection(Connection * _rmv, bool _deleteConnection) {
 	if (this->inputs_.find(_rmv) == this->inputs_.end()) {
 		throw "Cannot remove connection which does not exist";
 	}
+	if (_deleteConnection == true) {
+		delete _rmv;
+	}
 	this->inputs_.erase(_rmv);
+	
 }
 
-void Connecting::removeOutput(Connection * _rmv) {
+void Connecting::removeOutputConnection(Connection * _rmv, bool _deleteConnection) {
 	if (this->outputs_.find(_rmv) == this->outputs_.end()) {
 		throw "Cannot remove connection which does not exist";
 	}
+	if (_deleteConnection == true) {
+		delete _rmv;
+	}
 	this->outputs_.erase(_rmv);
+	
 }
 
-void Connecting::addInput(Connection * _add) {
+void Connecting::addInputConnection(Connection * _add) {
 	this->inputs_.emplace(_add);
 }
 
-void Connecting::addOutput(Connection * _add) {
+void Connecting::addOutputConnection(Connection * _add) {
 	this->outputs_.emplace(_add);
 }

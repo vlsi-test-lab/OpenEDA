@@ -12,7 +12,7 @@
 #ifndef TPI_COP_h
 #define TPI_COP_h
 
-#include "TPI.h"
+#include "TPI.hpp"
 #include "COP_fault_calculator.h"
 
 /*
@@ -28,10 +28,14 @@
  * test point selection for scan-based BIST. Proc. of 34th Design Automation 
  * Conference, pages 478-483,1997.
  *
- * @param _primitive The underlying data primitive used for simulation.
+ * NOTE: There is no "_primitive" parameter since COP can only be performed on 
+ *       Boolean circuits.
+ * @param _nodeType The type of nodes used in the circuit to be modified.
+ * @param _lineType THe type of lines used in the circuit to be modified.
  */
 
-class TPI_COP : public TPI<bool> {
+template <class _nodeType, class _lineType>
+class TPI_COP : public TPI<bool, _nodeType, _lineType> {
 public:
 	/*
 	 * Create a TPI algorithm with a given TP, quality, and time limit (in
@@ -50,9 +54,19 @@ public:
 		size_t _TPLimit = std::numeric_limits<size_t>::max(),
 		float _qualityLimit = 1.0,
 		size_t _timeLimit = std::numeric_limits<size_t>::max()
-	);
+	) :
+		TPI<bool, _nodeType, _lineType>(
+			_circuit, 
+			_TPLimit, 
+			_qualityLimit, 
+			_timeLimit)
+		, FaultCoverageCalculator_(
+			_circuit
+		) 
+	{
+		this->baseFaultCoverage_ = -1;
+	};
 
-protected:
 	/*
 	 * Return the "quality" of this testpoint.
 	 *
@@ -61,7 +75,14 @@ protected:
 	 * @param _testpoint The testpoint to measure.
 	 * @return The quality of the testpoint.
 	 */
-	float quality(Testpoint<bool>* _testpoint);
+	float quality(Testpoint<bool, _nodeType, _lineType>* _testpoint) {
+		float base = this->base();
+		_testpoint->activate();		
+		float TPCoverage = this->FaultCoverageCalculator_.faultCoverage();
+		float toReturn = TPCoverage - base;
+		_testpoint->deactivate();
+ 		return toReturn;
+	};
 
 private:
 	/*
@@ -84,7 +105,12 @@ private:
 	 *
 	 * @return The base quality"
 	 */
-	virtual float base();
+	virtual float base() {
+		if (this->baseFaultCoverage_ < 0) {
+			this->baseFaultCoverage_ = this->FaultCoverageCalculator_.faultCoverage();
+		}
+		return this->baseFaultCoverage_;
+	};
 
 	/*
 	 * Reset the "base" quality to compare against other testpoints against.
@@ -94,7 +120,10 @@ private:
 	 * @param _base The manually set base value.
 	 * @return The new base quality.
 	 */
-	virtual float base(float _base);
+	virtual float base(float _base) {
+		this->baseFaultCoverage_ = _base;
+		return this->baseFaultCoverage_;
+	};
 };
 
 #endif

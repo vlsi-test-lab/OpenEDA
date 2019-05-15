@@ -37,10 +37,11 @@ float COP_fault_calculator::detect(Fault<bool>* _fault) {
 		throw "Cannot calculate fault-based fault coverage: COP not enabled on the fault location.";
 	}
 	bool SAValue = _fault->value().magnitude();
-	float CO = cast->observability();
 	float CC = cast->controllability();
+	float CO = cast->observability();
 	if (SAValue == true) {
 		CC = 1 - CC;
 	}
+	//DEBUG printf("DBG Fault: %s (%d outputs) sa%d -> %f\n", _fault->location()->name().c_str(), _fault->location()->outputs().size(), SAValue, CC*CO); //DEBUG
 	return CC * CO;
 }

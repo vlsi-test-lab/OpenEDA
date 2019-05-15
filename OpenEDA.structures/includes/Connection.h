@@ -120,7 +120,7 @@ class Connecting {
    *
    * @param The input Connecting object to be disconnected.
    */
-  void removeInput(Connecting* _rmv);
+  virtual void removeInput(Connecting* _rmv);
 
   /*
    * Delete the output COnnection which connects the given input object.
@@ -129,7 +129,7 @@ class Connecting {
    *
    * @param The output Connecting object to be disconnected.
    */
-  void removeOutput(Connecting* _rmv);
+  virtual void removeOutput(Connecting* _rmv);
 
   /*
    * Add a given input Connecting object using a new Connection.
@@ -170,6 +170,7 @@ private:
    */
   std::string name_;
 
+protected:
   /**
    * The Connection class is a friend. It is the only class which can add/remove
    * itself using private functions.
@@ -183,8 +184,10 @@ private:
  * exception will be thrown.
  *
  * @param The input connection to remove.
+ * @param (optional) The Connection will be DELETED by this function. This
+ *        variable should only be set false by the Connection itself.
  */
-  void removeInput(Connection* _rmv);
+  virtual void removeInputConnection(Connection* _rmv, bool _deleteConnection = true);
 
   /*
  * Delete a given output connection
@@ -194,21 +197,21 @@ private:
  *
  * @param The output connection to remove.
  */
-  void removeOutput(Connection* _rmv);
+  virtual void removeOutputConnection(Connection* _rmv, bool _deleteConnection = true);
 
   /*
  * Add a given input connection
  *
  * @param Input connection to add
  */
-  void addInput(Connection* _add);
+  virtual void addInputConnection(Connection* _add);
 
   /*
    * Add a given output connection
    *
    * @param Output connection to add
    */
-  void addOutput(Connection* _add);
+  virtual void addOutputConnection(Connection* _add);
 };
 
 /**

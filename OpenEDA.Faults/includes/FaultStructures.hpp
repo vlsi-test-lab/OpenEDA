@@ -70,8 +70,8 @@ public:
 	 * @param _outputs Output lines to the given node.
 	 */
 	FaultyNode(Function<_primitive>* _function,
-			std::unordered_set<FaultyLine<_primitive>*> _inputs= std::unordered_set<FaultyLine<_primitive>*>(), 
-			std::unordered_set<FaultyLine<_primitive>*> _outputs= std::unordered_set<FaultyLine<_primitive>*>()
+			std::unordered_set<FaultyLine<_primitive>*> _inputs = std::unordered_set<FaultyLine<_primitive>*>(), 
+			std::unordered_set<FaultyLine<_primitive>*> _outputs = std::unordered_set<FaultyLine<_primitive>*>()
 	) :
 		SimulationNode<_primitive>(
 			_function,

@@ -156,22 +156,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\includes\COP_fault_calculator.h" />
-    <ClInclude Include="..\includes\Testpoint.h" />
-    <ClInclude Include="..\includes\Testpoint_control.h" />
-    <ClInclude Include="..\includes\Testpoint_invert.h" />
-    <ClInclude Include="..\includes\Testpoint_observe.h" />
-    <ClInclude Include="..\includes\TPGenerator.h" />
-    <ClInclude Include="..\includes\TPI.h" />
-    <ClInclude Include="..\includes\TPI_COP.h" />
+    <ClInclude Include="..\includes\COP_TPI_Structures.hpp" />
+    <ClInclude Include="..\includes\Testpoint.hpp" />
+    <ClInclude Include="..\includes\Testpoint_control.hpp" />
+    <ClInclude Include="..\includes\Testpoint_invert.hpp" />
+    <ClInclude Include="..\includes\Testpoint_observe.hpp" />
+    <ClInclude Include="..\includes\TPGenerator.hpp" />
+    <ClInclude Include="..\includes\TPI.hpp" />
+    <ClInclude Include="..\includes\TPI_COP.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\COP_fault_calculator.cpp" />
-    <ClCompile Include="..\src\Testpoint_control.cpp" />
-    <ClCompile Include="..\src\Testpoint_invert.cpp" />
-    <ClCompile Include="..\src\Testpoint_observe.cpp" />
-    <ClCompile Include="..\src\TPGenerator.cpp" />
-    <ClCompile Include="..\src\TPI.cpp" />
-    <ClCompile Include="..\src\TPI_COP.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
