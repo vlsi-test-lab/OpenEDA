@@ -74,6 +74,15 @@ public:
 	 */
 	std::unordered_set<Fault<_primitive>*> detectedFaults();
 
+	/*
+	 * Return the fault coverage.
+	 *
+	 * @return the fault coverage.
+	 */
+
+	float faultcoverage();
+
+
 protected:
 	/*
 	 * All undetected faults.

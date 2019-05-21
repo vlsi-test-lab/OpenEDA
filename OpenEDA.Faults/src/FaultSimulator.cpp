@@ -66,6 +66,16 @@ std::unordered_set<Fault<_primitive>*> FaultSimulator<_primitive>::detectedFault
 }
 
 template<class _primitive>
+float FaultSimulator<_primitive>::faultcoverage() {
+	
+	float fc = (float) detectedFaults_.size() /((float) detectedFaults_.size() + (float) undetectedFaults_.size());
+	return fc*100;
+}
+
+
+
+
+template<class _primitive>
 bool FaultSimulator<_primitive>::hasImpact(Fault<_primitive>* _fault) {
 	Value<_primitive> curLineValue = _fault->location()->value();
 	Value<_primitive> faultValue = _fault->value();
