@@ -104,7 +104,7 @@ int Levelized::outputLevelConst() const {
 }
 
 void Levelized::outputLevelClear() {
-	if (this->outputLevel_ <= 0) {
+	if (this->outputLevel_ < 0) {
 		return;
 	}
 
