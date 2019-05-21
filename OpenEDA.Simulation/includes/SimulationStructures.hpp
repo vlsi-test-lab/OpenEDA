@@ -26,7 +26,7 @@
  * @param _primitive The underlying primitive to implement in Simulation (bool, char, etc.)
  */
 template <class _primitive>
-class SimulationLine : public Evented<_primitive> {
+class SimulationLine : virtual public Evented<_primitive> {
 public:
 	/*
 	 * Create a simulation line with a "UNDEF" name.
@@ -70,7 +70,7 @@ public:
  * @param _primitive The underlying primitive to implement in Simulation (bool, char, etc.)
  */
 template <class _primitive>
-class SimulationNode : public Functioned<_primitive>, public Evented<_primitive> {
+class SimulationNode : virtual  public Functioned<_primitive>, virtual public Evented<_primitive> {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.

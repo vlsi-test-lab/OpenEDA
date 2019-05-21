@@ -138,5 +138,41 @@ private:
 	 * @return The calculated level value.
 	 */
 	virtual int levelCalculation(std::vector<int> _levels);
+
+protected:
+
+	/*
+	 * Delete a given input connection
+	 *
+	 * The given input connection will be removed. If it does not exist, an
+	 * exception will be thrown.
+	 *
+	 * @param The input connection to remove.
+	 */
+	virtual void removeInputConnection(Connection* _rmv, bool _deleteConnection = true);
+
+	/*
+   * Delete a given output connection
+   *
+   * The given output connection will be removed. If it does not exist, an
+   * exception will be thrown.
+   *
+   * @param The output connection to remove.
+   */
+	virtual void removeOutputConnection(Connection* _rmv, bool _deleteConnection = true);
+
+	/*
+   * Add a given input connection
+   *
+   * @param Input connection to add
+   */
+	virtual void addInputConnection(Connection* _add);
+
+	/*
+	 * Add a given output connection
+	 *
+	 * @param Output connection to add
+	 */
+	virtual void addOutputConnection(Connection* _add);
 };
 #endif

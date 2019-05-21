@@ -155,22 +155,22 @@ void COP::clearControllability() {
 
 void COP::removeInputConnection(Connection * _rmv, bool _deleteConnection) {
 	this->clearControllability();
-	this->Connecting::removeInputConnection(_rmv, _deleteConnection);
+	this->Levelized::removeInputConnection(_rmv, _deleteConnection);
 }
 
 void COP::removeOutputConnection(Connection * _rmv, bool _deleteConnection) {
 	this->clearObservability();
-	this->Connecting::removeOutputConnection(_rmv, _deleteConnection);
+	this->Levelized::removeOutputConnection(_rmv, _deleteConnection);
 }
 
 void COP::addInputConnection(Connection * _add) {
 	this->clearControllability();
-	this->Connecting::addInputConnection(_add);
+	this->Levelized::addInputConnection(_add);
 }
 
 void COP::addOutputConnection(Connection * _add) {
 	this->clearObservability();
-	this->Connecting::addOutputConnection(_add);
+	this->Levelized::addOutputConnection(_add);
 }
 
 COPLine::COPLine() : 

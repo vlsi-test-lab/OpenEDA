@@ -25,7 +25,7 @@
  * @parameter _primitive The primitive data value simulated.
  */
 template <class _primitive>
-class Evented : public virtual Valued<_primitive>, public Levelized {
+class Evented : public virtual Valued<_primitive>, virtual  public Levelized {
 public:
 	/*
 	 * Create an object which are connected to other Levelized objects.
@@ -47,7 +47,7 @@ public:
 	 * @param (optional) _values Values used to evaluate this event.
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	std::set<std::pair<size_t, Evented<_primitive>*>> go(
+	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go(
 		std::vector<Value<_primitive>> _values = std::vector<Value<_primitive>>()
 	);
 };

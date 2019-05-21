@@ -22,7 +22,7 @@
  * This is a pure vitrual class. Inheriting objects must designate how
  * controllability and obserability are calculated.
  */
-class COP : public virtual Connecting {
+class COP : virtual public Levelized {
 public:
 	/*
 	 * Create a COP object.
@@ -248,7 +248,7 @@ private:
  * Note that no template parameter exists since COP is only defined for binary
  * circuits.
  */
-class COPLine : public virtual SimulationLine<bool> , public COP {
+class COPLine : public virtual SimulationLine<bool> , public virtual COP {
 public:
 	
 	/*
@@ -296,7 +296,7 @@ protected:
  * Note that no template parameter exists since COP is only defined for binary
  * circuits.
  */
-class COPNode : public virtual SimulationNode<bool>, public COP {
+class COPNode : public virtual SimulationNode<bool>, public virtual COP {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.

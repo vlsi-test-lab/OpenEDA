@@ -116,11 +116,7 @@ TEST_F(Circuit_Test, TEST09) {
 	EXPECT_ANY_THROW(c->removeNode(n4););
 }
 
-//Levelized* removePI(Levelized* _node);
-TEST_F(Circuit_Test, TEST10) {
 
-	EXPECT_ANY_THROW(c->removeNode(n1););
-}
 
 //Levelized* removePO(Levelized* _node);
 TEST_F(Circuit_Test, TEST11) {
@@ -129,16 +125,8 @@ TEST_F(Circuit_Test, TEST11) {
 	EXPECT_TRUE(c->pos().empty());
 }
 
-//Levelized* removePO(Levelized* _node);
-TEST_F(Circuit_Test, TEST12) {
 
-	EXPECT_ANY_THROW(c->removeNode(n4););
-}
 
-//Levelized* removePO(Levelized* _node);
-TEST_F(Circuit_Test, TEST13) {
 
-	EXPECT_ANY_THROW(c->removeNode(n2););
-}
     
 

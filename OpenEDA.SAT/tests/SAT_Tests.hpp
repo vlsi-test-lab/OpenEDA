@@ -18,7 +18,7 @@ public:
 	void SetUp() override {
 
 	}
-	Parser<TraceLine<bool>, SatisfiableNode<bool>> parser;
+	Parser<TraceLine<bool>, SATNode<bool>> parser;
 	int time = 10;
 	Value<bool> val0 = new Value<bool>(0);
 	Value<bool> val1 = new Value<bool>(1);
@@ -40,9 +40,9 @@ public:
 	std::unordered_set<TraceLine<bool>*> sat_in = { sl1, sl2 };
 	std::unordered_set<TraceLine<bool>*> sat_out = { sl3 };
 	Function<bool>* func = new BooleanFunction("nand");
-	SatisfiableNode<bool>* sat = new SatisfiableNode<bool>(func, sat_in, sat_out);
+	SATNode<bool>* sat = new SATNode<bool>(func, sat_in, sat_out);
 	std::unordered_set<Combination<bool>*> combs = {};
-	std::unordered_set<SatisfiableNode<bool>*> satnodes = {sat};
+	std::unordered_set<SATNode<bool>*> satnodes = {sat};
 	SAT<bool>* obj = new SAT<bool>(time);
 	std::unordered_set<SimulationLine<bool>*> empty = {};
 	SimulationLine<bool>* l1 = new TraceLine<bool>("l1");

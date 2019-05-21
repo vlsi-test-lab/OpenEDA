@@ -49,14 +49,12 @@
     <ProjectReference Include="..\..\OpenEDA.Trace\OpenEDA.Trace.lib\OpenEDA.Trace.lib.vcxproj">
       <Project>{1e33aa3b-fc92-40c9-b4d1-9ad82d083648}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OpenEDA.SAT.lib\OpenEDA.SAT.lib.vcxproj">
-      <Project>{e3b5323b-295d-4000-b9bb-198e8eb27b44}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tests\C17Tests.hpp" />
     <ClInclude Include="..\tests\Combiantion_Test.hpp" />
     <ClInclude Include="..\tests\SAT.Tests.h" />
     <ClInclude Include="..\tests\SATStructures_Test.hpp" />

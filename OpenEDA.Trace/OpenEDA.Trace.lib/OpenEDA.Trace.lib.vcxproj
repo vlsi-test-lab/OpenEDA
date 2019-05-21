@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\Flagged.hpp" />
     <ClInclude Include="..\includes\Tracable.h" />
+    <ClInclude Include="..\includes\Tracer.hpp" />
     <ClInclude Include="..\includes\TraceStructures.hpp" />
   </ItemGroup>
   <ItemGroup>

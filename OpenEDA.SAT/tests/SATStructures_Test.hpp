@@ -22,17 +22,17 @@ public:
 	std::unordered_set<TraceLine<bool>*> sat_in = { sl1, sl2 };
 	std::unordered_set<TraceLine<bool>*> sat_out = { sl3 };
 	Function<bool>* func = new BooleanFunction("nand");
-	SatisfiableNode<bool>* sat = new SatisfiableNode<bool>(func, sat_in, sat_out);
+	SATNode<bool>* sat = new SATNode<bool>(func, sat_in, sat_out);
 	std::unordered_set<Combination<bool>*> combs = {};
 
 };
 
- //SatisfiableNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
+ //SATNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
 TEST_F(SATNodeTest, ConstructorTEST01) {
-	EXPECT_NO_THROW(SatisfiableNode<bool> sat(func, sat_in, sat_out););
+	EXPECT_NO_THROW(SATNode<bool> sat(func, sat_in, sat_out););
 }
 
-//SatisfiableNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
+//SATNode(Function<_primitive>* _function, std::unordered_set<TraceLine<_primitive>*> _inputs, std::unordered_set<TraceLine<_primitive>*> _outputs)
 TEST_F(SATNodeTest, ConstructorTEST02) {
 	combs = sat->populateAllCombinations();
 	EXPECT_EQ(4,combs.size());

@@ -15,22 +15,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\Combination.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\includes\SAT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\includes\SATStructures.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Combination.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SAT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="..\includes\Combination.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\SAT.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

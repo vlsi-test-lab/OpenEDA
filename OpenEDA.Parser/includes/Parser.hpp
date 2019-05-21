@@ -173,9 +173,9 @@ Circuit * Parser<_lineType, _nodeType>::Parse(std::string _filePath) {
 	file.close();
 	this->MergeLines();
 
-	std::unordered_set<Levelized*> nodes(this->nodes_.begin(), this->nodes_.end());
-	std::unordered_set<Levelized*> pis(this->pis_.begin(), this->pis_.end());
-	std::unordered_set<Levelized*> pos(this->pos_.begin(), this->pos_.end());
+	std::unordered_set<Levelized*> nodes = std::unordered_set<Levelized*>(this->nodes_.begin(), this->nodes_.end());
+	std::unordered_set<Levelized*> pis = std::unordered_set<Levelized*>(this->pis_.begin(), this->pis_.end());
+	std::unordered_set<Levelized*> pos = std::unordered_set<Levelized*>(this->pos_.begin(), this->pos_.end());
 	Circuit* toReturn = new Circuit(nodes, pis, pos);
 	this->Clean();
 

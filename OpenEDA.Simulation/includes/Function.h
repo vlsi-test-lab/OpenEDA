@@ -42,6 +42,13 @@ public:
 	}
 
 	/*
+	 * "Clone constructor".
+	 *
+	 * @return A copy of this Function object (as a function).
+	 */
+	virtual Function<T>* clone() const = 0;
+
+	/*
 	 * For a given input vector, return an output.
 	 *
 	 * @param _vector The input vector of Values to evaluate.
@@ -92,6 +99,20 @@ public:
 	BooleanFunction(std::string _functionString);
 
 	/*
+	 * Copy constructor.
+	 *
+	 * @param _obj The function to copy.
+	 */
+	BooleanFunction(const BooleanFunction & _obj);
+
+	/*
+	 * "Clone constructor".
+	 *
+	 * @return A copy of this Function object (as a function).
+	 */
+	virtual Function<bool>* clone() const;
+
+	/*
 	 * For a given input vector, return an output.
 	 *
 	 * @param _vector The input vector of Values to evaluate.
@@ -117,6 +138,7 @@ private:
 	 * This function pointer holds the Boolean function implemented by this function.
 	 */
 	Value<bool>(BooleanFunction::*function_)(std::vector<Value<bool>>) const;
+
 };
 
 /*
@@ -146,6 +168,20 @@ public:
 	 *        always be the value given.
 	 */
 	CopyFunction(std::string _name, Value<T> _value = Value<T>());
+
+	/*
+	 * Copy constructor.
+	 *
+	 * @param _obj The object to copy
+	 */
+	CopyFunction(const CopyFunction<T> & _obj);
+
+	/*
+	 * "Clone constructor".
+	 *
+	 * @return A copy of this Function object (as a function).
+	 */
+	virtual Function<T>* clone() const;
 
 	/*
 	 * Evaluate the Function.
@@ -187,6 +223,15 @@ public:
 	 * @param _outputs The output Connecting objects of this object.
 	 */
 	Functioned(Function<T>* _function);
+
+	/*
+	 * Copy constructor.
+	 *
+	 * A heap copy of the function will be created.
+	 *
+	 * @param _obj Object to copy.
+	 */
+	Functioned(const Functioned<T> & _obj);
 
 	/*
 	 * Delete this Functioned object.

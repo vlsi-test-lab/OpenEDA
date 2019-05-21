@@ -126,3 +126,23 @@ int Levelized::levelCalculation(std::vector<int> _levels) {
 	}
 	return toReturn + 1;
 }
+
+void Levelized::removeInputConnection(Connection * _rmv, bool _deleteConnection) {
+	this->inputLevelClear();
+	this->Connecting::removeInputConnection(_rmv, _deleteConnection);
+}
+
+void Levelized::removeOutputConnection(Connection * _rmv, bool _deleteConnection) {
+	this->outputLevelClear();
+	this->Connecting::removeOutputConnection(_rmv, _deleteConnection);
+}
+
+void Levelized::addInputConnection(Connection * _add) {
+	this->inputLevelClear();
+	this->Connecting::addInputConnection(_add);
+}
+
+void Levelized::addOutputConnection(Connection * _add) {
+	this->outputLevelClear();
+	this->Connecting::addOutputConnection(_add);
+}

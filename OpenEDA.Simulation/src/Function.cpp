@@ -14,7 +14,7 @@
 #include <cctype> //std::tolower
 
  BooleanFunction::BooleanFunction() : Function<bool>("invalid") {
-		 throw "Invalid: there is not 'default' Boolean function.";
+		 throw "Invalid: there is no 'default' Boolean function.";
  }
 
  BooleanFunction::BooleanFunction(std::string _functionString) : Function<bool>(_functionString) {
@@ -46,6 +46,41 @@
 		throw "Cannot create Boolean function from this string." ;
 	}
 }
+
+ BooleanFunction::BooleanFunction(const BooleanFunction & _obj) : Function<bool>(_obj.string()) {
+	 std::string _functionString = _obj.string();
+	 function_ = &BooleanFunction::BUF; //Overwritten, so it does not matter.  This prevents "uninitialized member" analysis.
+	 std::transform(_functionString.begin(), _functionString.end(), _functionString.begin(), (int(*)(int))std::tolower);
+	 if (_functionString == "and") {
+		 function_ = &BooleanFunction::AND;
+	 } else if (_functionString == "nand") {
+		 function_ = &BooleanFunction::NAND;
+	 } else if (_functionString == "or") {
+		 function_ = &BooleanFunction::OR;
+	 } else if (_functionString == "nor") {
+		 function_ = &BooleanFunction::NOR;
+	 } else if (_functionString == "xor") {
+		 function_ = &BooleanFunction::XOR;
+	 } else if (_functionString == "xnor") {
+		 function_ = &BooleanFunction::XNOR;
+	 } else if (_functionString == "buf") {
+		 function_ = &BooleanFunction::BUF;
+	 } else if (_functionString == "buff") {
+		 function_ = &BooleanFunction::BUF;
+	 } else if (_functionString == "copy") {
+		 function_ = &BooleanFunction::BUF;
+	 } else if (_functionString == "not") {
+		 function_ = &BooleanFunction::NOT;
+	 }
+
+	 else {
+		 throw "Cannot create Boolean function from this string.";
+	 }
+ }
+
+ Function<bool>* BooleanFunction::clone() const {
+	 return new BooleanFunction(*this);
+ }
 
 //-------------- Boolean Function Definitions
 
@@ -137,6 +172,15 @@ CopyFunction<T>::CopyFunction(std::string _name, Value<T> _value) : Function<T>(
 }
 
 template<class T>
+CopyFunction<T>::CopyFunction(const CopyFunction<T> & _obj) : Function<T>(_obj.string()) , Valued<T>(_obj.value()) {
+}
+
+template<class T>
+Function<T>* CopyFunction<T>::clone() const {
+	return new CopyFunction<T>(*this);
+}
+
+template<class T>
 Value<bool> CopyFunction<T>::evaluate(std::vector<Value<bool>> _vector) const {
 	if (this->value().valid() == true) {
 		return this->value();
@@ -157,6 +201,11 @@ Functioned<T>::Functioned() {
 template<class T>
 Functioned<T>::Functioned(Function<T>* _function) {
 	this->function_ = _function;
+}
+
+template<class T>
+Functioned<T>::Functioned(const Functioned<T>& _obj) {
+	this->function_ = _obj.function()->clone();
 }
 
 template<class T>

@@ -55,7 +55,7 @@ public:
 		Tracable(
 			std::unordered_set<Tracable*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<Tracable*>(_outputs.begin(), _outputs.end()),
-			_function->string() == "pi" || _function->string() == "po"
+			_function->string()
 		) ,
 		Connecting(
 			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
@@ -65,36 +65,37 @@ public:
 	
 	}
 
-	/*
-	 * Get all PIs (and COI) which drive this node.
-	 *
-	 * @param _coi The cone of influence of this node (returned by reference).
-	 * @return All PIs which drive this node.
-	 */
-	std::unordered_set <TraceNode<_primitive>*> pis(std::unordered_set<TraceNode<_primitive>*>& _coi) {
-		std::unordered_set <TraceNode<_primitive>*> toReturn;
-		std::unordered_set<Tracable*> flagged;
-		std::unordered_set<Tracable*> endpoints = this->backwards(flagged);
-		_coi.clear();
-		for (Tracable* flaggedElement : flagged) {
-			TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(flaggedElement);
-			if (cast != nullptr) {
-				_coi.emplace(cast);
-			}
-		}
-		//DELETE: replaced by above. _coi = std::unordered_set<TraceNode<_primitive>*>(flagged.begin(), flagged.end());
-		for (Tracable* endpoint : endpoints) {
-			TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(endpoint);
-			if (cast == nullptr) {
-				throw "Big problem: the endpoint of a trace was not a node.";
-			}
-			if (cast->function()->string() == "pi") {
-				//add to the list to return 
-				toReturn.emplace(cast);
-			}
-		}
-		return toReturn;
-	}
+	//DELETE: obsolete.
+	///*
+	// * Get all PIs (and COI) which drive this node.
+	// *
+	// * @param _coi The cone of influence of this node (returned by reference).
+	// * @return All PIs which drive this node.
+	// */
+	//std::unordered_set <TraceNode<_primitive>*> pis(std::unordered_set<TraceNode<_primitive>*>& _coi) {
+	//	std::unordered_set <TraceNode<_primitive>*> toReturn;
+	//	std::unordered_set<Tracable*> flagged;
+	//	std::unordered_set<Tracable*> endpoints = this->backwards(flagged);
+	//	_coi.clear();
+	//	for (Tracable* flaggedElement : flagged) {
+	//		TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(flaggedElement);
+	//		if (cast != nullptr) {
+	//			_coi.emplace(cast);
+	//		}
+	//	}
+	//	//DELETE: replaced by above. _coi = std::unordered_set<TraceNode<_primitive>*>(flagged.begin(), flagged.end());
+	//	for (Tracable* endpoint : endpoints) {
+	//		TraceNode<_primitive>* cast = dynamic_cast<TraceNode<_primitive>*>(endpoint);
+	//		if (cast == nullptr) {
+	//			throw "Big problem: the endpoint of a trace was not a node.";
+	//		}
+	//		if (cast->function()->string() == "pi") {
+	//			//add to the list to return 
+	//			toReturn.emplace(cast);
+	//		}
+	//	}
+	//	return toReturn;
+	//}
 
 private:
 
@@ -126,7 +127,6 @@ public:
 		Tracable(
 			std::unordered_set<Tracable*>(), 
 			std::unordered_set<Tracable*>(), 
-			false, 
 			_name
 		) ,
 		Connecting(
