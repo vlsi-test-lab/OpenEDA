@@ -53,11 +53,20 @@ public:
 	 */
 	void unssetActiveSimulationNodes(std::unordered_set < Tracable* > _nodes) {
 		for (Tracable* node : _nodes) {
+			node->flag(false);
+			if (node->inputs().size() == 0) { //SKIP nodes which do not have any inputs: PIs and combinations.
+				continue;
+			}
+			Valued<_primitive>* cast = dynamic_cast<Valued<_primitive>*>(node);
+			cast->value(std::vector<Value<_primitive>>(node->inputs().size(), Value<_primitive>()));
+		}
+		//DELETE: flawed
+		/*for (Tracable* node : _nodes) {
 			Connecting* output = *(node->outputs().begin());
 			Valued<_primitive>* outputCast = dynamic_cast<Valued<_primitive>*>(output);
 			outputCast->value(std::vector<Value<_primitive>>(output->inputs().size(), Value<_primitive>()));
 			node->flag(false);
-		}
+		}*/
 	};
 
 };
@@ -136,7 +145,7 @@ public:
 		}
 		std::vector<_nodeType*> pis;
 		std::unordered_set<Tracable*> coi;
-		this->prepare(_circuit, *(_combinations.begin()), pis, coi);
+		this->prepare(_circuit, _combinations, pis, coi);
 		for (Combination<_primitive, _lineType, _nodeType>* combination : _combinations) {
 			Combination<_primitive, _lineType, _nodeType> solution = this->satisfy(_circuit, combination, pis, coi);
 			if (solution.lines().size() > 0) {
@@ -180,12 +189,14 @@ protected:
 				return this->success(_coi, _pis);
 			}
 			std::vector<Value<_primitive>> currentCombinationValues = _combination->currentValues();
-			if (ValueVectorFunction<_primitive>::mismatch(currentCombinationValues, _combination->targetValues()) == true) { //Mismatch: try backtracking
+			std::vector<Value<_primitive>> targetValues = _combination->targetValues();
+			if (ValueVectorFunction<_primitive>::mismatch(currentCombinationValues, targetValues) == true) { //Mismatch: try backtracking
 				if (ValueVectorFunction<_primitive>::backtrack(currentPiValues) == false) { //Backtracking failed: exaustive search completed.
 					return this->fail(_coi);
 				}
 			} else {
 				if (ValueVectorFunction<_primitive>::forwardtrack(currentPiValues) == false) {
+					bool seen = _combination->seen();
 					throw "Forward track error! This should never happen. Ever. Period. Something is seriously wrong with SAT.";
 				}
 			}
@@ -206,15 +217,14 @@ protected:
 	 */
 	void prepare(
 		Circuit* _circuit,
-		Combination<_primitive, _lineType, _nodeType>* _combination,
+		std::unordered_set<Combination<_primitive, _lineType, _nodeType>*> _combinations,
 		std::vector<_nodeType*> & _pis,
 		std::unordered_set<Tracable*> & _coi
 	) {
 
-		std::unordered_set<_lineType*> combinationLines = _combination->lines();
 		std::unordered_set<Tracable*> coi;
 		std::unordered_set<_nodeType*> pis = Tracer<_lineType, _nodeType>::backwards(
-			std::unordered_set<Tracable*>(combinationLines.begin(), combinationLines.end()),
+			std::unordered_set<Tracable*>(_combinations.begin(), _combinations.end()),
 			coi
 		);
 		_pis = std::vector<_nodeType*>(pis.begin(), pis.end());
@@ -293,7 +303,7 @@ private:
 		std::vector<_nodeType*>& _pis, 
 		Combination<_primitive, _lineType, _nodeType>* _combination 
 	) {
-		std::unordered_set<_lineType*> combinationLines = _combination->lines();
+		std::vector<_lineType*> combinationLines = _combination->lines();
 		if (_pis.empty() || _coi.empty()) { //If pis & cone-of-influence not yet given, create it (and return it by reference).
 			std::unordered_set<Tracable*> coi;
 			std::unordered_set<_nodeType*> pis = Tracer<_lineType, _nodeType>::backwards(

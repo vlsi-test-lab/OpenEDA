@@ -85,12 +85,10 @@ std::unordered_set<Connecting*> Connecting::inputs(std::unordered_set<Connecting
 		this->removeInputConnection(input);
 		
 	}
-	std::unordered_set<Connection*> inputsCopy2;//debug
-	inputsCopy2 = this->inputs_;//debug
+
 	for (Connecting* input : _inputs) {
 		this->addInput(input);
 	}
-	 inputsCopy2 = this->inputs_;
 	return _inputs;
 }
 

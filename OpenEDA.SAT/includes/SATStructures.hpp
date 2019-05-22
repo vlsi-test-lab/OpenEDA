@@ -68,9 +68,11 @@ public:
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go() {
+	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go(
+		std::vector<Value<_primitive>> _values = std::vector<Value<_primitive>>()
+	) {
 		if (this->flag() == true) {
-			return this->Evented<_primitive>::go();
+			return this->Evented<_primitive>::go(_values);
 		}
 		return std::set<std::pair<size_t, Evented<_primitive>*>>();
 	}
@@ -148,9 +150,11 @@ public:
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
-	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go() {
+	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go(
+		std::vector<Value<_primitive>> _values = std::vector<Value<_primitive>>()
+	) {
 		if (this->flag() == true) {
-			return this->Evented<_primitive>::go();
+			return this->Evented<_primitive>::go(_values);
 		}
 		return std::set<std::pair<size_t, Evented<_primitive>*>>();
 	}

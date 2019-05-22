@@ -146,7 +146,7 @@ public:
 	 * An exception will be thrown if the size of the given Values is different 
 	 * than the Combination's Values.
 	 *
-	 * An exception will be thrown if this value has already been seen.
+	 * If the value has already been seen, a default value will be returned.
 	 *
 	 * NOTE: The returned value is in-effect useless. This is because this
 	 *       function overwrites the inherited value to allow "seen" values to
@@ -161,7 +161,8 @@ public:
 	 */
 	virtual Value<_primitive> value(std::vector<Value<_primitive>> _values) {
 		if (this->inputs().size() == 0) {
-			throw "This combination has already been seen.";
+			return Value<_primitive>();
+			//DELETE: flawed. throw "This combination has already been seen.";
 		}
 		if (_values.size() != values_.size()) {
 			throw "The size of values must match";
@@ -172,9 +173,10 @@ public:
 			}
 		}
 		//Values match, delete all input connections.
-		for (SATLine<_primitive>* line : this->lines_) {
+		this->inputs(std::unordered_set<Connecting*>());
+		/*for (SATLine<_primitive>* line : this->lines_) {
 			line->removeOutput(this);
-		}
+		}*/
 		return Value<_primitive>();
 	};
 
@@ -184,9 +186,6 @@ public:
 	 * @return True if the combination has been seen.
 	 */
 	bool seen() const {
-		if (this->lines_.size() == 0) {
-			return false;
-		}
 		return this->inputs().size() == 0;
 	};
 
@@ -217,8 +216,9 @@ public:
 	 *
 	 * @return The Lines polled by this Combination.
 	 */
-	std::unordered_set<SATLine<_primitive>*> lines() const {
-		return std::unordered_set<SATLine<_primitive>*>(this->lines_.begin(), this->lines_.end());
+	std::vector<SATLine<_primitive>*> lines() const {
+		//DELETE: obsolete return std::unordered_set<SATLine<_primitive>*>(this->lines_.begin(), this->lines_.end());
+		return this->lines_;
 	};
 
 	/*
