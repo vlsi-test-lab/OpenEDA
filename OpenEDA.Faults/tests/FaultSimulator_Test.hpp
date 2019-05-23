@@ -38,8 +38,10 @@ public:
 	std::vector<SimulationNode<bool>*> pisOrdered;
 
 	FaultSimulator<bool> faultSimulator;
+	FaultSimulator<bool> tdfSimulator = FaultSimulator<bool>(true);
 	FaultGenerator<bool> faultGenerator;
 	std::unordered_set<Fault<bool>*> faults = faultGenerator.allFaults(c);
+	std::unordered_set<Fault<bool>*> tdfFaults = faultGenerator.allFaults(c,false);
 
 	Value<bool> o = Value<bool>(0);
 	Value<bool> i = Value<bool>(1);
@@ -68,7 +70,7 @@ public:
 	}
 };
 
-TEST_F(FaultSimTest, c17) {
+TEST_F(FaultSimTest, c17safs) {
 	ASSERT_EQ(faults.size(), 22);
 	faultSimulator.setFaults(faults);
 
@@ -79,5 +81,22 @@ TEST_F(FaultSimTest, c17) {
 		size_t numDetectedFaults = faultSimulator.detectedFaults().size();
 		EXPECT_EQ(expectedNumDetectedFaults, numDetectedFaults);
 	}
+}
+
+TEST_F(FaultSimTest, c17tdfs) {
+	ASSERT_EQ(tdfFaults.size(), 34);
+	tdfSimulator.setFaults(tdfFaults);
+
+	for (size_t i = 0; i < testVectors.size(); i++) {
+		for (size_t j = 0; j < testVectors.size(); j++) {
+			std::vector<Value<bool>> firstVector = testVectors.at(i);
+			std::vector<Value<bool>> secondVector = testVectors.at(j);
+			size_t expectedNumDetectedFaults = numDetected.at(i);
+			tdfSimulator.applyStimulus(c, firstVector, EventQueue<bool>(), pisOrdered);
+			tdfSimulator.applyStimulus(c, secondVector, EventQueue<bool>(), pisOrdered);
+		}
+	}
+	size_t numDetectedFaults = tdfSimulator.detectedFaults().size();
+	EXPECT_EQ(34, numDetectedFaults);
 
 }

@@ -30,6 +30,16 @@ template <class _primitive>
 class FaultSimulator : public Simulator<_primitive> {
 public:
 	/*
+	 * Create the fautl simulator.
+	 *
+	 * The parameter is set to true if the faults given should be interpreted
+	 * as TDFs. By default, faults given are presumed to be SAFs.
+	 *
+	 * @param (optional) _tdfEnable Make this simulator a TDF simulator.
+	 */
+	FaultSimulator(bool _tdfEnable = false);
+
+	/*
 	 * On destruction, clear (delete) the fault lists.
 	 */
 	virtual ~FaultSimulator();
@@ -102,11 +112,30 @@ protected:
 	 */
 	virtual bool hasImpact(Fault<_primitive>* _fault);
 
+	/*
+	 * Will a Fault NOT be excited.
+	 *
+	 * This is not the same as !hasImpact, since the line which the Fault is on
+	 * must have a valid value.
+	 *
+	 * NOTE: This is used for TDF simulation (i.e., "will the first vector NOT
+	 *       excite the fault, and therefore the second might).
+	 *
+	 * @param _fault The fault which may (not) have an impact when activated.
+	 * @return True if the fault will not be effected with its current value.
+	 */
+	virtual bool notExcited(Fault<_primitive>* _fault);
+
 private:
 	/*
 	 * Clean all fault lists: delete all faults.
 	 */
 	void clearFaults();
+
+	/*
+	 * Is this a TDF simulator?
+	 */
+	bool tdfEnable_;
 };
 
 #endif

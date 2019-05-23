@@ -35,9 +35,11 @@ public:
 	 * Return a list of all faults for a given Circuit.
 	 *
 	 * @param _circuit The circuit to generate Faults for.
+	 * @param (optional) _checkpointReduce Reduce the number of faults by doing
+	 *        checkpoint equivalence.
 	 * @return The list of Faults.
 	 */
-	static std::unordered_set<Fault<_primitive>*> allFaults(Circuit* _circuit);
+	static std::unordered_set<Fault<_primitive>*> allFaults(Circuit* _circuit, bool _checkpointReduce = true);
 
 
 

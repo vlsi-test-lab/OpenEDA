@@ -12,6 +12,11 @@
 #include "ValueVectorFunctions.hpp"
 
 template<class _primitive>
+FaultSimulator<_primitive>::FaultSimulator(bool _tdfEnable) {
+	this->tdfEnable_ = _tdfEnable;
+}
+
+template<class _primitive>
 FaultSimulator<_primitive>::~FaultSimulator() {
 	this->clearFaults();
 }
@@ -22,13 +27,27 @@ std::vector<Value<_primitive>> FaultSimulator<_primitive>::applyStimulus(Circuit
 																		 EventQueue<_primitive> _simulationQueue,
 																		 std::vector<SimulationNode<_primitive>*> _inputs) 
 {
+	std::unordered_set<Fault<_primitive>*> preProcessFaults; 
+
+	//If TDF mode is enabled, do the preliminary fault elimination based on the
+	//current circuit state.
+	if (this->tdfEnable_ == true) {
+		for (Fault<_primitive>* fault : this->undetectedFaults_) {
+			if (this->notExcited(fault) == true) {
+				preProcessFaults.emplace(fault);
+			}
+		}
+	} else {
+		preProcessFaults = this->undetectedFaults_;
+	}
+
 	//Obatin the "non-faulty" state.
 	this->Simulator<_primitive>::applyStimulus(_circuit, _stimulus, _simulationQueue, _inputs);
 	std::vector<Value<_primitive>> goodOutputs = this->outputs(_circuit);
 
 	//Obtain all faults which are "worth simulating".
 	std::unordered_set<Fault<_primitive>*> faults;
-	for (Fault<_primitive>* fault : this->undetectedFaults_) {
+	for (Fault<_primitive>* fault : preProcessFaults) {
 		if (this->hasImpact(fault) == true) {
 			faults.emplace(fault);
 		}
@@ -80,6 +99,16 @@ bool FaultSimulator<_primitive>::hasImpact(Fault<_primitive>* _fault) {
 	Value<_primitive> curLineValue = _fault->location()->value();
 	Value<_primitive> faultValue = _fault->value();
 	return curLineValue != faultValue;
+}
+
+template<class _primitive>
+bool FaultSimulator<_primitive>::notExcited(Fault<_primitive>* _fault) {
+	Value<_primitive> curLineValue = _fault->location()->value();
+	Value<_primitive> faultValue = _fault->value();
+	if (curLineValue.valid() == false || faultValue.valid() == false) {
+		return false;
+	}
+	return curLineValue.magnitude() == faultValue.magnitude();
 }
 
 template<class _primitive>

@@ -95,13 +95,23 @@ public:
 	 */
 	bool operator < (const Fault<_primitive>& _other) const;
 
-
 	/*
 	 * Return the value of this Fault.
 	 *
 	 * @return The stuck-at value of the fault.
 	 */
 	Value<_primitive> value() const;
+
+	/*
+	 * Calculate the value returned by this fault based on the given value.
+	 *
+	 * For the stuck-at fault model, this will do one of the following:
+	 * 1) Return the stuck-at value regardless of the Values given.
+	 *
+	 * @param (ignored) _value The Value to set to.
+	 * @return The Value of this fault.
+	 */
+	virtual Value<_primitive> value(std::vector<Value<_primitive>> _values);
 
 	/*
 	 * Return the loaction of this Fault.

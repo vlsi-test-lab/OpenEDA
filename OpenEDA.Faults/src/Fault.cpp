@@ -75,6 +75,11 @@ Value<_primitive> Fault<_primitive>::value() const {
 }
 
 template<class _primitive>
+Value<_primitive> Fault<_primitive>::value(std::vector<Value<_primitive>> _values) {
+	return this->value();
+}
+
+template<class _primitive>
 FaultyLine<_primitive>* Fault<_primitive>::location() const {
 	return this->location_;
 }
@@ -150,8 +155,12 @@ Value<_primitive> Faulty<_primitive>::value() const {
 
 template<class _primitive>
 Value<_primitive> Faulty<_primitive>::value(std::vector<Value<_primitive>> _values) {
-	this->Valued<_primitive>::value(_values);
-	return this->value(); //Will redirect to faulty value if needed.
+	Value<_primitive> goodValue = this->Valued<_primitive>::value(_values); //Will always be calculated.
+	if (this->active_ == false) {
+		return goodValue;
+	}
+	Value<_primitive> faultyValue = this->fault_->value(_values);
+	return faultyValue; //Will redirect to faulty value if needed.
 }
 
 template<class _primitive>
