@@ -51,6 +51,8 @@ public:
 	Value(T _magnitude, bool _valid = true, T _min = std::numeric_limits<T>::min(),
 		  T _max = std::numeric_limits<T>::max());
 
+	//NOTE: "==" and "!=" can be combined to find the validity of two values. If
+	//       both return false, then one of the values is invalid.
 	/*
 	 * Two values are equal if their magnitudes are the same and they are valid.
 	 *
@@ -60,21 +62,54 @@ public:
 	bool operator == (const Value<T>& _other) const;
 
 	/*
-	 * See the overloaded operator "==", as this is the logical opposite.
+	 * Two values are not equal if their magnitudes are different and they are not valid).
 
 	 * @param _other The other value being compared to.
-	 * @return True if both magnitudes are opposite or one is not valid.
+	 * @return True if both magnitudes are opposite and both are valid.
 	 */
 	bool operator != (const Value<T>& _other) const;
 
 	/*
 	 * Compare two Values, presuming they are valid.
 	 *
+	 * An exexption will be thrown if either value is not valid.
+	 *
 	 * @param _other The other value being compared to.
 	 * @return True if both are valid and the magnitude of this Value is
 	 *         < the magnitude of _other
 	 */
 	bool operator < (const Value<T>& _other) const;
+
+	/*
+	 * Perform a bitwise "AND" (or equivalent) operation.
+	 *
+	 * @param _other The other value of the operation.
+	 * @return The AND operation of the two Values.
+	 */
+	Value<T> operator & (const Value<T>& _other) const;
+
+	/*
+	 * Perform a bitwise "OR" (or equivalent) operation.
+	 *
+	 * @param _other The other value of the operation.
+	 * @return The OR operation of the two Values.
+	 */
+	Value<T> operator | (const Value<T>& _other) const;
+
+	/*
+	 * Perform a bitwise "XOR" (or equivalent) operation.
+	 *
+	 * @param _other The other value of the operation.
+	 * @return The XOR operation of the two Values.
+	 */
+	Value<T> operator ^ (const Value<T>& _other) const;
+
+	/*
+	 * Perform a bitwise "NOT" (or equivalent) operation.
+	 *
+	 * @return The NOT operation of the Value.
+	 */
+	Value<T> operator ~ () const;
 
 	/*
 	 * Return true if the two values are 'possibly' different.
@@ -86,7 +121,8 @@ public:
 	 * @param _value2 The second Value of the comparison.
 	 * @return (bool) Are the two values (possibly) different
 	 */
-	static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
+	//DELETE: obsolete
+	//static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
 
 	/*
 	 * Return the magnitude of the Value.

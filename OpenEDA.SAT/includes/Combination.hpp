@@ -168,7 +168,9 @@ public:
 			throw "The size of values must match";
 		}
 		for (size_t i = 0; i < this->values_.size(); i++) {
-			if (values_.at(i) != this->lines_.at(i)->value()) {
+			if (values_.at(i) == this->lines_.at(i)->value()) {
+				continue;
+			} else {
 				return Value<_primitive>();
 			}
 		}

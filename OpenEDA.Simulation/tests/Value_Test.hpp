@@ -89,13 +89,14 @@ TEST_F(ValueTest, NETEST02) {
 }
 
 //bool operator != (const Value<T>& _other) const;
-TEST_F(ValueTest, NETEST03) {
-	ASSERT_FALSE(val0_iv.valid());
-	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(true, val1_iv.magnitude());
-	EXPECT_EQ(false, val0.magnitude());
-	EXPECT_TRUE(val0_iv != val0);
-}
+//DELETE incorrect (changed) behavior
+//TEST_F(ValueTest, NETEST03) {
+//	ASSERT_FALSE(val0_iv.valid());
+//	ASSERT_TRUE(val0.valid());
+//	EXPECT_EQ(true, val1_iv.magnitude());
+//	EXPECT_EQ(false, val0.magnitude());
+//	EXPECT_TRUE(val0_iv != val0);
+//}
 
 //bool operator < (const Value<T>& _other) const;
 TEST_F(ValueTest, LTTEST01) {
@@ -113,41 +114,43 @@ TEST_F(ValueTest, LTTEST02) {
 	EXPECT_TRUE(val0 < val1);
 }
 
+//DELETE incorrect (changed) behavior
 //bool operator < (const Value<T>& _other) const;
-TEST_F(ValueTest, LTTEST03) {
-	ASSERT_FALSE(val0_iv.valid());
-	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(false, val0.magnitude());
-	EXPECT_EQ(true, val1.magnitude());
-	EXPECT_FALSE(val0_iv < val1);
-}
+//TEST_F(ValueTest, LTTEST03) {
+//	ASSERT_FALSE(val0_iv.valid());
+//	ASSERT_TRUE(val1.valid());
+//	EXPECT_EQ(false, val0.magnitude());
+//	EXPECT_EQ(true, val1.magnitude());
+//	EXPECT_FALSE(val0_iv < val1);
+//}
 
-//static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
-TEST_F(ValueTest, DIFFERENTTEST01) {
-	ASSERT_TRUE(val0.valid());
-	EXPECT_EQ(false, val0.magnitude());
-	EXPECT_FALSE(val0.possiblyDifferent(val0,val0));
-}
-
-//static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
-TEST_F(ValueTest, DIFFERENTTEST02) {
-	//Value<bool> val1(false), val2(true);
-	ASSERT_TRUE(val0.valid());
-	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(false, val0.magnitude());
-	EXPECT_EQ(true, val1.magnitude());
-	EXPECT_TRUE(val0.possiblyDifferent(val0, val1));
-}
-
-//static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
-TEST_F(ValueTest, DIFFERENTTEST03) {
-	//Value<bool> val1(false, false), val2(true);
-	ASSERT_FALSE(val0_iv.valid());
-	ASSERT_TRUE(val1.valid());
-	EXPECT_EQ(false, val0_iv.magnitude());
-	EXPECT_EQ(true, val1.magnitude());
-	EXPECT_TRUE(val1.possiblyDifferent(val0_iv, val1));
-}
+//DELETE obsolete
+////static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
+//TEST_F(ValueTest, DIFFERENTTEST01) {
+//	ASSERT_TRUE(val0.valid());
+//	EXPECT_EQ(false, val0.magnitude());
+//	EXPECT_FALSE(val0.possiblyDifferent(val0,val0));
+//}
+//
+////static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
+//TEST_F(ValueTest, DIFFERENTTEST02) {
+//	//Value<bool> val1(false), val2(true);
+//	ASSERT_TRUE(val0.valid());
+//	ASSERT_TRUE(val1.valid());
+//	EXPECT_EQ(false, val0.magnitude());
+//	EXPECT_EQ(true, val1.magnitude());
+//	EXPECT_TRUE(val0.possiblyDifferent(val0, val1));
+//}
+//
+////static bool possiblyDifferent(const Value<T> _value1, const Value<T> _value2);
+//TEST_F(ValueTest, DIFFERENTTEST03) {
+//	//Value<bool> val1(false, false), val2(true);
+//	ASSERT_FALSE(val0_iv.valid());
+//	ASSERT_TRUE(val1.valid());
+//	EXPECT_EQ(false, val0_iv.magnitude());
+//	EXPECT_EQ(true, val1.magnitude());
+//	EXPECT_TRUE(val1.possiblyDifferent(val0_iv, val1));
+//}
 
 //T magnitude(T _magnitude) ;
 TEST_F(ValueTest, MagnitudeTEST01) {

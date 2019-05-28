@@ -89,19 +89,17 @@ Value<bool> BooleanFunction::evaluate(std::vector<Value<bool>> _vector) const {
 }
 
 Value<bool> BooleanFunction::AND(std::vector<Value<bool>> i) const {
-	bool valid = true;
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value.";
 	}
-	for (auto &val : i) {
-		if (val.magnitude() == false && val.valid() == true) {
-			return Value<bool>(false);
-		}
-		if (val.valid() == false) {
-			valid = false;//We still need to check the rest. A 0 will force the output.
+	Value<bool> toReturn = Value<bool>(true, true);
+	for (Value<bool> &val : i) {
+		toReturn = toReturn & val;
+		if (toReturn.magnitude() == false && toReturn.valid() == true) {
+			break;
 		}
 	}
-	return Value<bool>(true, valid);
+	return toReturn;
 }
 
 Value<bool> BooleanFunction::NAND(std::vector<Value<bool>> i) const {
@@ -109,19 +107,17 @@ Value<bool> BooleanFunction::NAND(std::vector<Value<bool>> i) const {
 }
 
 Value<bool> BooleanFunction::OR(std::vector<Value<bool>> i) const {
-	bool valid = true;
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value.";
 	}
-	for (auto &val : i) {
-		if (val.magnitude() == true && val.valid() == true) {
-			return Value<bool>(true);
-		}
-		if (val.valid() == false) {
-			valid = false; //We still need to check the rest. A 1 will force the output.
+	Value<bool> toReturn = Value<bool>(false, true);
+	for (Value<bool> &val : i) {
+		toReturn = toReturn | val;
+		if (toReturn.magnitude() == true && toReturn.valid() == true) {
+			break;
 		}
 	}
-	return Value<bool>(false, valid);
+	return toReturn;
 }
 
 Value<bool> BooleanFunction::NOR(std::vector<Value<bool>> i) const {
@@ -132,14 +128,14 @@ Value<bool> BooleanFunction::XOR(std::vector<Value<bool>> i) const {
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value." ;
 	}
-	bool ret = false; bool valid = true;
-	for (auto &val : i) {
-		ret = ret ^ val.magnitude();
-		if (val.valid() == false) {
-			valid = false; break; //For XOR, there is no reason to check the rest.
+	Value<bool> toReturn = Value<bool>(false, true);
+	for (Value<bool> &val : i) {
+		toReturn = toReturn ^ val;
+		if (toReturn.valid() == false) {
+			break;
 		}
 	}
-	return Value<bool>(ret, valid);
+	return toReturn;
 }
 
 Value<bool> BooleanFunction::XNOR(std::vector<Value<bool>> i) const {
@@ -164,7 +160,8 @@ Value<bool> BooleanFunction::NOT(std::vector<Value<bool>> i) const {
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value." ;
 	}
-	return Value<bool>(!(i.at(0).magnitude()), i.at(0).valid());
+	return ~i.at(0);
+	//DELETE obsolete. return Value<bool>(!(i.at(0).magnitude()), i.at(0).valid());
 }
 
 template<class T>

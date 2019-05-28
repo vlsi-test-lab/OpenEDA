@@ -199,5 +199,9 @@ TEST_F(C17Tests, AllLinePairCombinations) {
 		bool foundImpossible = (possible.size() == 0);
 		bool expectImpossible = isImpossible(combination);
 		EXPECT_EQ(foundImpossible, expectImpossible);
+		if (foundImpossible != expectImpossible) {
+			expectImpossible = isImpossible(combination);
+			int i = 0;
+		}
 	}
 }

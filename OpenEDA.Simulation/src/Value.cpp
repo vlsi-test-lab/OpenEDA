@@ -39,26 +39,79 @@ bool Value<T>::operator==(const Value<T>& _other) const {
 
 template<class T>
 bool Value<T>::operator!=(const Value<T>& _other) const {
-	return !(*this == _other);
+	//return !(*this == _other);
+	if (this->valid() == false) {
+		return false;
+	}
+	if (_other.valid() == false) {
+		return false;
+	}
+	return this->magnitude() != _other.magnitude();
 }
 
 template<class T>
 bool Value<T>::operator<(const Value<T>& _other) const {
-	if (this->valid() == false) {
-		return false;
-	}
-	if (this->valid() == false) {
-		return false;
+	if (this->valid() == false || _other.valid() == false) {
+		throw "Cannot compare '<' of two values if one is not valid.";
 	}
 	return this->magnitude() < _other.magnitude();
 }
 
 template<class T>
-bool Value<T>::possiblyDifferent(const Value<T> _value1, const Value<T> _value2) {
-	if ((_value1.valid() == false || _value2.valid()) == false) { return true; }
-	if (_value1 != _value2) { return true; }
-	return false;
+Value<T> Value<T>::operator&(const Value<T>& _other) const {
+	bool valid = true;
+	if (this->valid_ == false) {
+		valid = false;
+	} else if (this->magnitude_ == (T) 0) {
+		return Value<T>((T)0, true);
+	}
+	if (_other.valid() == false) {
+		valid = false;
+	} else if (_other.magnitude() == (T)0) {
+		return Value<T>((T)0, true);
+	}
+	return Value<T>((T)1, valid);
 }
+
+template<class T>
+Value<T> Value<T>::operator|(const Value<T>& _other) const {
+	bool valid = true;
+	if (this->valid_ == false) {
+		valid = false;
+	} else if (this->magnitude_ == (T)1) {
+		return Value<T>((T)1, true);
+	}
+	if (_other.valid() == false) {
+		valid = false;
+	} else if (_other.magnitude() == (T)1) {
+		return Value<T>((T)1, true);
+	}
+	return Value<T>((T)0, valid);
+}
+
+template<class T>
+Value<T> Value<T>::operator^(const Value<T>& _other) const {
+	if (this->valid_ == false || _other.valid() == false) {
+		return Value<T>((T)0, false);
+	} 
+	if (this->magnitude_ == _other.magnitude()) {
+		return Value<T>((T)0, true);
+	}
+	return Value<T>((T)1, true);
+}
+
+template<class T>
+Value<T> Value<T>::operator~() const {
+	return Value<T>(!this->magnitude_, this->valid_);
+}
+
+//DELETE obsolete
+//template<class T>
+//bool Value<T>::possiblyDifferent(const Value<T> _value1, const Value<T> _value2) {
+//	if ((_value1.valid() == false || _value2.valid()) == false) { return true; }
+//	if (_value1 != _value2) { return true; }
+//	return false;
+//}
 
 template<class T>
 T Value<T>::magnitude() const {
