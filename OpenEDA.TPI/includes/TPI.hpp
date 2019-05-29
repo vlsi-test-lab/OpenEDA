@@ -52,7 +52,7 @@ public:
 		this->circuit_ = _circuit;
 		this->TPLimit_ = _TPLimit;
 		this->qualityLimit_ = _qualityLimit;
-		this->timeLimit_ = _qualityLimit;
+		this->timeLimit_ = _timeLimit;
 	}
 
 
@@ -77,7 +77,7 @@ public:
 	 */
 	std::set<Testpoint<_primitive, _nodeType, _lineType>*> testpoints(
 		std::vector<std::set<Testpoint<_primitive, _nodeType, _lineType>*>> _testpoints,
-		std::vector<size_t> _limits = std::vector<size_t>
+		std::vector<size_t> _limits = std::vector<size_t>()
 	) {
 		this->resetTimer();
 		size_t curNumberTestpoints = 0;
@@ -118,6 +118,9 @@ public:
 			inserted.emplace(bestTestpoint);
 			_testpoints.at(bestSet).erase(bestTestpoint);
 			bestTestpoint->activate();
+			printf("Chosen TP \n");
+			curNumberTestpoints = curNumberTestpoints + 1;
+
 		}
 
 		return inserted;
@@ -239,6 +242,28 @@ private:
 	 */
 	std::clock_t endTime_;
 
+	/*std::string tpName(Testpoint<_primitive, _nodeType, _lineType>* _tp) {
+		std::string type;
+		if (dynamic_cast<Testpoint_observe<_primitive, _nodeType, _lineType>*>(_tp) != nullptr)
+		{
+			type = "OB";
+		}
+		else if (dynamic_cast<Testpoint_invert<_primitive, _nodeType, _lineType>*>(_tp) != nullptr)
+		{
+			type = "XOR";
+		}
+		else if (dynamic_cast<Testpoint_control<_primitive, _nodeType, _lineType>*>(_tp) != nullptr)
+		{
+			Testpoint_control<_primitive, _nodeType, _lineType>* cast = dynamic_cast<Testpoint_control<_primitive, _nodeType, _lineType>*>(_tp);
+			type = cast->getTPValue().getValue() == true ? "C1" : "C0";
+		}
+		else {
+			::err("I don't know what kind of TP this is.");
+		}
+		std::string net = _tp->getNet()->getName();
+		std::string fo = _tp->getFo() == nullptr ? "NULL" : _tp->getFo()->getOutput()->getName();
+		return net + "->" + fo + "_" + type;
+	}*/
 
 };
 
