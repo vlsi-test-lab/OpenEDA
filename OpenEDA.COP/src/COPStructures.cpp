@@ -144,13 +144,21 @@ void COP::clearControllability() {
 	for (Connecting * output : outputs) {
 		COP* cast = dynamic_cast<COP*>(output);
 		cast->clearControllability();
+
+		//Change CC can change CO on "parallel" lines (e.g., the lines feeding the
+		//same gate). NOTE: see deleted segment below.
+		for (Connecting * possiblyParralInput : output->inputs()) {
+			if (possiblyParralInput != this) {
+				COP* parallelInput = dynamic_cast<COP*>(possiblyParralInput);
+				parallelInput->clearObservability();
+			}
+		}
 	}
 
-	//Change CC can change CO on "parallel" lines (e.g., the lines feeding the
-	//same gate). Because the clearControllability call will always go forward,
+	//DELETE, bad performance: Because the clearControllability call will always go forward,
 	//the clearObservability call be be done directly here instead of finding
 	//what objects are "in parallel" with this one.
-	this->clearObservability();
+	//this->clearObservability();
 }
 
 void COP::removeInputConnection(Connection * _rmv, bool _deleteConnection) {

@@ -118,7 +118,7 @@ public:
 			inserted.emplace(bestTestpoint);
 			_testpoints.at(bestSet).erase(bestTestpoint);
 			bestTestpoint->activate();
-			printf("Chosen TP \n");
+			printf("TP Chosen - %d of %d\n", curNumberTestpoints, this->TPLimit_);
 			curNumberTestpoints = curNumberTestpoints + 1;
 
 		}
@@ -194,12 +194,15 @@ private:
 	std::pair<Testpoint<_primitive, _nodeType, _lineType>*, float> bestTestpoint(std::set<Testpoint<_primitive, _nodeType, _lineType>*> _testpoints) {
 		float bestQuality = -1;
 		Testpoint<_primitive, _nodeType, _lineType>* bestTestpoint;
+		size_t curTPNumber = 1;
 		for (Testpoint<_primitive, _nodeType, _lineType>* curTestpoint : _testpoints) {
 			float quality = this->quality(curTestpoint);
 			if (quality > bestQuality) {
 				bestQuality = quality;
 				bestTestpoint = curTestpoint;
 			}
+			//printf("Done analyzing TP %d of %d\n", curTPNumber, _testpoints.size());//DEBUG
+			curTPNumber++;
 		}
 		this->base(bestQuality);
 		return std::pair<Testpoint<_primitive, _nodeType, _lineType>*, float>(bestTestpoint, bestQuality);

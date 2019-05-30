@@ -248,7 +248,7 @@ private:
  * Note that no template parameter exists since COP is only defined for binary
  * circuits.
  */
-class COPLine : public virtual SimulationLine<bool> , public virtual COP {
+class COPLine : public virtual SimulationLine<bool> , public COP {
 public:
 	
 	/*
@@ -296,7 +296,7 @@ protected:
  * Note that no template parameter exists since COP is only defined for binary
  * circuits.
  */
-class COPNode : public virtual SimulationNode<bool>, public virtual COP {
+class COPNode : public virtual SimulationNode<bool>, public COP {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.

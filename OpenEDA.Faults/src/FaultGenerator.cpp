@@ -10,7 +10,7 @@
 
 #include "FaultGenerator.h"
 
-	 template<class _primitive>
+ template<class _primitive>
  std::unordered_set<Fault<_primitive>*> FaultGenerator<_primitive>::allFaults(Circuit * _circuit, bool _checkpointReduce) {
 	 std::unordered_set<Fault<_primitive>*> toReturn;
 	 std::unordered_set<FaultyLine<_primitive>*> circuitCheckpoints; //Lines where faults are generated
@@ -43,13 +43,14 @@ std::unordered_set<FaultyLine<_primitive>*> FaultGenerator<_primitive>::checkpoi
 	std::unordered_set<Connecting*> preCastToReturn;
 
 	//Step 1: get all the PI lines and fanout lines.
+	std::unordered_map<Connecting*, bool> visited; //Mapps lines to visited. This allows lines to not have the "Tracable" attribute.
 	for (Levelized* pi : _circuit->pis()) {
 		if (pi->outputs().size() != 1) {
 			throw "Problem: a PI in the circuit does not have an output line.";
 		}
 		Connecting* piLine = *(pi->outputs().begin());
 		preCastToReturn.emplace(piLine);
-		std::unordered_set<Connecting*> toAdd = fanouts(piLine);
+		std::unordered_set<Connecting*> toAdd = fanouts(piLine, visited);
 		preCastToReturn.insert(toAdd.begin(), toAdd.end());
 	}
 
@@ -67,21 +68,27 @@ std::unordered_set<FaultyLine<_primitive>*> FaultGenerator<_primitive>::checkpoi
 }
 
 template<class _primitive>
-std::unordered_set<Connecting*> FaultGenerator<_primitive>::fanouts(Connecting * _base) {
-	//Case 1: we reached the ned.
+std::unordered_set<Connecting*> FaultGenerator<_primitive>::fanouts(Connecting * _base, std::unordered_map<Connecting*, bool> & _visited) {
+	//Case 0: we've been here before.
+	if (_visited.find(_base) != _visited.end()) {
+		return std::unordered_set<Connecting*>();
+	}
+	_visited[_base] = true;
+
+	//Case 1: we reached the end.
 	if (_base->outputs().size() == 0) {
 		return std::unordered_set<Connecting*>();
 	}
 
 	//Case 2: we have a single output
 	if (_base->outputs().size() == 1) {
-		return fanouts(*(_base->outputs().begin()));
+		return fanouts(*(_base->outputs().begin()), _visited);
 	}
 
 	//Case 3: we have multiple outputs (and hence outputs)
 	std::unordered_set<Connecting*> toReturn = _base->outputs();
 	for (Connecting* output : _base->outputs()) {
-		std::unordered_set<Connecting*> toAdd = fanouts(output);
+		std::unordered_set<Connecting*> toAdd = fanouts(output, _visited);
 		toReturn.insert(toAdd.begin(), toAdd.end());
 	}
 	return toReturn;

@@ -12,6 +12,7 @@
 #define FaultGenerator_h
 
 #include <set>
+#include <unordered_map>
 
 #include "Fault.h"
 #include "Circuit.h"
@@ -66,7 +67,7 @@ private:
 	 * @param _line The object to start tracing forward from.
 	 * @return The set of all fan-out object.
 	 */
-	static std::unordered_set<Connecting*> fanouts(Connecting * _base);
+	static std::unordered_set<Connecting*> fanouts(Connecting * _base, std::unordered_map<Connecting*, bool> & _visited);
 
 
 };
