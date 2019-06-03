@@ -80,6 +80,14 @@ void FaultSimulator<_primitive>::setFaults(std::unordered_set<Fault<_primitive>*
 }
 
 template<class _primitive>
+void FaultSimulator<_primitive>::resetFaults() {
+	this->undetectedFaults_.insert(this->detectedFaults_.begin(), this->detectedFaults_.end());
+	this->detectedFaults_.clear();
+}
+
+
+
+template<class _primitive>
 std::unordered_set<Fault<_primitive>*> FaultSimulator<_primitive>::detectedFaults() {
 	return this->detectedFaults_;
 }

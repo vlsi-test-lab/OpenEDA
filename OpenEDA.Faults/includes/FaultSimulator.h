@@ -76,6 +76,12 @@ public:
 	 * @param _faults The set of faults.
 	 */
 	void setFaults(std::unordered_set<Fault<_primitive>*> _faults);
+	/*
+	 * reSet the fault list to simulate.
+	 *
+	 * @param _faults The set of faults.
+	 */
+	void resetFaults();
 
 	/*
 	 * Return the list of detected faults.
