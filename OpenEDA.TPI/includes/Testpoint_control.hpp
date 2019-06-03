@@ -92,9 +92,13 @@ public:
 	 * The location will have its input removed and replaced by a constant-value
 	 * holding Node (returned).
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of new nodes created during activation.
 	 */
-	virtual std::unordered_set<_nodeType*> activate() {
+	virtual std::unordered_set<_nodeType*> activate(Circuit* _circuit = nullptr) {
 		//DEBUG
 		//if (this->location_->inputs().size() != 1) {
 		//	throw "Problem: Before control point inserted, the location does not have exactly 1 driver.";
@@ -130,15 +134,22 @@ public:
 		/*if (this->location_->inputs().size() != 1) {
 			throw "Problem: after control point inserted, the location does not have exactly 1 driver.";
 		}*/
+		if (_circuit != nullptr) {
+			_circuit->addNode(this->newNode_);
+		}
 		return std::unordered_set<_nodeType*>({ this->newNode_ });
 	}
 
 	/*
 	 * Deactivate the Testpoint by modifying the circuit.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of node whichs should be (but was not) deleted.
 	 */
-	virtual std::unordered_set<_nodeType*> deactivate() {
+	virtual std::unordered_set<_nodeType*> deactivate(Circuit* _circuit = nullptr) {
 		this->location_->removeInput(this->newNode_);
 
 		//DELETE: flawed. Replaced with the following.
@@ -151,6 +162,9 @@ public:
 		}
 		this->oldDrivers_.clear();
 
+		if (_circuit != nullptr) {
+			_circuit->removeNode(this->newNode_);
+		}
 		_nodeType* toReturn = this->newNode_;
 		this->newNode_ = nullptr;
 		return std::unordered_set<_nodeType*>({ toReturn });

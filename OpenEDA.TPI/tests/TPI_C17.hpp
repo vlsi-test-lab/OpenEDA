@@ -20,12 +20,25 @@
 #include "Testpoint_control.hpp"
 #include "Testpoint_invert.hpp"
 #include "Testpoint_observe.hpp"
+#include "FaultSimulator.h"
 
 class C17Tests : public ::testing::Test {
 public:
 	void SetUp() override {
-
+		std::vector<std::string> order = { "1", "2", "3", "6", "7" };
+		for (size_t i = 0; i < pisUnordered.size(); i++) {
+			for (Levelized* pi : c17->pis()) {
+				Connecting* piLine = *(pi->outputs().begin());
+				std::string piName = piLine->name();
+				if (piName == order.at(i)) {
+					pisOrdered.push_back(dynamic_cast<SimulationNode<bool>*>(pi));
+					break;
+				}
+			}
+		}
 	}
+
+	
 
 	Parser<COP_TPI_Line, COP_TPI_Node> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
@@ -36,6 +49,27 @@ public:
 	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> controlTPs = controlGen.allTPs(c17);
 	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> observeTPs = observeGen.allTPs(c17);
 	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> invertTPs = invertGen.allTPs(c17);
+
+	std::unordered_set<Levelized*> pisUnordered = c17->pis();
+	std::vector<SimulationNode<bool>*> pisOrdered;
+
+	Value<bool> o = Value<bool>(0);
+	Value<bool> i = Value<bool>(1);
+	Value<bool> x = Value<bool>();
+	std::vector<Value<bool>> v3 = { i,o,i,o,o }; //Is is known that this vector will detect 6 of 22 collapsed faults:
+	//The following will be detected:
+	//1       0       0
+	//	10      3       0
+	//	2       0       1
+	//	3       0       0
+	//	7       0       1
+	//	23      16      0
+
+	//Therefore, the following WILL be detected:
+	// 1 s 1
+	// 2 s 1
+	// 3 s 11
+
 
 	//The Expected fault coverage of a given testpoint if one vector is applied.
 	std::map<std::string, float> ExpOneVecFC =
@@ -114,6 +148,28 @@ public:
 
 
 	};
+
+	//Expected number of faults detected when the given TP is present (observes only).
+	std::map<std::string, size_t> ExpNumDetected = {
+		{"O_1",6},
+		{"O_2",6},
+		{"O_3",6},
+		{"O_3_10",6},
+		{"O_3_11",7},
+		{"O_6",7},
+		{"O_7",6},
+		{"O_10",6},
+		{"O_11",7},
+		{"O_11_16",8},
+		{"O_11_19",8},
+		{"O_16",6},
+		{"O_16_22",7},
+		{"O_16_23",6},
+		{"O_19",6},
+		{"O_22",6},
+		{"O_23",6}
+
+	};
 };
 
 TEST_F(C17Tests, AllTPsGenerated) {
@@ -183,5 +239,41 @@ TEST_F(C17Tests, C17ExhaustiveInvert) {
 		float foundFC = tpi.quality(invertTP);
 		float expFC = ExpOneVecFC.at(tpName);
 		EXPECT_NEAR(foundFC, expFC, 0.0001);
+	}
+}
+
+//This test was generated in response to a found bug: some observe points were DECREASE fault coverage.
+//It is known that the attached vector will find
+TEST_F(C17Tests, C17ExhaustiveObserveFaultCoverage) {
+	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* observeTP : observeTPs) {
+		std::string tpName = "O";
+		std::string lineName = observeTP->location()->name();
+		std::string fanout = "";
+		if (observeTP->location()->inputs().size() != 0) {
+			Connecting* input = *(observeTP->location()->inputs().begin());
+			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+				Connecting* fanOutNode = *(observeTP->location()->outputs().begin());
+				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
+				fanout = "_" + fanOutLine->name();
+			}
+		}
+		tpName = tpName + "_" + lineName + fanout;
+		printf("\n\nDBG TP: %s\n", tpName.c_str());
+
+		//Find how many faults are detected when the TP is active.
+		FaultSimulator<bool> faultSimulator;
+		FaultGenerator<bool> faultGenerator;
+		std::unordered_set<Fault<bool>*> faults = faultGenerator.allFaults(c17);
+		faultSimulator.setFaults(faults);
+		observeTP->activate(c17);
+		faultSimulator.applyStimulus(c17, v3, EventQueue<bool>(), pisOrdered);
+
+		size_t foundFaultsDetected = faultSimulator.detectedFaults().size();
+		size_t expFaultsDetected = ExpNumDetected.at(tpName);
+		EXPECT_EQ(foundFaultsDetected, expFaultsDetected);
+
+		//Cleanup
+		faultSimulator.setFaults(std::unordered_set<Fault<bool>*>());
+		observeTP->deactivate(c17);
 	}
 }

@@ -122,6 +122,9 @@ public:
 			curNumberTestpoints = curNumberTestpoints + 1;
 
 		}
+		for (Testpoint<_primitive, _nodeType, _lineType>* testpoint : inserted) {
+			testpoint->deactivate();
+		}
 
 		return inserted;
 	};

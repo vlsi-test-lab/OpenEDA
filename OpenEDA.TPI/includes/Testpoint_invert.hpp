@@ -49,9 +49,13 @@ public:
 	 * NOTE: a new line will also be created by this function, but it is NOT
 	 *       returned.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of new nodes created during activation.
 	 */
-	virtual std::unordered_set<_nodeType*> activate() {
+	virtual std::unordered_set<_nodeType*> activate(Circuit* _circuit = nullptr) {
 		if (this->oldDrivers_.size() != 0 || this->newLine_ != nullptr || this->newNode_ != nullptr) {
 			throw "This inversion TP is already active.";
 		}
@@ -79,6 +83,9 @@ public:
 		//Make connections.
 		this->newLine_->addOutput(this->newNode_);
 		this->location_->addInput(this->newNode_);
+		if (_circuit != nullptr) {
+			_circuit->addNode(this->newNode_);
+		}
 
 		return std::unordered_set<_nodeType*>({ this->newNode_ });
 	};
@@ -91,9 +98,13 @@ public:
 	 * NOTE: the "new line" created during activation will be DELETED by this 
 	 *       function.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of node whichs should be (but was not) deleted.
 	 */
-	virtual std::unordered_set<_nodeType*> deactivate() {
+	virtual std::unordered_set<_nodeType*> deactivate(Circuit* _circuit = nullptr) {
 		if (this->oldDrivers_.size() == 0 || this->newLine_ == nullptr || this->newNode_ == nullptr) {
 			throw "This inversion TP is not active: it cannot be deactivated.";
 		}
@@ -108,6 +119,9 @@ public:
 		delete this->newLine_;
 
 		_nodeType* toReturn = this->newNode_;
+		if (_circuit != nullptr) {
+			_circuit->removeNode(toReturn);
+		}
 		this->newLine_ = nullptr;
 		this->newNode_ = nullptr;
 		return std::unordered_set<_nodeType*>({ toReturn });

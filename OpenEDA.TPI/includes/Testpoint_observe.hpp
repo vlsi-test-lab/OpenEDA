@@ -42,9 +42,12 @@ public:
 	 *
 	 * The location will have an output node added.
 	 *
-	 * @return A set of new nodes created during activation.
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 * @return A set of new nodes created during activation.
 	 */
-	virtual std::unordered_set<_nodeType*> activate() {
+	virtual std::unordered_set<_nodeType*> activate(Circuit* _circuit) {
 		if (this->newNode_ != nullptr) {
 			throw "Obseve point is already active.";
 		}
@@ -54,17 +57,27 @@ public:
 				)
 			);
 		this->location_->addOutput(this->newNode_);
+		if (_circuit != nullptr) {
+			_circuit->addPO(this->newNode_);
+		}
 		return std::unordered_set<_nodeType*>({ this->newNode_ });
 	};
 
 	/*
 	 * Deactivate the Testpoint by modifying the circuit.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of node whichs should be (but was not) deleted.
 	 */
-	virtual std::unordered_set<_nodeType*> deactivate(){
+	virtual std::unordered_set<_nodeType*> deactivate(Circuit* _circuit= nullptr){
 		this->location_->removeOutput(this->newNode_);
 		_nodeType* toReturn = this->newNode_;
+		if (_circuit != nullptr) {
+			_circuit->removeNode(this->newNode_);
+		}
 		this->newNode_ = nullptr;
 		return std::unordered_set<_nodeType*>({ toReturn });
 	};

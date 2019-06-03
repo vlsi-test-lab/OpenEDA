@@ -12,6 +12,7 @@
 #ifndef Testpoint_h
 #define Testpoint_h
 
+#include "Circuit.h"
 #include "FaultStructures.hpp"
 #include "Value.h"
 
@@ -81,18 +82,26 @@ public:
 	 *
 	 * Lines may be created by this function.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.	 
 	 * @return A set of new nodes created during activation.
 	 */
-	virtual std::unordered_set<_nodeType*> activate() = 0;
+	virtual std::unordered_set<_nodeType*> activate(Circuit* _circuit = nullptr) = 0;
 
 	/*
 	 * Deactivate the Testpoint by modifying the circuit.
 	 *
 	 * Lines may be deleted by this function.
 	 *
+	 * @param (optional) _circuit The circuit which (may) be modified (extra 
+	 *        nodes/pis/pos may be added/removed). If no circuit is given, then no
+	 *        circuit will be modified. This can be useful if adding/removing
+	 *        nodes to the circuit is not necessary.
 	 * @return A set of node whichs should be (but was not) deleted.
 	 */
-	virtual std::unordered_set<_nodeType*> deactivate() = 0;
+	virtual std::unordered_set<_nodeType*> deactivate(Circuit* _circuit = nullptr) = 0;
 
 	/*
 	 * The location of the TP.
