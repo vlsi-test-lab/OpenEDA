@@ -64,8 +64,9 @@ public:
 	 *        represents a Circuit input.
 	 * @return The Circuit output Values created by this stimulus.
 	 */
-	std::vector<Value<_primitive>> applyStimulus(Circuit * _circuit,
+	std::vector<Value<_primitive>> applyStimulus(Circuit * _circuit, 
 										std::vector<Value<_primitive>> _stimulus,
+		                                std::vector<float> _observe = std::vector<float>(_circuit->pos.size(), 1),
 										EventQueue<_primitive> _simulationQueue = EventQueue<_primitive>(),
 										std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>()
 	);
