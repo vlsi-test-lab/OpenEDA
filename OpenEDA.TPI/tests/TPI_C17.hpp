@@ -167,7 +167,43 @@ public:
 		{"O_16_23",6},
 		{"O_19",6},
 		{"O_22",6},
-		{"O_23",6}
+		{"O_23",6},
+
+{"C1_1",6},
+{"C1_2",4},
+{"C1_3",6},
+{"C1_3_10",5},
+{"C1_3_11",6},
+{"C1_6",4},
+{"C1_7",6},
+{"C1_10",4},
+{"C1_11",6},
+{"C1_11_16",6},
+{"C1_11_19",6},
+{"C1_16",5},
+{"C1_16_22",6},
+{"C1_16_23",5},
+{"C1_19",5},
+{"C1_22",3},
+{"C1_23",3},
+
+{"C0_1",5},
+{"C0_2",6},
+{"C0_3",6},
+{"C0_3_10",5},
+{"C0_3_11",6},
+{"C0_6",6},
+{"C0_7",6},
+{"C0_10",3},
+{"C0_11",4},
+{"C0_11_16",5},
+{"C0_11_19",5},
+{"C0_16",1},
+{"C0_16_22",3},
+{"C0_16_23",4},
+{"C0_19",3},
+{"C0_22",3},
+{"C0_23",3}
 
 	};
 };
@@ -275,5 +311,48 @@ TEST_F(C17Tests, C17ExhaustiveObserveFaultCoverage) {
 		//Cleanup
 		faultSimulator.setFaults(std::unordered_set<Fault<bool>*>());
 		observeTP->deactivate(c17);
+	}
+}
+
+TEST_F(C17Tests, C17ExhaustiveControlFaultCoverage) {
+	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* controlTP : controlTPs) {
+		std::string tpName = "C";
+		std::string lineName = controlTP->location()->name();
+		std::string controlValue = controlTP->value().magnitude() == false ? "0" : "1";
+		std::string fanout = "";
+		if (controlTP->location()->inputs().size() != 0) {
+			Connecting* input = *(controlTP->location()->inputs().begin());
+			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+				Connecting* fanOutNode = *(controlTP->location()->outputs().begin());
+				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
+				fanout = "_" + fanOutLine->name();
+			}
+		}
+		tpName = tpName + controlValue + "_" + lineName + fanout;
+		//TMP: delete
+		if (tpName == "C1_10") {
+			//continue;
+			int q = 0;
+		}
+		printf("\n\nDBG TP: %s\n", tpName.c_str());
+
+		//Find how many faults are detected when the TP is active.
+		FaultSimulator<bool> faultSimulator;
+		FaultGenerator<bool> faultGenerator;
+		std::unordered_set<Fault<bool>*> faults = faultGenerator.allFaults(c17);
+		faultSimulator.setFaults(faults);
+		EventQueue<bool> eventQueue;
+		controlTP->activate(c17);
+		faultSimulator.applyStimulus(c17, v3, EventQueue<bool>(), pisOrdered);
+
+		size_t foundFaultsDetected = faultSimulator.detectedFaults().size();
+		size_t expFaultsDetected = ExpNumDetected.at(tpName);
+		EXPECT_EQ(foundFaultsDetected, expFaultsDetected);
+
+		//Cleanup
+		faultSimulator.setFaults(std::unordered_set<Fault<bool>*>());
+		controlTP->deactivate(c17);
+		std::vector<Value<bool>> clearVector = std::vector<Value<bool>>({x, x, x, x, x});
+		faultSimulator.applyStimulus(c17, clearVector, EventQueue<bool>(), pisOrdered);
 	}
 }
