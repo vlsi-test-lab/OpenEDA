@@ -56,19 +56,27 @@ public:
 	 *
 	 * Detected faults will be stored internally.
 	 *
+	 * @param _circuit The circuit to perform simulation on.
 	 * @param _stimulus The input vector of Values to apply to the Circuit.
 	 * @param (optional) _queue The simulation queue to use. If none is given
 	 *        (which is typical), a blank quueue will be used.
 	 * @param (optional) _inputs Which circuit inputs to apply stimulus to. If not
 	 *        given, it will be presumed each input value in "_stimulus"
 	 *        represents a Circuit input.
+	 * @param (optional) _outputs The outputs to measure. If not given, all 
+	 *        circuit outputs will be measured.
+	 * @param (optional) _observe Which circuit outputs to measure (true =
+	 *        measure, false = do not measure). If not given, all outputs will
+	 *        be measured.
 	 * @return The Circuit output Values created by this stimulus.
 	 */
-	std::vector<Value<_primitive>> applyStimulus(Circuit * _circuit, 
-										std::vector<Value<_primitive>> _stimulus,
-		                                std::vector<float> _observe = std::vector<float>(_circuit->pos.size(), 1),
-										EventQueue<_primitive> _simulationQueue = EventQueue<_primitive>(),
-										std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>()
+	std::vector<Value<_primitive>> applyStimulus(
+		Circuit * _circuit, 
+		std::vector<Value<_primitive>> _stimulus,
+		EventQueue<_primitive> _simulationQueue = EventQueue<_primitive>(),
+		std::vector<SimulationNode<_primitive>*> _inputs = std::vector<SimulationNode<_primitive>*>(),
+		std::vector<SimulationNode<_primitive>*> _outputs = std::vector<SimulationNode<_primitive>*>(),
+		std::vector<bool> _observe = std::vector<bool>()
 	);
 
 	/*

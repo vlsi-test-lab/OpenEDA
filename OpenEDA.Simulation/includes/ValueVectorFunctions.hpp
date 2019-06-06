@@ -32,13 +32,27 @@ public:
 	 *
 	 * @param a The first vector to compare.
 	 * @param b The second vector to compare.
+	 * @param (optional) _compare A vector corresponding to the values to compare (false = do not compare).
+	 *        If not given, all values will be compared.
 	 * @return True if the two values (with unkowns) cannot be equal.
 	 */
-	static bool mismatch(const std::vector<Value<_primitive>> a, const std::vector<Value<_primitive>> b) {
+	static bool mismatch(
+		const std::vector<Value<_primitive>> a,
+		const std::vector<Value<_primitive>> b,
+		std::vector<bool> _compare = std::vector<bool>()
+	) {
 		if (a.size() != b.size()) {
 			throw "Cannot compare two value vectors of different sizes.";
 		}
+		if (_compare.empty() == true) {
+			_compare = std::vector<bool>(a.size(), true);
+		} else if (_compare.size() != a.size()) {
+			throw "Cannot compare two value vectors: comparison vector does not match the given vector sizes.";
+		}
 		for (unsigned int i = 0; i < a.size(); i++) {
+			if (_compare.at(i) == false) {
+				continue;
+			}
 			if (a.at(i).valid() == true && b.at(i).valid() == true) {
 				if (a.at(i).magnitude() != b.at(i).magnitude()) {
 					return true;
