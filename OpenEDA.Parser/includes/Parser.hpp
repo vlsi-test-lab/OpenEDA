@@ -287,7 +287,8 @@ void Parser<_lineType, _nodeType>::MergeLines() {
 			if (line->outputs().size() == 0) { base = line; lines.erase(line); break; }
 		}
 		if (base == nullptr) { throw "Could not merge lines: there is no base."; }
-		if (lines.size() == 0) { throw "Not enough lines to do a merge, which should not happen."; }
+		if (lines.size() == 0) { printf("WARNING: A line in circuit doesn't drive anything \n");
+		}
 		if (lines.size() == 1) { //Same non-fanout line, so delete.
 			_lineType* toDelete = *lines.begin();
 			if(toDelete->outputs().size() == 0){//Sanity check, this should not happen
