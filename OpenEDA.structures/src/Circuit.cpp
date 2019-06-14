@@ -32,14 +32,14 @@ Connecting* spread(
 	}
 
 	Connecting* newPoint = point;
-	if (backwards == true && backwards == true) {
+	if (forwards == true && backwards == true) {
 		newPoint = point->clone();
 		newToOld[newPoint] = point;
 		oldToNew[point] = newPoint;
 	}
 
 	//For each input, attempt to spread and connect.
-	if (forwards == true) {
+	if (backwards == true) {
 		for (Connecting* input : point->inputs()) {
 			Connecting* newInputConnection = spread(input, oldToNew, newToOld);
 			if (newInputConnection != nullptr) {
@@ -70,32 +70,55 @@ void Circuit::copy(std::unordered_set<Levelized*> _nodes, std::unordered_set<Lev
 	//First, set all PIs and POs of the circuit.
 	for (Levelized* pi : _pis) {
 		Levelized* newNode = pi->clone();
-		this->addNode(newNode);
+		//Not needed //this->addNode(newNode);
 		this->addPI(newNode);
 		newToOld[newNode] = pi;
 		oldToNew[pi] = newNode;
 	}
 	for (Levelized* po : _pos) {
 		Levelized* newNode = po->clone();
-		this->addNode(newNode);
+		//Not needed //this->addNode(newNode);
 		this->addPO(newNode);
 		newToOld[newNode] = po;
 		oldToNew[po] = newNode;
 	}
 
 	//Spread to populate the circuit.
-	for (Levelized* newPi : this->pis_) {
-		spread(newPi, oldToNew, newToOld, true, false);
+	for (Levelized* pi : _pis) {
+		spread(pi, oldToNew, newToOld, true, false);
 	}
-	for (Levelized* newPo : this->pos_) {
-		spread(newPo, oldToNew, newToOld, false, true);
+	for (Levelized* po : _pos) {
+		spread(po, oldToNew, newToOld, false, true);
 	}
+
 
 	//Go through old nodes to make this circuit's new nodes.
 	for (Levelized* oldNode : _nodes) {
 		Levelized* newNode = dynamic_cast<Levelized*>(oldToNew.at(oldNode));
 		this->addNode(newNode);
 	}
+
+
+	//Go through old objects to make this circuit's new connections.
+	for (auto objs : oldToNew) {
+		Connecting* oldObj = objs.first;
+		Connecting* newObj = objs.second;
+		std::unordered_set<Connecting*> oldInputs = oldObj->inputs();
+		std::unordered_set<Connecting*> oldOutputs = oldObj->outputs();
+		std::unordered_set<Connecting*> newInputs;
+		std::unordered_set<Connecting*> newOutputs;
+		for (Connecting* oldInput : oldInputs) {
+			Connecting* newInput = oldToNew.at(oldInput);
+			newInputs.emplace(newInput);
+		}
+		for (Connecting* oldOutput : oldOutputs) {
+			Connecting* newOutput= oldToNew.at(oldOutput);
+			newOutputs.emplace(newOutput);
+		}
+		newObj->inputs(newInputs);
+		newObj->outputs(newOutputs);
+	}
+
 }
 
 Circuit::Circuit(

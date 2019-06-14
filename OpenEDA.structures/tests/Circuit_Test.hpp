@@ -12,6 +12,63 @@
 #include"Circuit.h"
 #include<unordered_set>
 
+#include "Simulator.h"
+#include "SimulationStructures.hpp"
+#include "Parser.hpp"
+#include "ValueVectorFunctions.hpp"
+
+
+class CopyTest : public ::testing::Test {
+public:
+	void SetUp() override {
+		std::vector<std::string> order = { "7", "6", "3", "2", "1" };
+		std::unordered_set<Levelized*> pisUnordered = c17->pis();
+		for (size_t i = 0; i < pisUnordered.size(); i++) {
+			for (Levelized* pi : c17->pis()) {
+				Connecting* piLine = *(pi->outputs().begin());
+				std::string piName = piLine->name();
+				if (piName == order.at(i)) {
+					c17PisOrdered.push_back(dynamic_cast<SimulationNode<bool>*>(pi));
+					break;
+				}
+			}
+		}
+
+		pisUnordered = c17copy->pis();
+		for (size_t i = 0; i < pisUnordered.size(); i++) {
+			for (Levelized* pi : c17copy->pis()) {
+				Connecting* piLine = *(pi->outputs().begin());
+				std::string piName = piLine->name();
+				if (piName == order.at(i)) {
+					c17CopyPisOrdered.push_back(dynamic_cast<SimulationNode<bool>*>(pi));
+					break;
+				}
+			}
+		}
+	}
+
+	Parser<SimulationLine<bool>, SimulationNode<bool>> parser;
+	Circuit* c17 = parser.Parse("c17.bench");
+	Circuit* c17copy = new Circuit(*c17);
+	
+	std::vector<SimulationNode<bool>*> c17PisOrdered;
+	std::vector<SimulationNode<bool>*> c17CopyPisOrdered;
+
+	Simulator<bool> simulator;
+	EventQueue<bool> simulationQueue;
+
+};
+
+TEST_F(CopyTest, c17CopyTest) {
+	std::vector<Value<bool>> inputVector = std::vector<Value<bool>>(c17->pis().size(), Value<bool>(0));
+	do {
+		std::vector<Value<bool>> originalOut = simulator.applyStimulus(c17, inputVector, simulationQueue, c17PisOrdered);
+		std::vector<Value<bool>> copyOut = simulator.applyStimulus(c17copy, inputVector, simulationQueue, c17CopyPisOrdered);
+		bool mismatch = ValueVectorFunction<bool>::mismatch(originalOut, copyOut);
+		EXPECT_EQ(false, mismatch);
+	} while (ValueVectorFunction<bool>::increment(inputVector));
+}
+
 class Circuit_Test : public ::testing::Test {
 public:
 	void SetUp() override {

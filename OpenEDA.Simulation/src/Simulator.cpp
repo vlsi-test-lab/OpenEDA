@@ -74,7 +74,8 @@ std::vector<Value<T>> Simulator<T>::outputs(
 			continue;
 		}
 		SimulationNode<T>* output = _outputs.at(i);
-		SimulationLine<T>* outputLine = dynamic_cast<SimulationLine<T>*>(*(output->inputs().begin()));
+		std::unordered_set<Connecting*> lines = output->inputs();
+		SimulationLine<T>* outputLine = dynamic_cast<SimulationLine<T>*>(*(lines.begin()));
 		toReturn.push_back(outputLine->value());
 	}
 	return toReturn;
