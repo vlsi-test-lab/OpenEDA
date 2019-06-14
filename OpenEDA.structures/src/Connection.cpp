@@ -182,3 +182,8 @@ void Connecting::addInputConnection(Connection * _add) {
 void Connecting::addOutputConnection(Connection * _add) {
 	this->outputs_.emplace(_add);
 }
+
+
+Connecting* Connecting::clone() const {
+	return new Connecting({}, {},this->name());
+}

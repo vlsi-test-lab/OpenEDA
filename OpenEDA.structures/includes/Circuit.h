@@ -12,7 +12,7 @@
 #define Circuit_h
 
 #include <unordered_set>
-
+#include<map>
 #include "Level.h"
 
 /*
@@ -39,8 +39,31 @@ public:
 	 * @param _nodes The nodes to be contained in the circuit.
 	 * @param _inputs The input Nodes of the circuit.
 	 * @param _outputs The output Nodes of the circuit.
+	 * @param (optional) _copy Create a copy of the given nodes, inputs, and
+	 *        outputs, as opposed to making them part of the new circuit. By
+	 *        default, this is false.
 	 */
-	Circuit(std::unordered_set<Levelized*> _nodes, std::unordered_set <Levelized*> _inputs, std::unordered_set<Levelized*> _outputs);
+	Circuit(std::unordered_set<Levelized*> _nodes, std::unordered_set <Levelized*> _inputs, std::unordered_set<Levelized*> _outputs, bool _copy = false);
+
+	/*
+	 * Create a copy of a given circuit by creating a cloned copy of each node
+	 * and interconnecting all nodes.
+	 *
+	 * NOTE: If the "clone" function is not properly support for the type of nodes
+	 *       and lines in the circuit, lower-level forms will be created.
+	 *
+	 * @param _circuit The Circuit to copy.
+	 */
+	Circuit(const Circuit& _circuit);
+
+	/*
+	 * Delete the circuit and all objects in it.
+	 *
+	 * Lines will be deleted by propigating throughout the circuit.
+	 */
+	~Circuit();
+
+	
 
 	/*
 	 * Return all Nodes in the circuit
@@ -132,6 +155,16 @@ public:
 
 
 private:
+	/*
+	 * Make this circuit an identical copy of another circuit form a given set 
+	 * of pis, pos, and nodes.
+	 */
+	void copy(
+		std::unordered_set<Levelized*> _nodes,
+		std::unordered_set<Levelized*> _pis,
+		std::unordered_set<Levelized*> _pos
+	);
+
 	/*
 	 * The set of Nodes in this Circuit.
 	 */

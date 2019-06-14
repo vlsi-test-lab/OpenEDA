@@ -224,6 +224,11 @@ float COPLine::calculateObservability(COP * _calling) {
 	return toReturn;
 }
 
+
+COPLine* COPLine::clone() {
+	return new COPLine(this->name());
+}
+
 /*
  * Manually calculate COP for a given node.
  */
@@ -348,4 +353,8 @@ float COPNode::calculateObservability(COP * _calling) {
 		throw "Impossible pPass calculation.";
 	}
 	return toReturn;
+}
+
+COPNode* COPNode::clone() {
+	return new COPNode(this->function());
 }

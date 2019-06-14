@@ -117,6 +117,17 @@ public:
 	const int UNKNOWN_LEVEL = -1;
 
 
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new Levelized.
+	 */
+	virtual Levelized* clone() const;
+
+	
+
 
 private:
 	

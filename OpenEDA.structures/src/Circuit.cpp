@@ -10,20 +10,160 @@
 
 #include "Circuit.h"
 
-Circuit::Circuit(std::unordered_set<Levelized*> _nodes, std::unordered_set<Levelized*> _inputs, std::unordered_set<Levelized*> _outputs) {
-	nodes_ = _nodes;
-	pis_ = _inputs;
-	pos_ = _outputs;
-	for (Levelized* pi : pis_) {
-		pi->inputLevelZero();
-		nodes_.emplace(pi);
+#include <map>
+
+ //On a given clonable, levelized object, go both forward and backwards to 
+ //create and connect objects until the given stopping points are reached.
+ //
+ //@returns A new object which is created or a nullptr.
+Connecting* spread(
+	Connecting* point,
+	std::map<Connecting*, Connecting*> & oldToNew,
+	std::map<Connecting*, Connecting*> & newToOld,
+	bool forwards = true,
+	bool backwards = true
+) {
+	//If we already have seen the point, don't go any further.
+	if (
+		(forwards == true && backwards == true) &&
+		oldToNew.find(point) != oldToNew.end()
+		) {
+		return nullptr;
 	}
-	for (Levelized* po : pos_) {
-		po->outputLevelZero();
-		nodes_.emplace(po);
+
+	Connecting* newPoint = point;
+	if (backwards == true && backwards == true) {
+		newPoint = point->clone();
+		newToOld[newPoint] = point;
+		oldToNew[point] = newPoint;
 	}
-	
+
+	//For each input, attempt to spread and connect.
+	if (forwards == true) {
+		for (Connecting* input : point->inputs()) {
+			Connecting* newInputConnection = spread(input, oldToNew, newToOld);
+			if (newInputConnection != nullptr) {
+				newPoint->addInput(newInputConnection);
+				//newPoint->removeInput(newToOld.find(newInputConnection)->second);
+			}
+		}
+	}
+
+	//For each output, attempt to spread and connect.
+	if (forwards == true) {
+		for (Connecting* output : point->outputs()) {
+			Connecting* newOutputConnection = spread(output, oldToNew, newToOld);
+			if (newOutputConnection != nullptr) {
+				newPoint->addOutput(newOutputConnection);
+				//newPoint->removeOutput(newToOld.find(newOutputConnection)->second);
+			}
+		}
+	}
+
+	return newPoint;
 }
+
+void Circuit::copy(std::unordered_set<Levelized*> _nodes, std::unordered_set<Levelized*> _pis, std::unordered_set<Levelized*> _pos) {
+	std::map<Connecting*, Connecting*> oldToNew;
+	std::map<Connecting*, Connecting*> newToOld;
+
+	//First, set all PIs and POs of the circuit.
+	for (Levelized* pi : _pis) {
+		Levelized* newNode = pi->clone();
+		this->addNode(newNode);
+		this->addPI(newNode);
+		newToOld[newNode] = pi;
+		oldToNew[pi] = newNode;
+	}
+	for (Levelized* po : _pos) {
+		Levelized* newNode = po->clone();
+		this->addNode(newNode);
+		this->addPO(newNode);
+		newToOld[newNode] = po;
+		oldToNew[po] = newNode;
+	}
+
+	//Spread to populate the circuit.
+	for (Levelized* newPi : this->pis_) {
+		spread(newPi, oldToNew, newToOld, true, false);
+	}
+	for (Levelized* newPo : this->pos_) {
+		spread(newPo, oldToNew, newToOld, false, true);
+	}
+
+	//Go through old nodes to make this circuit's new nodes.
+	for (Levelized* oldNode : _nodes) {
+		Levelized* newNode = dynamic_cast<Levelized*>(oldToNew.at(oldNode));
+		this->addNode(newNode);
+	}
+}
+
+Circuit::Circuit(
+	std::unordered_set<Levelized*> _nodes,
+	std::unordered_set<Levelized*> _inputs,
+	std::unordered_set<Levelized*> _outputs,
+	bool _copy
+) {
+	if (_copy == false) {
+		nodes_ = _nodes;
+		pis_ = _inputs;
+		pos_ = _outputs;
+		for (Levelized* pi : pis_) {
+			pi->inputLevelZero();
+			nodes_.emplace(pi);
+		}
+		for (Levelized* po : pos_) {
+			po->outputLevelZero();
+			nodes_.emplace(po);
+		}
+	} else {
+		this->copy(_nodes, _inputs, _outputs);
+	}
+}
+
+
+
+Circuit::Circuit(const Circuit& _circuit) {
+	this->copy(
+		_circuit.nodes(),
+		_circuit.pis(),
+		_circuit.pos()
+	);
+}
+
+void spread(
+	Levelized* point,
+	std::unordered_set<Levelized*> & allCircuitObjects
+) {
+	if (allCircuitObjects.find(point) != allCircuitObjects.end()) {
+		return;
+	}
+	allCircuitObjects.emplace(point);
+
+	for (Connecting* input : point->inputs()) {
+		Levelized* cast = dynamic_cast<Levelized*>(input);
+		spread(cast, allCircuitObjects);
+	}
+	for (Connecting* output : point->outputs()) {
+		Levelized* cast = dynamic_cast<Levelized*>(output);
+		spread(cast, allCircuitObjects);
+	}
+}
+
+Circuit::~Circuit() {
+	std::unordered_set<Levelized*> allCircuitObjects;
+	for (Levelized* node : this->nodes_) {
+		spread(node, allCircuitObjects);
+	}
+	for (Levelized* object : allCircuitObjects) {
+		delete object;
+	}
+}
+
+
+
+
+
 
 std::unordered_set<Levelized*> Circuit::nodes() const {
 	return this->nodes_;
@@ -84,6 +224,8 @@ void Circuit::addPO(Levelized* _po) {
 	this->pos_.emplace(_po);
 	_po->outputLevelZero();
 }
+
+
 
 //DELETE: obsolete
 //Levelized* Circuit::removePO(Levelized* _po) {

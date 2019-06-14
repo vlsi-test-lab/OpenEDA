@@ -61,6 +61,19 @@ public:
 		)
 	{
 	};
+
+
+
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new simulationline.
+	 */
+	virtual SimulationLine* clone() const {
+		return new SimulationLine(this->name());
+	}
 };
 
 
@@ -120,6 +133,17 @@ public:
 		return toReturn;
 	}
 
+
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 * 
+	 *
+	 * @return new simulationnode.
+	 */
+	virtual SimulationNode* clone() const {
+		return new SimulationNode(this->function());
+	}
 
 
 };

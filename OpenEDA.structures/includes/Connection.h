@@ -153,6 +153,18 @@ class Connecting {
   virtual std::string name() const;
 
 
+
+  /*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new Connecting.
+	 */
+  virtual Connecting* clone() const;
+
+  
+
 private:
 
   /**

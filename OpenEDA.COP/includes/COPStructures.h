@@ -31,7 +31,7 @@ public:
 	 */
 	COP(bool _calculateAlways = true);
 
-	COP(const COP&p);
+
 
 	/*
 	 * Return the controllablity of the object (and calculate it if necessary).
@@ -150,6 +150,9 @@ public:
  //  */
 	//virtual void addOutput(Connecting* _add);
 	
+
+
+
 protected:
 
 	/*
@@ -263,6 +266,15 @@ public:
 	 */
 	COPLine(std::string _name);
 
+
+	/*
+ * Return Create an copy of this object.
+ *
+ *
+ *
+ * @return new COPline.
+ */
+	virtual COPLine* clone();
 protected:
 
 	/*
@@ -343,7 +355,16 @@ public:
 		//}//add more
 	}
 
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new COPnode.
+	 */
+	virtual COPNode* clone();
 
+	
 protected:
 
 	/*

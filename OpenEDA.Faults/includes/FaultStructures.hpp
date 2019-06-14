@@ -43,6 +43,18 @@ public:
 		Connecting(_name) 
 	{
 	};
+
+
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new faultline.
+	 */
+	virtual FaultyLine* clone() const {
+		return new FaultyLine(this->name());
+	}
 };
 
 /*
@@ -85,6 +97,17 @@ public:
 	}
 
 
+
+	/*
+	 * Return Create an copy of this object.
+	 *
+	 *
+	 *
+	 * @return new faultnode.
+	 */
+	virtual FaultyNode* clone() const {
+		return new FaultyNode(this->function());
+	}
 };
 
 #endif

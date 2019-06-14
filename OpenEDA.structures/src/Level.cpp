@@ -146,3 +146,7 @@ void Levelized::addOutputConnection(Connection * _add) {
 	this->outputLevelClear();
 	this->Connecting::addOutputConnection(_add);
 }
+
+Levelized* Levelized::clone() const {
+	return new Levelized({}, {},this->name());
+}
