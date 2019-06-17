@@ -14,6 +14,16 @@
 #include "COPStructures.h"
 #include "Parser.hpp"
 
+class B19Test : public ::testing::Test {
+public:
+	void SetUp() override {
+
+	}
+
+	Parser<COPLine, COPNode> parser;
+	Circuit* b19 = parser.Parse("b19.p.bench");
+};
+
 class C17Test : public ::testing::Test {
 public:
 	void SetUp() override {
@@ -115,7 +125,7 @@ public:
 };
 
 
-
+//This is an exaustive test for c17
 TEST_F(C17Test, ExhaustiveTest) {
 	for (Levelized* pi : c17->pis()) {
 		COPNode* cast = dynamic_cast<COPNode*>(pi);
@@ -123,6 +133,20 @@ TEST_F(C17Test, ExhaustiveTest) {
 			throw "You have a serious problem here.";
 		}
 		EXPECT_NO_THROW(ForwardCOPTraceAndCheck(cast));
+	}
+}
+
+//This tests confirms observabilty can be calcualted for all b19 inputs.
+//This was created for a latent bug.
+//This test can take some time to run, but this is expected: b19 is a large
+// circuit.
+TEST_F(B19Test, InputObservabilityTest) {
+	for (Levelized* pi : b19->pis()) {
+		COPNode* cast = dynamic_cast<COPNode*>(pi);
+		if (cast == nullptr) {
+			throw "You have a serious problem here.";
+		}
+		EXPECT_NO_THROW(cast->observability());
 	}
 }
 

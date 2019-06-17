@@ -208,7 +208,8 @@ float COPLine::calculateControllability() {
 
 float COPLine::calculateObservability(COP * _calling) {
 	if (this->outputs().size() == 0) {
-		throw "A line with no outputs cannot calculate its observability.";
+		return 0.0;
+		//DELETE: incorrect. throw "A line with no outputs cannot calculate its observability.";
 	}
 	float toReturn = 1;
 	for (Connecting* output : this->outputs()) {
