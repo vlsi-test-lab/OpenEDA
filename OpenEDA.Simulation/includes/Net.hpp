@@ -133,7 +133,7 @@ inline Net<_lineType, _nodeType>::Net(_lineType * _line) {
 
 template<class _lineType, class _nodeType>
 inline std::unordered_set<_lineType*> Net<_lineType, _nodeType>::addFanout(_nodeType * _node) {
-	_lineType* newLine = new _lineType();
+	_lineType* newLine = new _lineType(this->root_->name());
 	newLine->addOutput(_node);
 	return this->addFanout(newLine);
 }
@@ -150,16 +150,19 @@ inline std::unordered_set<_lineType*> Net<_lineType, _nodeType>::addFanout(_line
 	}
 
 	//no: One extra output line needs to be created representing the root Line's "current output".
-	_lineType* newLine = new _lineType();
+	//_lineType* newLine = this->root_->clone();
+	_lineType* newLine = new _lineType(this->root_->name());
 	if (this->root_->outputs().size()!=0)
 	{
 		newLine->addOutput(dynamic_cast<_nodeType*>(*(this->root_->outputs().begin())));
 	}
 	
-	newLine->addInput(this->root_);
+	//newLine->addInput(this->root_);
+	//this->root_->outputs({});
 	this->root_->outputs(std::unordered_set<Connecting*>({ newLine, _line }));
-	this->root_->addOutput(_line);
-	this->fanouts_.emplace(newLine); this->fanouts_.emplace(_line);
+	//this->root_->addOutput(_line);
+	this->fanouts_.emplace(newLine); 
+	this->fanouts_.emplace(_line);
 	return std::unordered_set<_lineType*>({ newLine });
 }
 
