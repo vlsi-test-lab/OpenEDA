@@ -117,8 +117,9 @@ std::unordered_set<_lineType*> fanouts(_lineType* _line) {
 	for (Connecting* output : _line->outputs()) {
 		_lineType* cast = dynamic_cast<_lineType*>(output);
 		if (cast != nullptr) {
-			std::unordered_set <_lineType*> toAdd = fanouts<_lineType>(cast);
-			toReturn.insert(toAdd.begin(), toAdd.end());
+			//std::unordered_set <_lineType*> toAdd = fanouts<_lineType>(cast);
+			//toReturn.insert(toAdd.begin(), toAdd.end());
+			toReturn.insert(cast);
 		}
 	}
 	return toReturn;
