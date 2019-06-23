@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1d81a9a7-0ded-47c4-a90a-d292f5b0a99e}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -45,6 +45,7 @@
   <ItemGroup>
     <ClInclude Include="..\tests\TPI.Tests.h" />
     <ClInclude Include="..\tests\TPI_C17.hpp" />
+    <ClInclude Include="..\tests\TPI_C432.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OpenEDA.COP\OpenEDA.COP.lib\OpenEDA.COP.lib.vcxproj">
@@ -52,6 +53,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.Faults\OpenEDA.Faults.lib\OpenEDA.Faults.lib.vcxproj">
       <Project>{f74f6a64-fba4-4985-8339-a7b11239bc3a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OpenEDA.PRPG\OpenEDA.PRPG.lib\OpenEDA.PRPG.lib.vcxproj">
+      <Project>{9a9a0a01-b921-4785-8f71-362fbc508b9b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\OpenEDA.Simulation\OpenEDA.Simulation.lib\OpenEDA.Simulation.lib.vcxproj">
       <Project>{e00aedbf-ca63-4e1f-975a-e8cb144ea7f2}</Project>
@@ -78,7 +82,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.PRPG\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -95,7 +99,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.PRPG\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +114,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.PRPG\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -127,7 +131,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\tests;$(ProjectDir)\..\includes;$(ProjectDir)\..\..\OpenEDA.COP\includes;$(ProjectDir)\..\..\OpenEDA.Faults\includes;$(ProjectDir)\..\..\OpenEDA.structures\includes;$(ProjectDir)\..\..\OpenEDA.Simulation\includes;ProjectDir)\..\..\OpenEDA.TPI\includes;$(ProjectDir)\..\..\OpenEDA.PRPG\includes;$(ProjectDir)\..\..\OpenEDA.Parser\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
