@@ -116,8 +116,8 @@ TEST_F(SimulatorTest, c17_exhaustive) {
 			);
 			Value<bool> exp_22 = ans_22.at(i);
 			Value<bool> exp_23 = ans_23.at(i);
-			EXPECT_EQ(exp_22, response.at(0));
-			EXPECT_EQ(exp_23, response.at(1));
+			ASSERT_EQ(exp_22, response.at(0));
+			ASSERT_EQ(exp_23, response.at(1));
 		}
 	}
 }

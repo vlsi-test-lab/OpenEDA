@@ -92,14 +92,15 @@ Value<bool> BooleanFunction::AND(std::vector<Value<bool>> i) const {
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value.";
 	}
-	Value<bool> toReturn = Value<bool>(true, true);
+	bool mag = true;
+	bool valid = true;
 	for (Value<bool> &val : i) {
-		toReturn = toReturn & val;
-		if (toReturn.magnitude() == false && toReturn.valid() == true) {
-			break;
-		}
+		bool otherMag = val.magnitude();
+		bool otherValid = val.valid();
+		valid = (valid & otherValid) | (otherValid & ~otherMag) | (valid & ~mag);
+		mag = mag & otherMag;
 	}
-	return toReturn;
+	return Value<bool>(mag, valid);
 }
 
 Value<bool> BooleanFunction::NAND(std::vector<Value<bool>> i) const {
@@ -110,14 +111,15 @@ Value<bool> BooleanFunction::OR(std::vector<Value<bool>> i) const {
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value.";
 	}
-	Value<bool> toReturn = Value<bool>(false, true);
+	bool mag = false;
+	bool valid = true;
 	for (Value<bool> &val : i) {
-		toReturn = toReturn | val;
-		if (toReturn.magnitude() == true && toReturn.valid() == true) {
-			break;
-		}
+		bool otherMag = val.magnitude();
+		bool otherValid = val.valid();
+		valid = (valid & otherValid) | (otherValid & otherMag) | (valid & mag);
+		mag = mag | otherMag;
 	}
-	return toReturn;
+	return Value<bool>(mag, valid);
 }
 
 Value<bool> BooleanFunction::NOR(std::vector<Value<bool>> i) const {
@@ -128,14 +130,15 @@ Value<bool> BooleanFunction::XOR(std::vector<Value<bool>> i) const {
 	if (i.size() < 1) {
 		throw "Input to a boolean function must have at least one value." ;
 	}
-	Value<bool> toReturn = Value<bool>(false, true);
+	bool mag = false;
+	bool valid = true;
 	for (Value<bool> &val : i) {
-		toReturn = toReturn ^ val;
-		if (toReturn.valid() == false) {
-			break;
-		}
+		bool otherMag = val.magnitude();
+		bool otherValid = val.valid();
+		valid = (valid & otherValid);
+		mag = mag ^ otherMag;
 	}
-	return toReturn;
+	return Value<bool>(mag, valid);
 }
 
 Value<bool> BooleanFunction::XNOR(std::vector<Value<bool>> i) const {
