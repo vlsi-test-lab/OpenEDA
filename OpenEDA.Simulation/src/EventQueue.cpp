@@ -92,13 +92,13 @@ void EventQueue<_primitive>::add(size_t _level, Evented<_primitive> * _event) {
 		size_t currentM = this->queue_.size();
 		for (size_t i = currentM; i < _level; i++)
 		{
-			this->queue_.push_back(std::unordered_set<Evented<_primitive>*>());
+			this->queue_.push_back(std::vector<Evented<_primitive>*>());
 		}
-		std::unordered_set<Evented<_primitive>*> soham_event =  std::unordered_set<Evented<_primitive>*>({ _event });
+		std::vector<Evented<_primitive>*> soham_event =  std::vector<Evented<_primitive>*>({ _event });
 		this->queue_.push_back(soham_event);
 		this->maxLevel_ = _level;
 	} else {
-		this->queue_.at(_level).emplace(_event);
+		this->queue_.at(_level).push_back(_event);
 	}
 }
 
@@ -114,14 +114,19 @@ void EventQueue<_primitive>::process() {
 	if (this->queue_.size() == 0) {//The loop below does not handle "empty queue" gracefully.
 		return;
 	}
+	
 	for (size_t currentLevel = 0; currentLevel <= maxLevel_; currentLevel++) {
-		std::unordered_set<Evented<_primitive>*> events = this->queue_.at(currentLevel);
-		for (Evented<_primitive>* currentEvent : events) {
+		std::vector<Evented<_primitive>*> events = this->queue_.at(currentLevel);
+		//for (Evented<_primitive>* currentEvent : events) {
+		#pragma omp parallel for
+		for (int eventNum = 0; eventNum < events.size(); eventNum++) {
+			Evented<_primitive>* currentEvent = events.at(eventNum);
 			std::set<std::pair<size_t, Evented<_primitive>*>> newEvents = currentEvent->go();
 			for (std::pair<size_t, Evented<_primitive>*> toAdd : newEvents) {
 				if (toAdd.first <= currentLevel) {
 					throw "EventQueue can only add events during processing 'in order'.";
 				}
+				#pragma omp critical 
 				this->add(toAdd.first, toAdd.second);
 			}
 		}

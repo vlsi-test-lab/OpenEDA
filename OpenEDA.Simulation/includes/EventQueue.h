@@ -95,7 +95,7 @@ private:
 	 * Each "index" of the vector is a "priority level".
 	 * Each "index entry" is a set of Events.
 	 */
-	std::vector<std::unordered_set<Evented<_primitive>*>> queue_;
+	std::vector<std::vector<Evented<_primitive>*>> queue_;
 
 	/*
 	 * The current maximum level of the queue.
