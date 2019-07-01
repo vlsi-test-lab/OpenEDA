@@ -80,8 +80,11 @@ private:
  * A Boolean function.
  *
  * This class implements a Boolean function which is evaluated algorithmically.
+ *
+ * @param _width The "width" of the Boolean function (i.e., how many bits to process at once).
  */
-class BooleanFunction : public Function<bool> {
+template <class _width>
+class BooleanFunction : public Function<_width> {
 public:
 	/*
 	 * Will throw an exception: there is no "undefined" Boolean function.
@@ -110,7 +113,7 @@ public:
 	 *
 	 * @return A copy of this Function object (as a function).
 	 */
-	virtual Function<bool>* clone() const;
+	virtual Function<_width>* clone() const;
 
 	/*
 	 * For a given input vector, return an output.
@@ -118,26 +121,26 @@ public:
 	 * @param _vector The input vector of Values to evaluate.
 	 * @return The output corresponding to the input vector.
 	 */
-	virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
+	virtual Value<_width> evaluate(std::vector<Value<_width>> _vector) const;
 
 private:
 
 	/*
 	 * The following are the separate (possible) primitive Booelan functions.
 	 */
-	Value<bool> AND(std::vector<Value<bool>>) const;
-	Value<bool> OR(std::vector<Value<bool>>) const;
-	Value<bool> NAND(std::vector<Value<bool>>) const;
-	Value<bool> NOR(std::vector<Value<bool>>) const;
-	Value<bool> XOR(std::vector<Value<bool>>) const;
-	Value<bool> XNOR(std::vector<Value<bool>>) const;
-	Value<bool> BUF(std::vector<Value<bool>>) const;
-	Value<bool> NOT(std::vector<Value<bool>>) const;
+	Value<_width> AND(std::vector<Value<_width>>) const;
+	Value<_width> OR(std::vector<Value<_width>>) const;
+	Value<_width> NAND(std::vector<Value<_width>>) const;
+	Value<_width> NOR(std::vector<Value<_width>>) const;
+	Value<_width> XOR(std::vector<Value<_width>>) const;
+	Value<_width> XNOR(std::vector<Value<_width>>) const;
+	Value<_width> BUF(std::vector<Value<_width>>) const;
+	Value<_width> NOT(std::vector<Value<_width>>) const;
 
 	/*
 	 * This function pointer holds the Boolean function implemented by this function.
 	 */
-	Value<bool>(BooleanFunction::*function_)(std::vector<Value<bool>>) const;
+	Value<_width>(BooleanFunction::*function_)(std::vector<Value<_width>>) const;
 
 };
 
@@ -194,7 +197,7 @@ public:
 	 * @param _vector The input vector of Values to evaluate.
 	 * @return The output corresponding to the input vector.
 	 */
-	virtual Value<bool> evaluate(std::vector<Value<bool>> _vector) const;
+	virtual Value<T> evaluate(std::vector<Value<T>> _vector) const;
 
 
 };

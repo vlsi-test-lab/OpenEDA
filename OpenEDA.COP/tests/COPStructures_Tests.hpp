@@ -20,7 +20,7 @@ public:
 
 	}
 
-	Parser<COPLine, COPNode> parser;
+	Parser<COPLine, COPNode, bool> parser;
 	Circuit* b19 = parser.Parse("b19.p.bench");
 };
 
@@ -30,7 +30,7 @@ public:
 
 	}
 
-	Parser<COPLine, COPNode> parser;
+	Parser<COPLine, COPNode, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
 
 	std::map<std::string, float> CC =

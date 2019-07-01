@@ -49,7 +49,8 @@ public:
 	 */
 	PRPG(
 		size_t _size,
-		std::vector<Value<_primitive>> _seed = std::vector<Value<_primitive>>()
+		unsigned int _seed = (_primitive)1
+		//std::vector<Value<_primitive>> _seed = std::vector<Value<_primitive>>()
 	);
 
 	/*
@@ -79,12 +80,19 @@ private:
 	/*
 	 * The current state of the LFSR.
 	 */
-	std::vector<Value<_primitive>> lfsr_;
+	unsigned long long int lfsr_;
 
 	/*
 	 * The LFSR XORed indicies (exponents).
+	 *
+	 * The "1s" are the indicies.
+	 *
+	 * The stnadard XOR bits for a 64-bit LFSR are 1, 3, 4 ('0' is part of the wrap-around, but is not "inverted")
+	 * Since bits are shifted right, these positions are tranlated to 62, 60, and 59 ("63" is the MSB which "wraps around").
+	 * //DELETE: old external LFSR //The standard XORs bits for the 31-bit lfsr are 0 and 3.
 	 */
-	std::unordered_set<size_t> exp_;
+	//DELTE: 31-bit external lfsr //unsigned long int exp_ = 0x00000009;
+	unsigned long long int exp_ = 0x5800000000000000;
 	
 };
 

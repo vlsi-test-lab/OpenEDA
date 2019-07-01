@@ -48,7 +48,7 @@ public:
 	 * @param _min (Optional) Minimum possible value of the Value.
 	 * @param _max (Optional) Maximum possible value of the Value.
 	 */
-	Value(T _magnitude, bool _valid = true, T _min = std::numeric_limits<T>::min(),
+	Value(T _magnitude, T _valid = 0xFFFFFFFFFFFFFFFF, T _min = std::numeric_limits<T>::min(),
 		  T _max = std::numeric_limits<T>::max());
 
 	//NOTE: "==" and "!=" can be combined to find the validity of two values. If
@@ -80,29 +80,29 @@ public:
 	 */
 	bool operator < (const Value<T>& _other) const;
 
-	/*
-	 * Perform a bitwise "AND" (or equivalent) operation.
-	 *
-	 * @param _other The other value of the operation.
-	 * @return The AND operation of the two Values.
-	 */
-	Value<T> operator & (const Value<T>& _other) const;
+	///*
+	// * Perform a bitwise "AND" (or equivalent) operation.
+	// *
+	// * @param _other The other value of the operation.
+	// * @return The AND operation of the two Values.
+	// */
+	//Value<T> operator & (const Value<T>& _other) const;
 
-	/*
-	 * Perform a bitwise "OR" (or equivalent) operation.
-	 *
-	 * @param _other The other value of the operation.
-	 * @return The OR operation of the two Values.
-	 */
-	Value<T> operator | (const Value<T>& _other) const;
+	///*
+	// * Perform a bitwise "OR" (or equivalent) operation.
+	// *
+	// * @param _other The other value of the operation.
+	// * @return The OR operation of the two Values.
+	// */
+	//Value<T> operator | (const Value<T>& _other) const;
 
-	/*
-	 * Perform a bitwise "XOR" (or equivalent) operation.
-	 *
-	 * @param _other The other value of the operation.
-	 * @return The XOR operation of the two Values.
-	 */
-	Value<T> operator ^ (const Value<T>& _other) const;
+	///*
+	// * Perform a bitwise "XOR" (or equivalent) operation.
+	// *
+	// * @param _other The other value of the operation.
+	// * @return The XOR operation of the two Values.
+	// */
+	//Value<T> operator ^ (const Value<T>& _other) const;
 
 	/*
 	 * Perform a bitwise "NOT" (or equivalent) operation.
@@ -144,7 +144,7 @@ public:
 	  *
 	  * @return (bool) Is this Valid valid.
 	  */
-	 bool valid() const;
+	 T valid() const;
 
 	 /* 
 	  * Set the validity of this Value.
@@ -152,7 +152,7 @@ public:
 	  * @param _valid The new validity of this Value.
 	  * @return (bool) The new validity of thsi Value.
 	  */
-	 bool valid(bool _valid);
+	 T valid(T _valid);
 
 	 /*
 	  * Increment's this Value's magnitude.
@@ -187,7 +187,7 @@ private:
 	T magnitude_;
 
 	//Is the Value valid?
-	bool valid_;
+	T valid_;
 
 	//The minimum magnitude.
 	T min_;

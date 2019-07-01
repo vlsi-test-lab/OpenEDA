@@ -16,7 +16,7 @@
 class FaultTest : public ::testing::Test {
 protected:
 	void SetUp() override {
-		Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
+		Parser<FaultyLine<bool>, FaultyNode<bool>, bool> parser;
 		Circuit* c = parser.Parse("c17.bench");
 		FaultGenerator<bool> fgen;
 		std::unordered_set<Fault<bool>*> faults = fgen.allFaults(c);

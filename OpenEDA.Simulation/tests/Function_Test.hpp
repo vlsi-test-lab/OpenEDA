@@ -27,39 +27,39 @@ public:
 	std::vector<Value<bool>> vals0 = { val0 };
 	std::vector<Value<bool>> val_empty = { };
 	//BooleanFunction bfunc;
-	BooleanFunction* and = new BooleanFunction("and");
-	BooleanFunction* nand = new BooleanFunction("nand");
-	BooleanFunction* or = new BooleanFunction("or");
-	BooleanFunction* nor = new BooleanFunction("nor");
-	BooleanFunction* buf = new BooleanFunction("bUf");
-	BooleanFunction* xor = new BooleanFunction("XOR");
-	BooleanFunction* xnor = new BooleanFunction("xnor");
-	BooleanFunction* not = new BooleanFunction("noT");
+	BooleanFunction<bool>* and = new BooleanFunction<bool>("and");
+	BooleanFunction<bool>* nand = new BooleanFunction<bool>("nand");
+	BooleanFunction<bool>* or = new BooleanFunction<bool>("or");
+	BooleanFunction<bool>* nor = new BooleanFunction<bool>("nor");
+	BooleanFunction<bool>* buf = new BooleanFunction<bool>("bUf");
+	BooleanFunction<bool>* xor = new BooleanFunction<bool>("XOR");
+	BooleanFunction<bool>* xnor = new BooleanFunction<bool>("xnor");
+	BooleanFunction<bool> * not = new BooleanFunction<bool>("noT");
 
 };
 
 
 //BooleanFunction(std::string _functionString);
 TEST(BFuncConstructorTest, TEST01) {
-	EXPECT_ANY_THROW(BooleanFunction bfunc);
+	EXPECT_ANY_THROW(BooleanFunction<bool> bfunc);
 }
 
 //BooleanFunction(std::string _functionString);
 TEST(BFuncConstructorTest, TEST02) {
-	EXPECT_NO_THROW(BooleanFunction bfunc("and"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("nand"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("or"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("nor"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("noT"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("bUf"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("XOR"););
-	EXPECT_NO_THROW(BooleanFunction bfunc("xnor"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("and"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("nand"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("or"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("nor"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("noT"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("bUf"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("XOR"););
+	EXPECT_NO_THROW(BooleanFunction<bool> bfunc("xnor"););
 }
 
 //BooleanFunction(std::string _functionString);
 TEST(BFuncConstructorTest, TEST03) {
-	EXPECT_ANY_THROW(BooleanFunction bfunc("for"););
-	EXPECT_ANY_THROW(BooleanFunction bfunc("absor"););
+	EXPECT_ANY_THROW(BooleanFunction<bool> bfunc("for"););
+	EXPECT_ANY_THROW(BooleanFunction<bool> bfunc("absor"););
 }
 
 //std::string string() const;

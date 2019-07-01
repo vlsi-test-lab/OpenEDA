@@ -89,7 +89,7 @@ public:
 	 * Create a node with no inputs, no outputs, and a "copy" function.
 	 */
 	SimulationNode() : Evented<_primitive>() {
-		this->function_ = new BooleanFunction("copy");
+		this->function_ = new BooleanFunction<_primitive>("copy");
 	}
 
 	/*

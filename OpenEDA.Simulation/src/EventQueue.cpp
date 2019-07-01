@@ -30,13 +30,13 @@
   */
  template<class _primitive>
  bool changed(Value<_primitive> _a, Value<_primitive> _b) {
-	 if (_a.valid() == false && _b.valid() == false) {
+	 if (_a.valid() == false && _b.valid() == false) { //NOTE: this works for noon-bool widths: valid() == false only if all are valid.
 		 return false;
 	 }
-	 if (_a.valid() != _b.valid()) {
+	 if (_a.valid() != _b.valid()) {//NOTE: this works for noon-bool widths: this will be true if any mis-match.
 		 return true;
 	 }
-	 if (_a.magnitude() != _b.magnitude()) {
+	 if (_a.magnitude() != _b.magnitude()) {//NOTE: this works for noon-bool widths: this will be true if any mis-match.
 		 return true;
 	 }
 	 return false;
@@ -137,3 +137,6 @@ void EventQueue<_primitive>::process() {
 
 template class Evented<bool>;
 template class EventQueue<bool>;
+
+template class Evented<unsigned long long int>;
+template class EventQueue<unsigned long long int>;

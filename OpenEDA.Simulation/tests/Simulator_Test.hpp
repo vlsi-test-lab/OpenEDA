@@ -30,7 +30,7 @@ public:
 		}
 	}
 	
-	Parser<SimulationLine<bool>, SimulationNode<bool>> parser;
+	Parser<SimulationLine<bool>, SimulationNode<bool>, bool> parser;
 	Circuit* c = parser.Parse("c17.bench");
 	std::unordered_set<Levelized*> pisUnordered = c->pis();
 	std::vector<SimulationNode<bool>*> pisOrdered;

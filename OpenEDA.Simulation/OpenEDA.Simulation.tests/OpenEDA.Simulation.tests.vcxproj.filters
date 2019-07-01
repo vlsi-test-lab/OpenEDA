@@ -17,6 +17,9 @@
     <ClInclude Include="..\tests\Function_Test.hpp">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="..\tests\WideSimulator_Test.hpp">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

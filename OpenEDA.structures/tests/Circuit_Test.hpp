@@ -47,7 +47,7 @@ public:
 		}
 	}
 
-	Parser<SimulationLine<bool>, SimulationNode<bool>> parser;
+	Parser<SimulationLine<bool>, SimulationNode<bool>, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
 	Circuit* c17copy = new Circuit(*c17);
 	

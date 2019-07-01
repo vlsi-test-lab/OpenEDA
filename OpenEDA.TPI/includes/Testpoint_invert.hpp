@@ -62,7 +62,7 @@ public:
 
 		//Create the new node and new line.
 		this->newNode_ = new _nodeType(
-			new BooleanFunction("not")
+			new BooleanFunction<_primitive>("not")
 			);
 		std::string name = this->location_->name() + "_pre-invert-TP";
 		this->newLine_ = new _lineType(

@@ -19,7 +19,7 @@ public:
 	void SetUp() override {
 
 	}
-	Parser<SimulationLine<bool>, SimulationNode<bool>> parse;
+	Parser<SimulationLine<bool>, SimulationNode<bool>, bool> parse;
 	Circuit* c = parse.Parse("c17.bench");
 	std::unordered_set<Levelized*> nodes = c->nodes();
 	std::unordered_set<Levelized*> pis = c->pis();

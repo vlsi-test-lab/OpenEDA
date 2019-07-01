@@ -81,7 +81,7 @@ public:
 		initializeAllCombinations();
 	}
 
-	Parser<SATLine<bool>, SATNode<bool>> parser;
+	Parser<SATLine<bool>, SATNode<bool>, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
 	SAT<bool, SATLine<bool>, SATNode<bool>> sat = SAT<bool, SATLine<bool>, SATNode<bool>>(3600);
 	

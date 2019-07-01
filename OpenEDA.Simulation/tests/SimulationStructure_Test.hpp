@@ -45,7 +45,7 @@ public:
 	SimulationLine<bool>* l2 = new SimulationLine<bool>("l2"); 
 	std::unordered_set<SimulationLine<bool>*> in_l_n1 = { l1 };
 	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l2 };
-	Function<bool>* func = new BooleanFunction("nand");
+	Function<bool>* func = new BooleanFunction<bool>("nand");
 	SimulationNode<bool>* sn = new SimulationNode<bool>(func, in_l_n1, o_l_n1);
 	Value<bool> val1 =  Value<bool>(1);
 	Value<bool> val2 =  Value<bool>(0);
@@ -61,11 +61,11 @@ TEST_F(SimNode_Test, TEST01) {
 }
 
 //SimulationNode()
-TEST_F(SimNode_Test, TEST02) {
-
-	std::set<std::pair<size_t, Evented<bool>*>> event_queue = sn->go();
-	EXPECT_TRUE(event_queue.empty()); //The input values are the same before and after: X
-}
+//TEST_F(SimNode_Test, TEST02) {
+//
+//	std::set<std::pair<size_t, Evented<bool>*>> event_queue = sn->go();
+//	EXPECT_TRUE(event_queue.empty()); //The input values are the same before and after: X
+//}
 
 //SimulationNode()
 TEST_F(SimNode_Test, TEST03) {

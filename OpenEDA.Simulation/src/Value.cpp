@@ -15,11 +15,11 @@ Value<T>::Value() {
 	min_ = std::numeric_limits<T>::min();
 	max_ = std::numeric_limits<T>::max();
 	magnitude_ = min_;
-	valid_ = false;
+	valid_ = (T)0x0000000000000000;
 }
 
 template<class T>
-Value<T>::Value(T _magnitude, bool _valid, T _min, T _max) {
+Value<T>::Value(T _magnitude, T _valid, T _min, T _max) {
 	magnitude_ = _magnitude;
 	valid_ = _valid;
 	min_ = _min;
@@ -28,81 +28,90 @@ Value<T>::Value(T _magnitude, bool _valid, T _min, T _max) {
 
 template<class T>
 bool Value<T>::operator==(const Value<T>& _other) const {
-	if (this->valid() == false) {
+	if ((this->valid() & _other.valid()) == (T)0x0) {
 		return false;
 	}
-	if (_other.valid() == false) {
+	//DELETE: obsolete by previous statement.
+	/*if (_other.valid() == 0x0) {
 		return false;
-	}
+	}*/
 	return this->magnitude() == _other.magnitude();
 }
 
 template<class T>
 bool Value<T>::operator!=(const Value<T>& _other) const {
 	//return !(*this == _other);
-	if (this->valid() == false) {
+	if ((this->valid() & _other.valid()) == (T)0x0) {
 		return false;
 	}
-	if (_other.valid() == false) {
+	/*if (_other.valid() == 0x0) {
 		return false;
-	}
+	}*/
 	return this->magnitude() != _other.magnitude();
 }
 
 template<class T>
 bool Value<T>::operator<(const Value<T>& _other) const {
-	if (this->valid() == false || _other.valid() == false) {
+	//if (this->valid() == false | _other.valid() == false) {
+	if (this->valid() & _other.valid() != (T)0xFFFFFFFFFFFFFFFF) {
 		throw "Cannot compare '<' of two values if one is not valid.";
 	}
 	return this->magnitude() < _other.magnitude();
 }
 
-template<class T>
-Value<T> Value<T>::operator&(const Value<T>& _other) const {
-	bool valid = true;
-	if (this->valid_ == false) {
-		valid = false;
-	} else if (this->magnitude_ == (T) 0) {
-		return Value<T>((T)0, true);
-	}
-	if (_other.valid() == false) {
-		valid = false;
-	} else if (_other.magnitude() == (T)0) {
-		return Value<T>((T)0, true);
-	}
-	return Value<T>((T)1, valid);
-}
-
-template<class T>
-Value<T> Value<T>::operator|(const Value<T>& _other) const {
-	bool valid = true;
-	if (this->valid_ == false) {
-		valid = false;
-	} else if (this->magnitude_ == (T)1) {
-		return Value<T>((T)1, true);
-	}
-	if (_other.valid() == false) {
-		valid = false;
-	} else if (_other.magnitude() == (T)1) {
-		return Value<T>((T)1, true);
-	}
-	return Value<T>((T)0, valid);
-}
-
-template<class T>
-Value<T> Value<T>::operator^(const Value<T>& _other) const {
-	if (this->valid_ == false || _other.valid() == false) {
-		return Value<T>((T)0, false);
-	} 
-	if (this->magnitude_ == _other.magnitude()) {
-		return Value<T>((T)0, true);
-	}
-	return Value<T>((T)1, true);
-}
+//template<class T>
+//Value<T> Value<T>::operator&(const Value<T>& _other) const {
+//	bool valid = true;
+//	if (this->valid_ == false) {
+//		valid = false;
+//	} else if (this->magnitude_ == (T) 0) {
+//		return Value<T>((T)0, true);
+//	}
+//	if (_other.valid() == false) {
+//		valid = false;
+//	} else if (_other.magnitude() == (T)0) {
+//		return Value<T>((T)0, true);
+//	}
+//	return Value<T>((T)1, valid);
+//}
+//
+//template<class T>
+//Value<T> Value<T>::operator|(const Value<T>& _other) const {
+//	bool valid = true;
+//	if (this->valid_ == false) {
+//		valid = false;
+//	} else if (this->magnitude_ == (T)1) {
+//		return Value<T>((T)1, true);
+//	}
+//	if (_other.valid() == false) {
+//		valid = false;
+//	} else if (_other.magnitude() == (T)1) {
+//		return Value<T>((T)1, true);
+//	}
+//	return Value<T>((T)0, valid);
+//}
+//
+//template<class T>
+//Value<T> Value<T>::operator^(const Value<T>& _other) const {
+//	if (this->valid_ == false || _other.valid() == false) {
+//		return Value<T>((T)0, false);
+//	} 
+//	if (this->magnitude_ == _other.magnitude()) {
+//		return Value<T>((T)0, true);
+//	}
+//	return Value<T>((T)1, true);
+//}
 
 template<class T>
 Value<T> Value<T>::operator~() const {
-	return Value<T>(!this->magnitude_, this->valid_);
+	return Value<T>(~this->magnitude_, this->valid_);
+}
+
+//Technically, the "~" operator does not function properly on bool:
+//https://stackoverflow.com/questions/29402367/does-using-bitwise-not-operator-on-boolean-values-invoke-undefined-behavior
+template<>
+Value<bool> Value<bool>::operator~() const {
+	return Value<bool>(!this->magnitude_, this->valid_);
 }
 
 //DELETE obsolete
@@ -128,12 +137,12 @@ T Value<T>::magnitude(T _magnitude) {
 }
 
 template<class T>
-bool Value<T>::valid() const {
+T Value<T>::valid() const {
 	return this->valid_;
 }
 
 template<class T>
-bool Value<T>::valid(bool _valid) {
+T Value<T>::valid(T _valid) {
 	this->valid_ = _valid;
 	return _valid;
 }
@@ -163,7 +172,7 @@ unsigned long int Value<T>::cardinality() const {
 	return (unsigned long int) this->max() - (unsigned long int) this->min() + 1;
 }
 
-template class Value<bool>;
+
 
 template<class T>
 Valued<T>::Valued() {
@@ -190,3 +199,6 @@ Value<T> Valued<T>::value(std::vector<Value<T>> _value) {
 }
 
 template class Valued<bool>;
+template class Valued<unsigned long long int>;
+template class Value<bool>;
+template class Value<unsigned long long int>;

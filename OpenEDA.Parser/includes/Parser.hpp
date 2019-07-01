@@ -47,8 +47,11 @@
   *                  must have a constructor which takes in a Function
   *                  pointer, a set of _lineTypes for inputs, and a set of 
   *                  _lineTypes for outputs.
+  * @param _width    The width of data to be simulated. Typically, "bool", but
+  *                  64x performance can be obtained by using "unsigned long
+  *                  long int".
   */
-template <class _lineType, class _nodeType>
+template <class _lineType, class _nodeType, class _width>
 class Parser {
 public:
 	/*
@@ -161,8 +164,8 @@ std::vector<std::string> StringToTokins(const std::string &source, const char *d
 	return results;
 }
 
-template <class _lineType, class _nodeType>
-Circuit * Parser<_lineType, _nodeType>::Parse(std::string _filePath) {
+template <class _lineType, class _nodeType, class _width>
+Circuit * Parser<_lineType, _nodeType, _width>::Parse(std::string _filePath) {
 	//Open the file.
 	std::string currentLine;
 	std::ifstream file(_filePath);
@@ -182,31 +185,31 @@ Circuit * Parser<_lineType, _nodeType>::Parse(std::string _filePath) {
 	return toReturn;
 }
 
-template <class _lineType, class _nodeType>
-_lineType * Parser<_lineType, _nodeType>::newLine(std::string _name) {
+template <class _lineType, class _nodeType, class _width>
+_lineType * Parser<_lineType, _nodeType, _width>::newLine(std::string _name) {
 	return new _lineType(_name);
 }
 
-template <class _lineType, class _nodeType>
-_nodeType * Parser<_lineType, _nodeType>::newNode(std::string _functionName, std::unordered_set<_lineType*> _inputs, std::unordered_set<_lineType*> _outputs) {
-	Function<bool>* function;
+template <class _lineType, class _nodeType, class _width>
+_nodeType * Parser<_lineType, _nodeType, _width>::newNode(std::string _functionName, std::unordered_set<_lineType*> _inputs, std::unordered_set<_lineType*> _outputs) {
+	Function<_width>* function;
 	if (
 		!_functionName.compare("copy") ||
 		!_functionName.compare("pi") ||
 		!_functionName.compare("po") ||
 		!_functionName.compare("const")
 		) {
-		function = new CopyFunction<bool>(_functionName);
+		function = new CopyFunction<_width>(_functionName);
 	}
 	else {
-		function = new BooleanFunction(_functionName);
+		function = new BooleanFunction<_width>(_functionName);
 	}
 	_nodeType* newNode = new _nodeType(function, _inputs, _outputs);
 	return newNode;
 }
 
-template <class _lineType, class _nodeType>
-void Parser<_lineType, _nodeType>::addLine(_lineType * _line) {
+template <class _lineType, class _nodeType, class _width>
+void Parser<_lineType, _nodeType, _width>::addLine(_lineType * _line) {
 	std::string name = _line->name();
 	if (lines_.count(name) == 0) {//Name is not in use yet.
 		lines_[name] = std::set<_lineType*>({ _line });
@@ -216,8 +219,8 @@ void Parser<_lineType, _nodeType>::addLine(_lineType * _line) {
 	}
 }
 
-template <class _lineType, class _nodeType>
-size_t Parser<_lineType, _nodeType>::ParseLine(std::string _textLine) {
+template <class _lineType, class _nodeType, class _width>
+size_t Parser<_lineType, _nodeType, _width>::ParseLine(std::string _textLine) {
 	//Reminder: the line format:
 	//  #comment
 	//  GATE_NAME = PRIMITIVE(INPUT1, INPUT2, ... INPUTX)
@@ -277,8 +280,8 @@ size_t Parser<_lineType, _nodeType>::ParseLine(std::string _textLine) {
 }
 
 
-template <class _lineType, class _nodeType>
-void Parser<_lineType, _nodeType>::MergeLines() {
+template <class _lineType, class _nodeType, class _width>
+void Parser<_lineType, _nodeType, _width>::MergeLines() {
 	for (auto it = lines_.begin(); it != lines_.end(); ++it) {
 		std::string lineName = it->first;
 		std::set<_lineType*> lines = it->second;
@@ -307,8 +310,8 @@ void Parser<_lineType, _nodeType>::MergeLines() {
 	}
 }
 
-template <class _lineType, class _nodeType>
-void Parser<_lineType, _nodeType>::Clean() {
+template <class _lineType, class _nodeType, class _width>
+void Parser<_lineType, _nodeType, _width>::Clean() {
 	pis_.clear();
 	pos_.clear();
 	nodes_.clear();

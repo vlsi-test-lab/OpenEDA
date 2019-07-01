@@ -84,3 +84,4 @@ std::vector<Value<T>> Simulator<T>::outputs(
 
 
 template class Simulator<bool>;
+template class Simulator<unsigned long long int>;

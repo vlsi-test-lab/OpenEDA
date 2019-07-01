@@ -32,7 +32,7 @@ public:
 	}
 
 
-	Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
+	Parser<FaultyLine<bool>, FaultyNode<bool>, bool> parser;
 	Circuit* c = parser.Parse("c17.bench");
 	std::unordered_set<Levelized*> pisUnordered = c->pis();
 	std::vector<SimulationNode<bool>*> pisOrdered;

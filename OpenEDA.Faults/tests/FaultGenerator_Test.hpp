@@ -19,7 +19,7 @@ public:
 	void SetUp() override {
 
 	}
-	Parser<FaultyLine<bool>, FaultyNode<bool>> parser;
+	Parser<FaultyLine<bool>, FaultyNode<bool>, bool> parser;
 	Circuit* ckt = parser.Parse("c17.bench");
 	FaultGenerator<bool>* fgen;
 	std::unordered_set<Fault<bool>*> c17faults = fgen->allFaults(ckt);

@@ -40,7 +40,7 @@ public:
 
 	
 
-	Parser<COP_TPI_Line, COP_TPI_Node> parser;
+	Parser<COP_TPI_Line, COP_TPI_Node, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
 	TPI_COP<COP_TPI_Node, COP_TPI_Line> tpi = TPI_COP<COP_TPI_Node, COP_TPI_Line>(c17);
 	TPGenerator<Testpoint_control<bool, COP_TPI_Node, COP_TPI_Line>, COP_TPI_Node, COP_TPI_Line, bool> controlGen;
