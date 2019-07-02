@@ -193,3 +193,6 @@ bool Faulty<_primitive>::isFaultActive(Fault<_primitive>* _fault) {
 
 template class Fault<bool>;
 template class Faulty<bool>;
+
+template class Fault<unsigned long long int>;
+template class Faulty<unsigned long long int>;

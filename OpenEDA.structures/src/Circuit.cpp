@@ -69,14 +69,14 @@ void Circuit::copy(std::unordered_set<Levelized*> _nodes, std::unordered_set<Lev
 
 	//First, set all PIs and POs of the circuit.
 	for (Levelized* pi : _pis) {
-		Levelized* newNode = pi->clone();
+		Levelized* newNode = dynamic_cast<Levelized*>(pi->clone());
 		//Not needed //this->addNode(newNode);
 		this->addPI(newNode);
 		newToOld[newNode] = pi;
 		oldToNew[pi] = newNode;
 	}
 	for (Levelized* po : _pos) {
-		Levelized* newNode = po->clone();
+		Levelized* newNode = dynamic_cast<Levelized*>(po->clone());
 		//Not needed //this->addNode(newNode);
 		this->addPO(newNode);
 		newToOld[newNode] = po;

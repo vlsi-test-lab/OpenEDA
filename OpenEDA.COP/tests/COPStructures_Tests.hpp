@@ -20,7 +20,7 @@ public:
 
 	}
 
-	Parser<COPLine, COPNode, bool> parser;
+	Parser<COPLine<bool>, COPNode<bool>, bool> parser;
 	Circuit* b19 = parser.Parse("b19.p.bench");
 };
 
@@ -30,7 +30,7 @@ public:
 
 	}
 
-	Parser<COPLine, COPNode, bool> parser;
+	Parser<COPLine<bool>, COPNode<bool>, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
 
 	std::map<std::string, float> CC =
@@ -76,7 +76,7 @@ public:
 
 	void ForwardCOPTraceAndCheck(COP* obj) {
 		//1 Is this is a line? If so, check its value (don't care about checking nodes).
-		COPLine* lineCast = dynamic_cast<COPLine*>(obj);
+		COPLine<bool>* lineCast = dynamic_cast<COPLine<bool>*>(obj);
 		if (lineCast != nullptr) {
 			//CHOICE: Is this a fan-out?
 			std::string lineName = obj->name();
@@ -84,7 +84,7 @@ public:
 			bool isFanOut = false;
 			if (obj->inputs().size() != 0) {
 				Connecting* input = *(obj->inputs().begin());
-				if (dynamic_cast<COPNode*>(input) == nullptr) {
+				if (dynamic_cast<COPNode<bool>*>(input) == nullptr) {
 					isFanOut = true;
 					Connecting* fanOutNode = *(obj->outputs().begin());
 					Connecting* fanOutLine = *(fanOutNode->outputs().begin());
@@ -128,7 +128,7 @@ public:
 //This is an exaustive test for c17
 TEST_F(C17Test, ExhaustiveTest) {
 	for (Levelized* pi : c17->pis()) {
-		COPNode* cast = dynamic_cast<COPNode*>(pi);
+		COPNode<bool>* cast = dynamic_cast<COPNode<bool>*>(pi);
 		if (cast == nullptr) {
 			throw "You have a serious problem here.";
 		}
@@ -142,7 +142,7 @@ TEST_F(C17Test, ExhaustiveTest) {
 // circuit.
 TEST_F(B19Test, InputObservabilityTest) {
 	for (Levelized* pi : b19->pis()) {
-		COPNode* cast = dynamic_cast<COPNode*>(pi);
+		COPNode<bool>* cast = dynamic_cast<COPNode<bool>*>(pi);
 		if (cast == nullptr) {
 			throw "You have a serious problem here.";
 		}
@@ -166,24 +166,24 @@ TEST_F(B19Test, InputObservabilityTest) {
 //	std::unordered_set<SimulationLine<bool>*> o_l_n1 = { l3 };
 //	Function<bool>* func = new BooleanFunction("nand");
 //	SimulationNode<bool>* sn = new SimulationNode<bool>(func, in_l_n1, o_l_n1);
-//	COPLine *cl1 = dynamic_cast<COPLine*>(l1);
-//	COPLine *cl2 = dynamic_cast<COPLine*>(l2);
-//	COPLine *cl3 = dynamic_cast<COPLine*>(l3);
-//	COPNode *cnode = dynamic_cast<COPNode*>(sn);
-//	std::unordered_set<COPLine*> inputs = {cl1,cl2};
-//	std::unordered_set<COPLine*> outputs = { cl3 };
+//	COPLine<bool> *cl1 = dynamic_cast<COPLine<bool>*>(l1);
+//	COPLine<bool> *cl2 = dynamic_cast<COPLine<bool>*>(l2);
+//	COPLine<bool> *cl3 = dynamic_cast<COPLine<bool>*>(l3);
+//	COPNode<bool> *cnode = dynamic_cast<COPNode<bool>*>(sn);
+//	std::unordered_set<COPLine<bool>*> inputs = {cl1,cl2};
+//	std::unordered_set<COPLine<bool>*> outputs = { cl3 };
 //};
 //
-//TEST_F(COPTest, COPLine01) {
-//	EXPECT_NO_THROW(COPLine *cline;);
-//	COPLine *cline = new COPLine;
+//TEST_F(COPTest, COPLine<bool>01) {
+//	EXPECT_NO_THROW(COPLine<bool> *cline;);
+//	COPLine<bool> *cline = new COPLine<bool>;
 //	EXPECT_EQ("UNDEF",cline->name());
 //}
 //
-//TEST_F(COPTest, COPLine02) {
-//	EXPECT_NO_THROW(COPLine *cline = new COPLine("COPLine"););
-//	COPLine *cline = new COPLine("COPLine");
-//	EXPECT_EQ("COPLine",cline->name());
+//TEST_F(COPTest, COPLine<bool>02) {
+//	EXPECT_NO_THROW(COPLine<bool> *cline = new COPLine<bool>("COPLine<bool>"););
+//	COPLine<bool> *cline = new COPLine<bool>("COPLine<bool>");
+//	EXPECT_EQ("COPLine<bool>",cline->name());
 //}
 //
 //TEST_F(COPTest, SetControllabilitiesTest) {
@@ -221,11 +221,11 @@ TEST_F(B19Test, InputObservabilityTest) {
 //	EXPECT_EQ(0.5, cl2->observability());
 //}
 //
-//TEST_F(COPTest, COPNodeTest01) {
-//	EXPECT_NO_THROW(COPNode* copnode;);
+//TEST_F(COPTest, COPNode<bool>Test01) {
+//	EXPECT_NO_THROW(COPNode<bool>* COPNode<bool>;);
 //}
 //
-//TEST_F(COPTest, COPNodeTest02) {
-//	EXPECT_NO_THROW(COPNode* copnode = new COPNode(func,inputs,outputs););
+//TEST_F(COPTest, COPNode<bool>Test02) {
+//	EXPECT_NO_THROW(COPNode<bool>* COPNode<bool> = new COPNode<bool>(func,inputs,outputs););
 //}
 //

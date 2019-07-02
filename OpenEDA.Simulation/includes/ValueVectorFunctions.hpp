@@ -53,11 +53,17 @@ public:
 			if (_compare.at(i) == false) {
 				continue;
 			}
-			if (a.at(i).valid() == true && b.at(i).valid() == true) {
+			Value<_primitive> aValue = a.at(i);
+			Value<_primitive> bValue = b.at(i);
+			if (aValue != bValue) {
+				return true;
+			}
+			//DELETE: this is now obsolete with non-bool values.
+			/*if (a.at(i).valid() == true && b.at(i).valid() == true) {
 				if (a.at(i).magnitude() != b.at(i).magnitude()) {
 					return true;
 				}
-			}
+			}*/
 		}
 		return false;
 	}
@@ -73,13 +79,17 @@ public:
 	 */
 	static bool backtrack(std::vector<Value<_primitive>> & val) {
 		int index = -1;
+
+		//First, find the largest index which has a valid value.
 		for (size_t i = 0; i < val.size(); i++) {
-			if (val.at(i).valid() == true) {
+			if (val.at(i).valid()) {
 				index = i;
 			} else {
 				break;
 			}
 		}
+
+		//Then work backwards trying to flip the value.
 		while (index >= 0) {
 			if (val.at(index).increment() == false) {
 				return true;
@@ -113,6 +123,7 @@ public:
 		return true;
 	}
 
+
 	/*
 	 * Increment the vector while holding a given value.
 	 *
@@ -123,16 +134,31 @@ public:
 	 * @return False if the vector "rolled over".
 	 */
 	static bool increment(std::vector <Value<_primitive>> & _vec, int _hold = -1) {
+		_primitive CONSTANTS[6] = {
+			0xAAAAAAAAAAAAAAAA, //1010
+			0xCCCCCCCCCCCCCCCC, //1100
+			0xF0F0F0F0F0F0F0F0, //00001111
+			0xFF00FF00FF00FF00,
+			0xFFFF0000FFFF0000,
+			0xFFFFFFFF00000000
+		};
+
+		_primitive valids = validMask(_vec.size());
 		for (std::size_t i = 0; i < _vec.size(); i++) {
-			if (i == _hold) {
+			if (i == _hold) { continue;	}
+			if (i < numConstantFields()) {
+				_vec[i] = Value<_primitive>(CONSTANTS[i], valids);
 				continue;
 			}
-			//DEL//wrong functionality. for (Value<T> val : _vec) {
-			if (_vec.at(i).valid() == false) {
+			//DELETE: Will no longer check for valid values.
+			/*if (_vec.at(i).valid() == false) {
 				throw "A vector with a non-valid value cannot be incremented.";
-			}
-			if (_vec.at(i).increment() == false) {
+			}*/
+			if (_vec.at(i).magnitude() == (_primitive)0x0) { //It's a 0: flip it an return.
+				_vec.at(i).magnitude((_primitive)0xFFFFFFFFFFFFFFFF);
 				return true;
+			} else {
+				_vec.at(i).magnitude((_primitive)0x0000000000000000);
 			}
 		}
 		return false;
@@ -149,21 +175,7 @@ public:
 	 * @param (optional) _weights The weight assigned to each input, by default, "50%".
 	 * @return The generated random vector.
 	 */
-	static std::vector<Value<_primitive>> random(size_t _size, std::vector<float> _weights = std::vector<float>()) {
-		if (_weights.size() == 0) {
-			_weights = std::vector<float>(_size, 0.5);
-		}
-		if (_size != _weights.size()) {
-			throw "Cannot generate random vector: incorrect number of weights given";
-		}
-		std::vector<Value<_primitive>> toReturn;
-		static std::default_random_engine e;
-		for (size_t a = 0; a < _weights.size(); a++) {
-			std::bernoulli_distribution b(_weights.at(a));
-			toReturn.push_back(Value<_primitive>(b(e)));
-		}
-		return toReturn;
-	}
+	static std::vector<Value<_primitive>> random(size_t _size, std::vector<float> _weights = std::vector<float>());
 
 	/*
 	 * Shift a vector left.
@@ -181,6 +193,85 @@ public:
 		_vector.push_back(_input);
 		return toReturn;
 	}
+
+private:
+	/*
+	 * For increment, return the number of "constant fields".
+	 */
+	static size_t numConstantFields();
+
+	
+
+	/*
+	 * For increment, return a "partial valid" mask for a given number of inputs.
+	 *
+	 * @param _inputs The number of inputs which are being incremented.
+	 */
+	static _primitive validMask(size_t _inputs) {
+		/*
+		 * The valid masks for a given input size.
+		 */
+		_primitive VALID_MASKS [7] = {
+			0x0000000000000001, //0 input (which doesn't make sense)
+			0x0000000000000003, //1 input : 01
+			0x000000000000000F, //2 inputs : 0101
+			0x00000000000000FF, //3
+			0x000000000000FFFF, //4
+			0x00000000FFFFFFFF, //5
+			0xFFFFFFFFFFFFFFFF  //6 (and more)
+		};
+		_inputs = (_inputs > 6) ? 6 : _inputs; //Max out at 6.
+		return VALID_MASKS[_inputs];
+	}
+
 };
+
+template<>
+inline size_t ValueVectorFunction<bool>::numConstantFields() {
+	return 0;
+}
+
+template<>
+inline size_t ValueVectorFunction<unsigned long long int>::numConstantFields() {
+	return 6;
+}
+
+template<>
+inline std::vector<Value<bool>> ValueVectorFunction<bool>::random(size_t _size, std::vector<float> _weights) {
+	if (_weights.size() == 0) {
+		_weights = std::vector<float>(_size, 0.5);
+	}
+	if (_size != _weights.size()) {
+		throw "Cannot generate random vector: incorrect number of weights given";
+	}
+	std::vector<Value<bool>> toReturn;
+	static std::default_random_engine e;
+	for (size_t a = 0; a < _weights.size(); a++) {
+		std::bernoulli_distribution b(_weights.at(a));
+		toReturn.push_back(Value<bool>(b(e)));
+	}
+	return toReturn;
+}
+
+template<>
+inline std::vector<Value<unsigned long long int>> ValueVectorFunction<unsigned long long int>::random(size_t _size, std::vector<float> _weights) {
+	if (_weights.size() == 0) {
+		_weights = std::vector<float>(_size, 0.5);
+	}
+	if (_size != _weights.size()) {
+		throw "Cannot generate random vector: incorrect number of weights given";
+	}
+	std::vector<Value<unsigned long long int>> toReturn;
+	static std::default_random_engine e;
+	for (size_t a = 0; a < _weights.size(); a++) {
+		//std::bernoulli_distribution b(_weights.at(a));
+		unsigned long long int num = rand(); //Only 16 bits, because, why not make things confusing.
+		num = num << 16; num = num | rand();
+		num = num << 16; num = num | rand();
+		num = num << 16; num = num | rand();
+		toReturn.push_back(Value<unsigned long long int>(num));
+	}
+	return toReturn;
+}
 
 #endif

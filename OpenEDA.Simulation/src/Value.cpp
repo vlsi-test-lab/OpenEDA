@@ -35,7 +35,7 @@ bool Value<T>::operator==(const Value<T>& _other) const {
 	/*if (_other.valid() == 0x0) {
 		return false;
 	}*/
-	return this->magnitude() == _other.magnitude();
+	return (this->magnitude() & this->valid()) == (_other.magnitude() & _other.valid());
 }
 
 template<class T>
@@ -47,7 +47,7 @@ bool Value<T>::operator!=(const Value<T>& _other) const {
 	/*if (_other.valid() == 0x0) {
 		return false;
 	}*/
-	return this->magnitude() != _other.magnitude();
+	return (this->magnitude() & this->valid()) != (_other.magnitude() & _other.valid());
 }
 
 template<class T>

@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return new simulationline.
 	 */
-	virtual SimulationLine* clone() const {
+	virtual Connecting* clone() const {
 		return new SimulationLine(this->name());
 	}
 };
@@ -141,7 +141,7 @@ public:
 	 *
 	 * @return new simulationnode.
 	 */
-	virtual SimulationNode* clone() const {
+	virtual Connecting* clone() const {
 		return new SimulationNode(this->function());
 	}
 

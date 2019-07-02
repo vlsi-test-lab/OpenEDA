@@ -124,7 +124,7 @@ public:
 	 *
 	 * @return new Levelized.
 	 */
-	virtual Levelized* clone() const;
+	virtual Connecting* clone() const;
 
 	
 

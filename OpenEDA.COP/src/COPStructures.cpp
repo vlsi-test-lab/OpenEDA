@@ -181,20 +181,22 @@ void COP::addOutputConnection(Connection * _add) {
 	this->Levelized::addOutputConnection(_add);
 }
 
-COPLine::COPLine() : 
+template<class _width>
+COPLine<_width>::COPLine() : 
 	COP(false) , 
-	SimulationLine<bool>() 
+	SimulationLine<_width>() 
 {
 }
 
-COPLine::COPLine(std::string _name) :
+template<class _width>
+COPLine<_width>::COPLine(std::string _name) :
 	COP(false),
-	SimulationLine<bool>(_name),
+	SimulationLine<_width>(_name),
 	Connecting(_name)
 {
 }
-
-float COPLine::calculateControllability() {
+template<class _width>
+float COPLine<_width>::calculateControllability() {
 	if (this->inputs().size() != 1) {
 		throw "Cannot calculate COPLine controllability: need exactly 1 input.";
 	}
@@ -206,7 +208,8 @@ float COPLine::calculateControllability() {
 	return toReturn;
 }
 
-float COPLine::calculateObservability(COP * _calling) {
+template<class _width>
+float COPLine<_width>::calculateObservability(COP * _calling) {
 	if (this->outputs().size() == 0) {
 		return 0.0;
 		//DELETE: incorrect. throw "A line with no outputs cannot calculate its observability.";
@@ -225,47 +228,64 @@ float COPLine::calculateObservability(COP * _calling) {
 	return toReturn;
 }
 
+template<class _width>
+Connecting* COPLine<_width>::clone() {
+	return new COPLine<_width>(this->name());
+}
 
-COPLine* COPLine::clone() {
-	return new COPLine(this->name());
+/*
+ * Count the number of 1s in a number
+ *
+ * https://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetNaive
+ */
+//NOTE: this function is not actually used for anything, but it's kept here for reference.
+template<class _width>
+unsigned long int numOnes(_width v) {
+	unsigned long int c; // c accumulates the total bits set in v
+	for (c = 0; v; c++) {
+		v &= v - 1; // clear the least significant bit set
+	}
+	return c;
 }
 
 /*
  * Manually calculate COP for a given node.
  */
-float manualCOP(COPNode* node, std::vector<float> inputControllabilities) {
-	Function<bool>* func = dynamic_cast<Function<bool>*>(node->function());
-	std::vector<Value<bool>> nodeInputVals = std::vector<Value<bool>>(node->inputs().size(), Value<bool>(false));
-	unsigned long int num0 = 0;
-	unsigned long int num1 = 0;
+template<class _width>
+float manualCOP(COPNode<_width>* node, std::vector<float> inputControllabilities) {
+	Function<_width>* func = dynamic_cast<Function<_width>*>(node->function());
+	//TODO: what's the "initial" value?
+	std::vector<Value<_width>> nodeInputVals = std::vector<Value<_width>>(node->inputs().size(), Value<_width>((_width)0x0));
 	float ret = 0.0;
-	float ret1;
 	do {
-		Value<bool> outVal = func->evaluate(nodeInputVals);
-		if (outVal.valid() == false) {
-			throw "COP cannot be calculated for a non-valid function output.";
-		}
-		if (outVal.magnitude() == false) {
-			num0++;
-		}
-		if (outVal.magnitude() == true) {
-			ret1 = 1;
-			for (size_t a = 0; a < nodeInputVals.size(); a++) {
-
-				if (nodeInputVals.at(a).magnitude() == true) {
-					ret1 = ret1 * (inputControllabilities.at(a));
-				} else {
-					ret1 = ret1 * (1 - inputControllabilities.at(a));
+		Value<_width> outVal = func->evaluate(nodeInputVals);
+		_width valid = outVal.valid();
+		_width magnitude = outVal.magnitude();
+		_width inputMask = (_width)0x1;//Which input values are we currently looking at?
+		while (valid) {//There's at least one valid output to measure.
+			if (valid & magnitude & 0x1) { //We have a valid 1, so calculate the prob. of it occuring.
+				float prob = 1;
+				for (size_t a = 0; a < nodeInputVals.size(); a++) {
+					if (nodeInputVals.at(a).magnitude() & inputMask) { //Input is a 1
+						prob = prob * (inputControllabilities.at(a));
+					} else { //Input is a 0
+						prob = prob * (1 - inputControllabilities.at(a));
+					}
 				}
+				ret = ret + prob;
 			}
-			ret = ret + ret1;
+			valid = valid >> 1;
+			magnitude = magnitude >> 1;
+			inputMask = inputMask << 1;
 		}
-	} while (ValueVectorFunction<bool>::increment(nodeInputVals) == true);
+		
+	} while (ValueVectorFunction<_width>::increment(nodeInputVals) == true);
 
 	return ret;
 }
 
-float COPNode::calculateControllability() {
+template<class _width>
+float COPNode<_width>::calculateControllability() {
 	//First, get the input controllabilities.
 	std::vector<float> inputControllabilities;
 	for (Connecting* input : this->inputs()) {
@@ -275,12 +295,12 @@ float COPNode::calculateControllability() {
 
 	//Second, calculate depending on the gate type.
 	float toReturn = 1.0;
-	Function<bool>* function = this->function();
+	Function<_width>* function = this->function();
 	std::string functionName = function->string();
 	if (functionName == "pi") {
 		return 0.5;
 	} else if (functionName == "const") {
-		Value<bool> value = function->evaluate(std::vector<Value<bool>>());
+		Value<_width> value = function->evaluate(std::vector<Value<_width>>());
 		if (value.valid() == false) {
 			throw "Cannot calculate COP CC: constant value is not valid.";
 		}
@@ -318,8 +338,9 @@ float COPNode::calculateControllability() {
 	return toReturn;
 }
 
-float COPNode::calculateObservability(COP * _calling) {
-	Function<bool>* function = this->function();
+template<class _width>
+float COPNode<_width>::calculateObservability(COP * _calling) {
+	Function<_width>* function = this->function();
 	if (function->string() == "po") {
 		return 1.0;
 	}
@@ -356,6 +377,13 @@ float COPNode::calculateObservability(COP * _calling) {
 	return toReturn;
 }
 
-COPNode* COPNode::clone() {
-	return new COPNode(this->function());
+template<class _width>
+Connecting* COPNode<_width>::clone() {
+	return new COPNode<_width>(this->function());
 }
+
+template class COPNode<bool>;
+template class COPNode<unsigned long long int>;
+
+template class COPLine<bool>;
+template class COPLine<unsigned long long int>;

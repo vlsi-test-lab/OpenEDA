@@ -248,10 +248,10 @@ private:
 /*
  * A Line which holds information necessary to perform COP.
  *
- * Note that no template parameter exists since COP is only defined for binary
- * circuits.
+ * @param _width The width of simulation (bool or unsigned long long it).
  */
-class COPLine : public virtual SimulationLine<bool> , public COP {
+template <class _width>
+class COPLine : public virtual SimulationLine<_width> , public COP {
 public:
 	
 	/*
@@ -274,7 +274,7 @@ public:
  *
  * @return new COPline.
  */
-	virtual COPLine* clone();
+	virtual Connecting* clone();
 protected:
 
 	/*
@@ -305,15 +305,15 @@ protected:
 /*
  * A Node which holds information necessary to perform COP.
  *
- * Note that no template parameter exists since COP is only defined for binary
- * circuits.
+ * @param _width The width of simulation (bool or unsigned long long it).
  */
-class COPNode : public virtual SimulationNode<bool>, public COP {
+template <class _width>
+class COPNode : public virtual SimulationNode<_width>, public COP {
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.
 	 */
-	COPNode() : SimulationNode<bool>() , COP(true), Connecting() {
+	COPNode() : SimulationNode<_width>() , COP(true), Connecting() {
 		
 	}
 
@@ -327,14 +327,14 @@ public:
 	 * @param _po (optional) Is the node a PO (optional, default = false).
 	 */
 	COPNode(
-		Function<bool>* _function, 
-			std::unordered_set<COPLine*> _inputs = std::unordered_set<COPLine*>(),
-			std::unordered_set<COPLine*> _outputs = std::unordered_set<COPLine*>()
+		Function<_width>* _function,
+			std::unordered_set<COPLine<_width>*> _inputs = std::unordered_set<COPLine<_width>*>(),
+			std::unordered_set<COPLine<_width>*> _outputs = std::unordered_set<COPLine<_width>*>()
 	) :
-		SimulationNode(
+		SimulationNode<_width>(
 			_function, 
-			std::unordered_set<SimulationLine<bool>*>(_inputs.begin(), _inputs.end()), 
-			std::unordered_set<SimulationLine<bool>*>(_outputs.begin(), _outputs.end())
+			std::unordered_set<SimulationLine<_width>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<SimulationLine<_width>*>(_outputs.begin(), _outputs.end())
 		),
 		COP(true),
 		Connecting(
@@ -362,7 +362,7 @@ public:
 	 *
 	 * @return new COPnode.
 	 */
-	virtual COPNode* clone();
+	virtual Connecting* clone();
 
 	
 protected:

@@ -100,3 +100,68 @@ TEST_F(FaultSimTest, c17tdfs) {
 	EXPECT_EQ(34, numDetectedFaults);
 
 }
+
+class FaultSimTestWide : public ::testing::Test {
+public:
+	void SetUp() override {
+		std::vector<std::string> order = { "1", "2", "3", "6", "7" };
+		for (size_t i = 0; i < pisUnordered.size(); i++) {
+			for (Levelized* pi : c->pis()) {
+				Connecting* piLine = *(pi->outputs().begin());
+				std::string piName = piLine->name();
+				if (piName == order.at(i)) {
+					pisOrdered.push_back(dynamic_cast<SimulationNode<unsigned long long int>*>(pi));
+					break;
+				}
+			}
+		}
+	}
+
+
+	Parser<FaultyLine<unsigned long long int>, FaultyNode<unsigned long long int>, unsigned long long int> parser;
+	Circuit* c = parser.Parse("c17.bench");
+	std::unordered_set<Levelized*> pisUnordered = c->pis();
+	std::vector<SimulationNode<unsigned long long int>*> pisOrdered;
+
+	FaultSimulator<unsigned long long int> faultSimulator;
+	FaultGenerator<unsigned long long int> faultGenerator;
+	std::unordered_set<Fault<unsigned long long int>*> faults = faultGenerator.allFaults(c);
+	std::unordered_set<Fault<unsigned long long int>*> tdfFaults = faultGenerator.allFaults(c, false);
+
+	Value<bool> o = Value<bool>(0);
+	Value<bool> i = Value<bool>(1);
+	Value<bool> x = Value<bool>();
+
+	//See the above "order" for what each of these inputs are.
+	Value<unsigned long long int> p1inputs = Value<unsigned long long int>(0x0000000000000014, 0x000000000000001F);
+	Value<unsigned long long int> p2inputs = Value<unsigned long long int>(0x00000000000000C3, 0x00000000000000FF);
+	Value<unsigned long long int> p3inputs = Value<unsigned long long int>(0x000000000000001B, 0x00000000000000FF);
+	Value<unsigned long long int> p6inputs = Value<unsigned long long int>(0x0000000000000042, 0x00000000000000DF);
+	Value<unsigned long long int> p7inputs = Value<unsigned long long int>(0x000000000000000E, 0x000000000000003F);
+	std::vector<Value<unsigned long long int>> stimulus = {
+		p1inputs,
+		p2inputs,
+		p3inputs,
+		p6inputs,
+		p7inputs
+	};
+
+	void TearDown() {
+		delete c;
+		//This was deleted: the fault simulator will delete the tests.
+		//for (Fault<bool>* fault : faults) {
+		//	delete fault;
+		//}
+	}
+};
+
+TEST_F(FaultSimTestWide, c17safs) {
+	ASSERT_EQ(faults.size(), 22);
+	faultSimulator.setFaults(faults);
+		
+	size_t expectedNumDetectedFaults = 22;
+	faultSimulator.applyStimulus(c, stimulus, EventQueue<unsigned long long int>(), pisOrdered);
+	size_t numDetectedFaults = faultSimulator.detectedFaults().size();
+	EXPECT_EQ(expectedNumDetectedFaults, numDetectedFaults);
+	
+}

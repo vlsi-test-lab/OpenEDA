@@ -154,3 +154,4 @@ void FaultSimulator<_primitive>::clearFaults() {
 }
 
 template class FaultSimulator<bool>;
+template class FaultSimulator<unsigned long long int>;

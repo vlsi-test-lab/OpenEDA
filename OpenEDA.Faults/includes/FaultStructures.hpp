@@ -52,7 +52,7 @@ public:
 	 *
 	 * @return new faultline.
 	 */
-	virtual FaultyLine* clone() const {
+	virtual Connecting* clone() const {
 		return new FaultyLine(this->name());
 	}
 };
@@ -105,7 +105,7 @@ public:
 	 *
 	 * @return new faultnode.
 	 */
-	virtual FaultyNode* clone() const {
+	virtual Connecting* clone() const {
 		return new FaultyNode(this->function());
 	}
 };

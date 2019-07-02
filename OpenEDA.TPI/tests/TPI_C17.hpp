@@ -40,15 +40,15 @@ public:
 
 	
 
-	Parser<COP_TPI_Line, COP_TPI_Node, bool> parser;
+	Parser<COP_TPI_Line<bool>, COP_TPI_Node<bool>, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
-	TPI_COP<COP_TPI_Node, COP_TPI_Line> tpi = TPI_COP<COP_TPI_Node, COP_TPI_Line>(c17);
-	TPGenerator<Testpoint_control<bool, COP_TPI_Node, COP_TPI_Line>, COP_TPI_Node, COP_TPI_Line, bool> controlGen;
-	TPGenerator<Testpoint_observe<bool, COP_TPI_Node, COP_TPI_Line>, COP_TPI_Node, COP_TPI_Line, bool> observeGen;
-	TPGenerator<Testpoint_invert<bool, COP_TPI_Node, COP_TPI_Line>, COP_TPI_Node, COP_TPI_Line, bool> invertGen;
-	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> controlTPs = controlGen.allTPs(c17);
-	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> observeTPs = observeGen.allTPs(c17);
-	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> invertTPs = invertGen.allTPs(c17);
+	TPI_COP<COP_TPI_Node<bool>, COP_TPI_Line<bool>> tpi = TPI_COP<COP_TPI_Node<bool>, COP_TPI_Line<bool>>(c17);
+	TPGenerator<Testpoint_control<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> controlGen;
+	TPGenerator<Testpoint_observe<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> observeGen;
+	TPGenerator<Testpoint_invert<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> invertGen;
+	std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*> controlTPs = controlGen.allTPs(c17);
+	std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*> observeTPs = observeGen.allTPs(c17);
+	std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*> invertTPs = invertGen.allTPs(c17);
 
 	std::unordered_set<Levelized*> pisUnordered = c17->pis();
 	std::vector<SimulationNode<bool>*> pisOrdered;
@@ -215,14 +215,14 @@ TEST_F(C17Tests, AllTPsGenerated) {
 }
 
 TEST_F(C17Tests, C17ExhaustiveControl) {
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* controlTP : controlTPs) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* controlTP : controlTPs) {
 		std::string tpName = "C";
 		std::string lineName = controlTP->location()->name();
 		std::string controlValue = controlTP->value().magnitude() == false ? "0" : "1";
 		std::string fanout = "";
 		if (controlTP->location()->inputs().size() != 0) {
 			Connecting* input = *(controlTP->location()->inputs().begin());
-			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+			if (dynamic_cast<COP_TPI_Node<bool>*>(input) == nullptr) {
 				Connecting* fanOutNode = *(controlTP->location()->outputs().begin());
 				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
 				fanout = "_" + fanOutLine->name();
@@ -237,13 +237,13 @@ TEST_F(C17Tests, C17ExhaustiveControl) {
 }
 
 TEST_F(C17Tests, C17ExhaustiveObserve) {
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* observeTP : observeTPs) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* observeTP : observeTPs) {
 		std::string tpName = "O";
 		std::string lineName = observeTP->location()->name();
 		std::string fanout = "";
 		if (observeTP->location()->inputs().size() != 0) {
 			Connecting* input = *(observeTP->location()->inputs().begin());
-			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+			if (dynamic_cast<COP_TPI_Node<bool>*>(input) == nullptr) {
 				Connecting* fanOutNode = *(observeTP->location()->outputs().begin());
 				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
 				fanout = "_" + fanOutLine->name();
@@ -258,13 +258,13 @@ TEST_F(C17Tests, C17ExhaustiveObserve) {
 }
 
 TEST_F(C17Tests, C17ExhaustiveInvert) {
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* invertTP : invertTPs) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* invertTP : invertTPs) {
 		std::string tpName = "I";
 		std::string lineName = invertTP->location()->name();
 		std::string fanout = "";
 		if (invertTP->location()->inputs().size() != 0) {
 			Connecting* input = *(invertTP->location()->inputs().begin());
-			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+			if (dynamic_cast<COP_TPI_Node<bool>*>(input) == nullptr) {
 				Connecting* fanOutNode = *(invertTP->location()->outputs().begin());
 				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
 				fanout = "_" + fanOutLine->name();
@@ -281,13 +281,13 @@ TEST_F(C17Tests, C17ExhaustiveInvert) {
 //This test was generated in response to a found bug: some observe points were DECREASE fault coverage.
 //It is known that the attached vector will find
 TEST_F(C17Tests, C17ExhaustiveObserveFaultCoverage) {
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* observeTP : observeTPs) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* observeTP : observeTPs) {
 		std::string tpName = "O";
 		std::string lineName = observeTP->location()->name();
 		std::string fanout = "";
 		if (observeTP->location()->inputs().size() != 0) {
 			Connecting* input = *(observeTP->location()->inputs().begin());
-			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+			if (dynamic_cast<COP_TPI_Node<bool>*>(input) == nullptr) {
 				Connecting* fanOutNode = *(observeTP->location()->outputs().begin());
 				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
 				fanout = "_" + fanOutLine->name();
@@ -315,14 +315,14 @@ TEST_F(C17Tests, C17ExhaustiveObserveFaultCoverage) {
 }
 
 TEST_F(C17Tests, C17ExhaustiveControlFaultCoverage) {
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* controlTP : controlTPs) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* controlTP : controlTPs) {
 		std::string tpName = "C";
 		std::string lineName = controlTP->location()->name();
 		std::string controlValue = controlTP->value().magnitude() == false ? "0" : "1";
 		std::string fanout = "";
 		if (controlTP->location()->inputs().size() != 0) {
 			Connecting* input = *(controlTP->location()->inputs().begin());
-			if (dynamic_cast<COP_TPI_Node*>(input) == nullptr) {
+			if (dynamic_cast<COP_TPI_Node<bool>*>(input) == nullptr) {
 				Connecting* fanOutNode = *(controlTP->location()->outputs().begin());
 				Connecting* fanOutLine = *(fanOutNode->outputs().begin());
 				fanout = "_" + fanOutLine->name();

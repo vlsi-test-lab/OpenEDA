@@ -29,8 +29,8 @@
 		 }
 	 }
 	 for (FaultyLine<_primitive>* checkpoint : circuitCheckpoints) {
-		 Fault<_primitive>* sa0 = new Fault<_primitive>(checkpoint, Value<_primitive>(0));
-		 Fault<_primitive>* sa1 = new Fault<_primitive>(checkpoint, Value<_primitive>(1));
+		 Fault<_primitive>* sa0 = new Fault<_primitive>(checkpoint, Value<_primitive>((_primitive)0x0000000000000000));
+		 Fault<_primitive>* sa1 = new Fault<_primitive>(checkpoint, Value<_primitive>((_primitive)0xFFFFFFFFFFFFFFFF));
 		 toReturn.emplace(sa0);
 		 toReturn.emplace(sa1);
 	 }
@@ -95,3 +95,4 @@ std::unordered_set<Connecting*> FaultGenerator<_primitive>::fanouts(Connecting *
 }
 
 template class FaultGenerator<bool>;
+template class FaultGenerator<unsigned long long int>;

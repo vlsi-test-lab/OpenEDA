@@ -23,14 +23,15 @@ class Faulty;
  *
  * NOTE: This structure has no added functionallity.
  *
- * NOTE: There is no "_primitive" parameter since COP is "bool-only".
+ * @param _width The width of simulation (bool or unsigned long long it).
  */
-class COP_TPI_Line : virtual public COPLine, virtual public FaultyLine<bool> {
+template <class _width>
+class COP_TPI_Line : virtual public COPLine<_width>, virtual public FaultyLine<_width> {
 public:
 	/*
 	 * Create a with a "UNDEF" name.
 	 */
-	COP_TPI_Line() : COPLine(), FaultyLine<bool>(), Connecting("UNDEF") {
+	COP_TPI_Line() : COPLine<_width>(), FaultyLine<_width>(), Connecting("UNDEF") {
 	};
 
 	/*
@@ -39,10 +40,14 @@ public:
 	 * @param _name The name of the Line
 	 */
 	COP_TPI_Line(std::string _name) :
-		COPLine(_name),
-		FaultyLine<bool>(_name),
+		COPLine<_width>(_name),
+		FaultyLine<_width>(_name),
 		Connecting(_name) {
 	};
+
+	virtual Connecting* clone() const {
+		return new COP_TPI_Line<_width>(this->name());
+	}
 };
 
 /*
@@ -50,14 +55,15 @@ public:
  *
  * NOTE: This structure has no added functionallity.
  *
- * NOTE: There is no "_primitive" parameter since COP is "bool-only".
+ * @param _width The width of simulation (bool or unsigned long long it).
  */
-class COP_TPI_Node : public virtual COPNode, virtual public FaultyNode<bool>{
+template <class _width>
+class COP_TPI_Node : public virtual COPNode<_width>, virtual public FaultyNode<_width>{
 public:
 	/*
 	 * Create a node with no inputs, no outputs, and a "copy" function.
 	 */
-	COP_TPI_Node() : COPNode(), FaultyNode<bool>() {
+	COP_TPI_Node() : COPNode<_width>(), FaultyNode<_width>() {
 
 	}
 
@@ -68,24 +74,24 @@ public:
 	 * @param _inputs Input lines to the given node.
 	 * @param _outputs Output lines to the given node.
 	 */
-	COP_TPI_Node(Function<bool>* _function,
-			   std::unordered_set<COP_TPI_Line*> _inputs = std::unordered_set<COP_TPI_Line*>(),
-			   std::unordered_set<COP_TPI_Line*> _outputs = std::unordered_set<COP_TPI_Line*>()
+	COP_TPI_Node(Function<_width>* _function,
+			   std::unordered_set<COP_TPI_Line<_width>*> _inputs = std::unordered_set<COP_TPI_Line<_width>*>(),
+			   std::unordered_set<COP_TPI_Line<_width>*> _outputs = std::unordered_set<COP_TPI_Line<_width>*>()
 	) :
-		COPNode(
+		COPNode<_width>(
 			_function,
-			std::unordered_set<COPLine*>(_inputs.begin(), _inputs.end()),
-			std::unordered_set<COPLine*>(_outputs.begin(), _outputs.end())
+			std::unordered_set<COPLine<_width>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<COPLine<_width>*>(_outputs.begin(), _outputs.end())
 			),
-		FaultyNode<bool>(
+		FaultyNode<_width>(
 			_function,
-			std::unordered_set<FaultyLine<bool>*>(_inputs.begin(), _inputs.end()),
-			std::unordered_set<FaultyLine<bool>*>(_outputs.begin(), _outputs.end())
+			std::unordered_set<FaultyLine<_width>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<FaultyLine<_width>*>(_outputs.begin(), _outputs.end())
 		),
-		SimulationNode<bool>(
+		SimulationNode<_width>(
 			_function,
-			std::unordered_set<SimulationLine<bool>*>(_inputs.begin(), _inputs.end()),
-			std::unordered_set<SimulationLine<bool>*>(_outputs.begin(), _outputs.end())
+			std::unordered_set<SimulationLine<_width>*>(_inputs.begin(), _inputs.end()),
+			std::unordered_set<SimulationLine<_width>*>(_outputs.begin(), _outputs.end())
 			),
 		Connecting(
 			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
@@ -97,3 +103,4 @@ public:
 };
 
 #endif //COP_TPI_Structures_h
+
