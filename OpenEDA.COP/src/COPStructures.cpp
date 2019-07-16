@@ -378,6 +378,15 @@ float COPNode<_width>::calculateObservability(COP * _calling) {
 }
 
 template<class _width>
+void COPNode<_width>::clearControllability() {
+	std::string functionName = this->function()->string();
+	if (functionName == "pi" || functionName == "po" || functionName == "const") {
+		return; //Do nothing.
+	}
+	this->COP::clearControllability();
+}
+
+template<class _width>
 Connecting* COPNode<_width>::clone() {
 	return new COPNode<_width>(this->function());
 }

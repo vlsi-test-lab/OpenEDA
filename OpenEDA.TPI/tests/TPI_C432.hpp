@@ -47,76 +47,22 @@ std::vector<SimulationNode<bool>*> orderedPis(Circuit* _circuit) {
 class C432Tests : public ::testing::Test {
 public:
 	void SetUp() override {
-		/*std::vector<std::string> order = { 
-			"1",
-			"4",
-			"8",
-			"11",
-			"14",
-			"17",
-			"21",
-			"24",
-			"27",
-			"30",
-			"34",
-			"37",
-			"40",
-			"43",
-			"47",
-			"50",
-			"53",
-			"56",
-			"60",
-			"63",
-			"66",
-			"69",
-			"73",
-			"76",
-			"79",
-			"82",
-			"86",
-			"89",
-			"92",
-			"95",
-			"99",
-			"102",
-			"105",
-			"108",
-			"112",
-			"115"
-		};
-		for (size_t i = 0; i < order.size(); i++) {
-			for (Levelized* pi : originalCircuit->pis()) {
-				Connecting* piLine = *(pi->outputs().begin());
-				std::string piName = piLine->name();
-				if (piName == order.at(i)) {
-					originalPisOrdered.push_back(dynamic_cast<SimulationNode<bool>*>(pi));
-					break;
-				}
-			}
-			for (Levelized* pi : modifiedCircuit->pis()) {
-				Connecting* piLine = *(pi->outputs().begin());
-				std::string piName = piLine->name();
-				if (piName == order.at(i)) {
-					modifiedPisOrdered.push_back(dynamic_cast<SimulationNode<bool>*>(pi));
-					break;
-				}
-			}
-		}*/
+		observeTPs = observeGen.allTPs(modifiedCircuit);
+		all_tps = { observeTPs };
 		originalPisOrdered = orderedPis(originalCircuit);
 		modifiedPisOrdered = orderedPis(modifiedCircuit);
 	}
 
 
 
-	Parser<COP_TPI_Line, COP_TPI_Node> parser;
+	Parser<COP_TPI_Line<bool>, COP_TPI_Node<bool>, bool> parser;
+
 	Circuit* originalCircuit = parser.Parse("c432.bench");
 	Circuit* modifiedCircuit = parser.Parse("c432.bench");
-
-	TPI_COP<COP_TPI_Node, COP_TPI_Line> tpi = TPI_COP<COP_TPI_Node, COP_TPI_Line>(modifiedCircuit);
-	TPGenerator<Testpoint_observe<bool, COP_TPI_Node, COP_TPI_Line>, COP_TPI_Node, COP_TPI_Line, bool> observeGen;
-	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> observeTPs = observeGen.allTPs(modifiedCircuit);
-	std::vector<std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*>> all_tps = { observeTPs };
+	TPI_COP<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>> tpi = TPI_COP<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>(modifiedCircuit);
+	TPGenerator<Testpoint_observe<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> observeGen;
+	std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*> observeTPs;
+	std::vector<std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*>> all_tps;
 
 	std::vector<SimulationNode<bool>*> originalPisOrdered;
 	std::vector<SimulationNode<bool>*> modifiedPisOrdered;
@@ -129,7 +75,7 @@ TEST_F(C432Tests, ObservePointTests) {
 	//PERFORM TPI
 	tpi.timeLimit(3600);
 	tpi.testpointLimit(0.01*(originalCircuit->nodes().size()));
-	std::set<Testpoint<bool, COP_TPI_Node, COP_TPI_Line>*> testpoints = tpi.testpoints(all_tps);
+	std::set<Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>*> testpoints = tpi.testpoints(all_tps);
 	EXPECT_EQ(testpoints.size(), 2);
 
 	//Fault Simulation Setup
@@ -154,7 +100,7 @@ TEST_F(C432Tests, ObservePointTests) {
 	}
 
 	//Activate TPs
-	for (Testpoint<bool, COP_TPI_Node, COP_TPI_Line>* testpoint : testpoints) {
+	for (Testpoint<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>* testpoint : testpoints) {
 		testpoint->activate();
 	}
 
@@ -165,3 +111,4 @@ TEST_F(C432Tests, ObservePointTests) {
 		ASSERT_LE(originalSimulator.detectedFaults().size(), modifiedSimulator.detectedFaults().size());
 	}
 }
+

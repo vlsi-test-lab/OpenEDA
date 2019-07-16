@@ -34,8 +34,8 @@
  * @param _lineType THe type of lines used in the circuit to be modified.
  */
 
-template <class _nodeType, class _lineType>
-class TPI_COP : public TPI<bool, _nodeType, _lineType> {
+template <class _primitive, class _nodeType, class _lineType>
+class TPI_COP : public TPI<_primitive, _nodeType, _lineType> {
 public:
 	/*
 	 * Create a TPI algorithm with a given TP, quality, and time limit (in
@@ -55,7 +55,7 @@ public:
 		float _qualityLimit = 1.0,
 		size_t _timeLimit = std::numeric_limits<size_t>::max()
 	) :
-		TPI<bool, _nodeType, _lineType>(
+		TPI<_primitive, _nodeType, _lineType>(
 			_circuit, 
 			_TPLimit, 
 			_qualityLimit, 
@@ -75,7 +75,7 @@ public:
 	 * @param _testpoint The testpoint to measure.
 	 * @return The quality of the testpoint.
 	 */
-	float quality(Testpoint<bool, _nodeType, _lineType>* _testpoint) {
+	float quality(Testpoint<_primitive, _nodeType, _lineType>* _testpoint) {
 		float base = this->base();
 		_testpoint->activate();		
 		float TPCoverage = this->FaultCoverageCalculator_.faultCoverage();
@@ -93,7 +93,7 @@ private:
 	/*
 	 * The calculator used for calculating fault coverage.
 	 */
-	COP_fault_calculator FaultCoverageCalculator_;
+	COP_fault_calculator<_primitive> FaultCoverageCalculator_;
 
 	/*
 	 * Return the "base" quality (no extra TP fault coverage) to compare other

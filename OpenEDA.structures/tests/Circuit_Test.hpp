@@ -2,7 +2,7 @@
  * @file Circuit_Test.cpp
  * @author Joshua Immanuel (jzi0005@tigermail.auburn.edu)
  * @version 0.1
- * @date 2019-12-27
+ * @date 2018-12-27
  *
  * @copyright Copyright (c) 2018
  *
@@ -17,6 +17,25 @@
 #include "Parser.hpp"
 #include "ValueVectorFunctions.hpp"
 
+class DeleteTest : public ::testing::Test {
+public:
+	void SetUp() override {
+		
+	}
+
+	Parser<SimulationLine<bool>, SimulationNode<bool>, bool> parser;
+	Circuit* c17 = parser.Parse("c17.bench");
+	Circuit* b14 = parser.Parse("b14.p.bench");
+
+};
+
+TEST_F(DeleteTest, c17DeleteTest) {
+	delete c17;
+}
+
+TEST_F(DeleteTest, b14DeleteTest) {
+	delete b14;
+}
 
 class CopyTest : public ::testing::Test {
 public:

@@ -11,37 +11,44 @@
 
 #include "COP_fault_calculator.h"
 
-COP_fault_calculator::COP_fault_calculator(Circuit * _circuit) {
-	this->faults_ = FaultGenerator<bool>::allFaults(_circuit);
+template <class _primitive>
+COP_fault_calculator< _primitive>::COP_fault_calculator(Circuit * _circuit) {
+	this->faults_ = FaultGenerator<_primitive>::allFaults(_circuit);
 }
 
-COP_fault_calculator::~COP_fault_calculator() {
-	for (Fault<bool>* fault : this->faults_) {
+template <class _primitive>
+COP_fault_calculator< _primitive>::~COP_fault_calculator() {
+	for (Fault<_primitive>* fault : this->faults_) {
 		delete fault;
 	}
 }
 
-float COP_fault_calculator::faultCoverage() {
+template <class _primitive>
+float COP_fault_calculator< _primitive>::faultCoverage() {
 	float toReturn = 0.0;
-	for (Fault<bool>* fault : this->faults_) {
+	for (Fault<_primitive>* fault : this->faults_) {
 		toReturn += this->detect(fault);
 	}
 	toReturn /= (float)this->faults_.size();
 	return toReturn;
 }
 
-float COP_fault_calculator::detect(Fault<bool>* _fault) {
-	FaultyLine<bool>* location = _fault->location();
+template <class _primitive>
+float COP_fault_calculator< _primitive>::detect(Fault<_primitive>* _fault) {
+	FaultyLine<_primitive>* location = _fault->location();
 	COP* cast = dynamic_cast<COP*>(location);
 	if (cast == nullptr) {
 		throw "Cannot calculate fault-based fault coverage: COP not enabled on the fault location.";
 	}
-	bool SAValue = _fault->value().magnitude();
+	_primitive SAValue = _fault->value().magnitude();
 	float CC = cast->controllability();
 	float CO = cast->observability();
-	if (SAValue == true) {
+	if (SAValue) {
 		CC = 1 - CC;
 	}
 	//DEBUG printf("DBG Fault: %s (%d outputs) sa%d -> %f\n", _fault->location()->name().c_str(), _fault->location()->outputs().size(), SAValue, CC*CO); //DEBUG
 	return CC * CO;
 }
+
+template class COP_fault_calculator<unsigned long long int>;
+template class COP_fault_calculator<bool>;

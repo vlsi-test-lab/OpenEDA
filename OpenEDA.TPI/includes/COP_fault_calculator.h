@@ -19,7 +19,10 @@
 
 /*
  * Calculates the fault coverage of a circuit using COP values.
+ *
+ * @param _primitive The primitive measured by cop (bool or unsigned long long int).
  */
+template <class _primitive>
 class COP_fault_calculator {
 public:
 	/*
@@ -46,7 +49,7 @@ private:
 	/*
 	 * The faults for this calculator.
 	 */
-	std::unordered_set<Fault<bool>*> faults_;
+	std::unordered_set<Fault<_primitive>*> faults_;
 
 	/*
 	 * The probability a given fault is detected.
@@ -54,7 +57,7 @@ private:
 	 * @param _fault The fault to detect.
 	 * @return The probability of detection.
 	 */
-	float detect(Fault<bool>* _fault);
+	float detect(Fault<_primitive>* _fault);
 
 };
 

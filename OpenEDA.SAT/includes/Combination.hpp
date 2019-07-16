@@ -175,6 +175,10 @@ public:
 			}
 		}
 		//Values match, delete all input connections.
+		//NOTE: the "critical" part is needed because if multiple processes try to "disconect"
+		//      this combination at the same time, it can cause a memory race condition. The
+		//      project which compiles this needs to have openMP enabled.
+		#pragma omp critical 
 		this->inputs(std::unordered_set<Connecting*>());
 		/*for (SATLine<_primitive>* line : this->lines_) {
 			line->removeOutput(this);

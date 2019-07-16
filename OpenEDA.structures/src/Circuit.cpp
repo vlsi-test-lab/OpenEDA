@@ -154,31 +154,66 @@ Circuit::Circuit(const Circuit& _circuit) {
 	);
 }
 
-void spread(
-	Levelized* point,
-	std::unordered_set<Levelized*> & allCircuitObjects
+//DELETE:
+//Although this method works, it causes a stack overflow for large circuits, e.g., b14
+//void spread(
+//	Levelized* point,
+//	std::unordered_set<Levelized*> & allCircuitObjects
+//) {
+//	if (allCircuitObjects.find(point) != allCircuitObjects.end()) {
+//		return;
+//	}
+//	allCircuitObjects.emplace(point);
+//
+//	for (Connecting* input : point->inputs()) {
+//		Levelized* cast = dynamic_cast<Levelized*>(input);
+//		spread(cast, allCircuitObjects);
+//	}
+//	for (Connecting* output : point->outputs()) {
+//		Levelized* cast = dynamic_cast<Levelized*>(output);
+//		spread(cast, allCircuitObjects);
+//	}
+//}
+
+void visit(
+	Levelized* _point,
+	std::unordered_set<Levelized*> & _unvisitedCircuitObjects,
+	std::unordered_set<Levelized*> & _visitedCircuitObjects
 ) {
-	if (allCircuitObjects.find(point) != allCircuitObjects.end()) {
+	_unvisitedCircuitObjects.erase(_point);
+	if (_visitedCircuitObjects.find(_point) != _visitedCircuitObjects.end()) {
 		return;
 	}
-	allCircuitObjects.emplace(point);
+	_visitedCircuitObjects.emplace(_point);
+	
 
-	for (Connecting* input : point->inputs()) {
+	for (Connecting* input : _point->inputs()) {
 		Levelized* cast = dynamic_cast<Levelized*>(input);
-		spread(cast, allCircuitObjects);
+		if (_visitedCircuitObjects.find(cast) != _visitedCircuitObjects.end()) {
+			_unvisitedCircuitObjects.emplace(cast);
+		}
 	}
-	for (Connecting* output : point->outputs()) {
+	for (Connecting* output : _point->outputs()) {
 		Levelized* cast = dynamic_cast<Levelized*>(output);
-		spread(cast, allCircuitObjects);
+		_unvisitedCircuitObjects.emplace(cast);
+		if (_visitedCircuitObjects.find(cast) != _visitedCircuitObjects.end()) {
+			_unvisitedCircuitObjects.emplace(cast);
+		}
 	}
 }
 
 Circuit::~Circuit() {
-	std::unordered_set<Levelized*> allCircuitObjects;
-	for (Levelized* node : this->nodes_) {
-		spread(node, allCircuitObjects);
+	std::unordered_set<Levelized*> unvisitedCircuitObjects = this->nodes_;
+	std::unordered_set<Levelized*> visitedCircuitObjects;
+	while (unvisitedCircuitObjects.empty() == false) {
+		Levelized* curCircuitObject = *(unvisitedCircuitObjects.begin());
+		visit(curCircuitObject, unvisitedCircuitObjects, visitedCircuitObjects);
 	}
-	for (Levelized* object : allCircuitObjects) {
+	//DELETE: see "spread" comment
+	/*for (Levelized* node : this->nodes_) {
+		spread(node, allCircuitObjects);
+	}*/
+	for (Levelized* object : visitedCircuitObjects) {
 		delete object;
 	}
 }

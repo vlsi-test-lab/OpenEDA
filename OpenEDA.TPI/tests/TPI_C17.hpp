@@ -42,7 +42,7 @@ public:
 
 	Parser<COP_TPI_Line<bool>, COP_TPI_Node<bool>, bool> parser;
 	Circuit* c17 = parser.Parse("c17.bench");
-	TPI_COP<COP_TPI_Node<bool>, COP_TPI_Line<bool>> tpi = TPI_COP<COP_TPI_Node<bool>, COP_TPI_Line<bool>>(c17);
+	TPI_COP<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>> tpi = TPI_COP<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>(c17);
 	TPGenerator<Testpoint_control<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> controlGen;
 	TPGenerator<Testpoint_observe<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> observeGen;
 	TPGenerator<Testpoint_invert<bool, COP_TPI_Node<bool>, COP_TPI_Line<bool>>, COP_TPI_Node<bool>, COP_TPI_Line<bool>, bool> invertGen;

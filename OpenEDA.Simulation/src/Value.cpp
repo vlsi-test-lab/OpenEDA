@@ -157,6 +157,16 @@ bool Value<T>::increment() {
 	return false;
 }
 
+template<>
+bool Value<unsigned long long int>::increment() {
+	if (this->magnitude_) { //there's a 1
+		this->magnitude_ = 0x0000000000000000;
+		return true;
+	}
+	this->magnitude_ = 0xFFFFFFFFFFFFFFFF;
+	return false;
+}
+
 template<class T>
 T Value<T>::min() const {
 	return this->min_;

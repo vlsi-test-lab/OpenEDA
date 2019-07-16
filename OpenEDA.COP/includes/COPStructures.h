@@ -186,7 +186,7 @@ protected:
 	 * Clear this object's controllability and any controllabilities that rely on 
 	 * this object.
 	 */
-	void clearControllability();
+	virtual void clearControllability();
 
 private:
 
@@ -388,6 +388,12 @@ protected:
 	 * @return The controllability calculated.
 	 */
 	virtual float calculateObservability(COP* _calling = nullptr);
+
+	/*
+ * Clear this object's controllability and any controllabilities that rely on
+ * this object.
+ */
+	virtual void clearControllability();
 };
 
 #endif
