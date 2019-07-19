@@ -12,6 +12,7 @@
 #include"FaultSimulator.h"
 #include"FaultGenerator.h"
 #include"Parser.hpp"
+#include "ValueVectorFunctions.hpp"
 
 
 
@@ -101,6 +102,29 @@ TEST_F(FaultSimTest, c17tdfs) {
 
 }
 
+template <class type>
+bool connectingSortFunction(SimulationNode<type>* i, SimulationNode<type>* j) {
+	Connecting* iOutput = *(i->outputs().begin());
+	std::string iName = iOutput->name();
+	Connecting* jOutput = *(j->outputs().begin());
+	std::string jName = jOutput->name();
+	return iName.compare(jName) < 0;
+}
+
+template <class type>
+std::vector<SimulationNode<type>*> orderedPis(Circuit* _circuit) {
+	std::vector<SimulationNode<type>*> toReturn;
+	for (Levelized* pi : _circuit->pis()) {
+		SimulationNode<type>* cast = dynamic_cast<SimulationNode<type>*>(pi);
+		if (cast == nullptr) {
+			throw "Cannot order PIs if a pi is not of the correct type";
+		}
+		toReturn.push_back(cast);
+	}
+	std::sort(toReturn.begin(), toReturn.end(), connectingSortFunction<type>);
+	return toReturn;
+}
+
 class FaultSimTestWide : public ::testing::Test {
 public:
 	void SetUp() override {
@@ -115,6 +139,9 @@ public:
 				}
 			}
 		}
+
+		boolPisOrdered = orderedPis<bool>(regularCircuit);
+		widePisOrdered = orderedPis<unsigned long long int>(wideCircuit);
 	}
 
 
@@ -146,8 +173,39 @@ public:
 		p7inputs
 	};
 
+	/////////////////////////////////////////////////////////////////
+	// Wide vs bool tests.
+	/////////////////////////////////////////////////////////////////
+	Parser<FaultyLine<bool>, FaultyNode<bool>, bool> parserBool;
+	Circuit* regularCircuit = parserBool.Parse("c432.bench");
+	Circuit* wideCircuit = parser.Parse("c432.bench");
+	
+	FaultGenerator<bool> faultGeneratorBool;
+	
+	std::unordered_set<Fault<bool>*> faultsBool = faultGeneratorBool.allFaults(regularCircuit);
+	std::unordered_set<Fault<bool>*> tdfFaultsBool = faultGeneratorBool.allFaults(regularCircuit, false);
+	std::unordered_set<Fault<unsigned long long int>*> faultsWide = faultGenerator.allFaults(wideCircuit);
+	std::unordered_set<Fault<unsigned long long int>*> tdfFaultsWide = faultGenerator.allFaults(wideCircuit, false);
+
+	FaultSimulator<bool> faultSimulatorBoolSAF;
+	FaultSimulator<bool> faultSimulatorBoolTDF = FaultSimulator<bool>(true);
+	FaultSimulator<unsigned long long int> faultSimulatorWideSAF;
+	FaultSimulator<unsigned long long int> faultSimulatorWideTDF = FaultSimulator<unsigned long long int>(true);
+
+	//The input stimulus:
+	std::vector<Value<unsigned long long int>> WideVec = 
+		std::vector<Value<unsigned long long int>>(36, Value<unsigned long long int>(0x0000000000000000));
+
+
+	std::vector<Value<bool>> BoolVec = std::vector<Value<bool>>(36, Value<bool>(0x0000000000000000));
+	std::vector<SimulationNode<bool>*> boolPisOrdered;
+	std::vector<SimulationNode<unsigned long long int>*> widePisOrdered;
+
+
 	void TearDown() {
 		delete c;
+		delete wideCircuit;
+		delete regularCircuit;
 		//This was deleted: the fault simulator will delete the tests.
 		//for (Fault<bool>* fault : faults) {
 		//	delete fault;
@@ -164,4 +222,62 @@ TEST_F(FaultSimTestWide, c17safs) {
 	size_t numDetectedFaults = faultSimulator.detectedFaults().size();
 	EXPECT_EQ(expectedNumDetectedFaults, numDetectedFaults);
 	
+}
+
+TEST_F(FaultSimTestWide, wideVsBool) {
+	ASSERT_EQ(faultsBool.size(), faultsWide.size());
+	ASSERT_EQ(tdfFaultsBool.size(), tdfFaultsWide.size());
+	faultSimulatorBoolSAF.setFaults(faultsBool);
+	faultSimulatorWideSAF.setFaults(faultsWide);
+	faultSimulatorBoolTDF.setFaults(tdfFaultsBool);
+	faultSimulatorWideTDF.setFaults(tdfFaultsWide);
+
+	//C432 has 40 inputs, but we won't simulate ALL input combinatons or pairs: that it's not feasible.
+	//We'll simulate a total of 256 stuck-at fault vectors, and we'll check that fault coverage is the same every 64.
+	WideVec[0] = Value<unsigned long long int>(0xAAAAAAAAAAAAAAAA);
+	WideVec[1] = Value<unsigned long long int>(0xCCCCCCCCCCCCCCCC);
+	WideVec[2] = Value<unsigned long long int>(0xF0F0F0F0F0F0F0F0);
+	WideVec[3] = Value<unsigned long long int>(0xFF00FF00FF00FF00);
+	WideVec[4] = Value<unsigned long long int>(0xFFFF0000FFFF0000);
+	WideVec[5] = Value<unsigned long long int>(0xFFFFFFFF00000000);
+	
+	for (size_t i = 1; i <= 256; i++) {
+		faultSimulatorBoolSAF.applyStimulus(regularCircuit, BoolVec, EventQueue<bool>(), boolPisOrdered);
+		if ((i % 64) == 0) {
+			faultSimulatorWideSAF.applyStimulus(wideCircuit, WideVec, EventQueue<unsigned long long int>(), widePisOrdered);
+			ASSERT_EQ(faultSimulatorWideSAF.detectedFaults().size(), faultSimulatorBoolSAF.detectedFaults().size());
+			ValueVectorFunction<unsigned long long int>::increment(WideVec);
+		}
+		ValueVectorFunction<bool>::increment(BoolVec);
+	}
+
+	//TDF simulation will always be from "all 0's" to a given vector. This makes things easy.
+	//In this context, the "applied vector" will the vector we are toing to.
+	WideVec =
+		std::vector<Value<unsigned long long int>>(36, Value<unsigned long long int>(0x0000000000000000));
+	WideVec[0] = Value<unsigned long long int>(0xAAAAAAAAAAAAAAAA);
+	WideVec[1] = Value<unsigned long long int>(0xCCCCCCCCCCCCCCCC);
+	WideVec[2] = Value<unsigned long long int>(0xF0F0F0F0F0F0F0F0);
+	WideVec[3] = Value<unsigned long long int>(0xFF00FF00FF00FF00);
+	WideVec[4] = Value<unsigned long long int>(0xFFFF0000FFFF0000);
+	WideVec[5] = Value<unsigned long long int>(0xFFFFFFFF00000000);
+
+	BoolVec = std::vector<Value<bool>>(36, Value<bool>(0x0000000000000000));
+
+	Simulator<bool> regularSimulator; //We'll use this to "reset" the state of the circuit to all 0s.
+	
+	for (size_t i = 1; i <= 64; i++) {
+		regularSimulator.applyStimulus(regularCircuit,
+									   std::vector<Value<bool>>(36, Value<bool>(0))
+									   );
+		faultSimulatorBoolTDF.applyStimulus(regularCircuit, BoolVec, EventQueue<bool>(), boolPisOrdered);
+		ValueVectorFunction<bool>::increment(BoolVec);
+	}
+	Simulator<unsigned long long int> wideSimulator;
+	wideSimulator.applyStimulus(wideCircuit,
+								std::vector<Value<unsigned long long int>>(36, Value<unsigned long long int>(0x0000000000000000))
+								);
+	faultSimulatorWideTDF.applyStimulus(wideCircuit, WideVec, EventQueue<unsigned long long int>(), widePisOrdered);
+	ASSERT_EQ(faultSimulatorWideTDF.detectedFaults().size(), faultSimulatorBoolTDF.detectedFaults().size());
+
 }
