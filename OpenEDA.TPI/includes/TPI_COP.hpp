@@ -48,12 +48,14 @@ public:
 	 *        By default, this is will 100% (1.0f).
 	 * @param (optional) _timeLimit The maximum time (in seconds) to spend
 	 *        on TPI. By default, this will be the "maximum possible time".
+	 *@param(optinal)stuck_target is true,use the stuck target cop, if it is false, use delay target cop
 	 */
 	TPI_COP(
 		Circuit* _circuit,
 		size_t _TPLimit = std::numeric_limits<size_t>::max(),
 		float _qualityLimit = 1.0,
-		size_t _timeLimit = std::numeric_limits<size_t>::max()
+		size_t _timeLimit = std::numeric_limits<size_t>::max(),
+		bool stuck_target = true
 	) :
 		TPI<_primitive, _nodeType, _lineType>(
 			_circuit, 
@@ -61,7 +63,7 @@ public:
 			_qualityLimit, 
 			_timeLimit)
 		, FaultCoverageCalculator_(
-			_circuit
+			_circuit, stuck_target
 		) 
 	{
 		this->baseFaultCoverage_ = -1;

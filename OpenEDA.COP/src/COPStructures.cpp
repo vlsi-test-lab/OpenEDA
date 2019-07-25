@@ -377,20 +377,76 @@ float COPNode<_width>::calculateObservability(COP * _calling) {
 	return toReturn;
 }
 
-template<class _width>
-void COPNode<_width>::clearControllability() {
-	std::string functionName = this->function()->string();
-	if (functionName == "pi" || functionName == "po" || functionName == "const") {
-		return; //Do nothing.
-	}
-	this->COP::clearControllability();
-}
+
 
 template<class _width>
 Connecting* COPNode<_width>::clone() {
 	return new COPNode<_width>(this->function());
 }
 
+
+template<class _width>
+void COPNode<_width>::clearControllability()
+{
+	Function<_width>* function = this->function();
+
+	if (function->string() == "pi" || function->string() == "const") {
+		return;
+	}
+	else {
+		this->controllability(-1);
+
+	}
+	//DEBUG printf("DBG CC CLEAR %s (%d outputs)\n", this->name().c_str(), this->outputs().size());//DEBUG
+
+	std::unordered_set<Connecting*> outputs = this->outputs();
+	for (Connecting * output : outputs) {
+		COP* cast = dynamic_cast<COP*>(output);
+		cast->clearControllability();
+
+		//Change CC can change CO on "parallel" lines (e.g., the lines feeding the
+		//same gate). NOTE: see deleted segment below.
+		for (Connecting * possiblyParralInput : output->inputs()) {
+			if (possiblyParralInput != this) {
+				COP* parallelInput = dynamic_cast<COP*>(possiblyParralInput);
+				parallelInput->clearObservability();
+			}
+		}
+	}
+
+}
+
+
+
+template<class _width>
+void COPNode<_width>::clearObservability() {
+	Function<_width>* function = this->function();
+
+	if (function->string() == "po") {
+		return;
+	}
+	//DEBUG printf("DBG CO CLEAR %s (%d outputs) ... ", this->name().c_str(), this->outputs().size());//DEBUG
+	else
+	{
+		this->observability(-1);
+	}
+
+
+
+	std::unordered_set<Connecting*> inputs = this->inputs();
+	//DEBUG printf("DONE, forward to %d\n", inputs.size());
+	for (Connecting * input : inputs) {
+		COP* cast = dynamic_cast<COP*>(input);
+		if (cast != nullptr) {
+			//A SPECIAL NOTE:
+			//This is one of the few places where casting to a nullptr is allowed. When a node is deleted, it will
+			//call "clear observability/controllability" on itself. The controllability call will lead to clear
+			//observability calls coming back to it, but by this time, the node will no longer be considered "COP"
+			//(since it is in the process of being deconstructed). To avoid this, nullptrs are skipped.
+			cast->clearObservability();
+		}
+	}
+}
 template class COPNode<bool>;
 template class COPNode<unsigned long long int>;
 

@@ -12,7 +12,7 @@
 #include "COP_fault_calculator.h"
 
 template <class _primitive>
-COP_fault_calculator< _primitive>::COP_fault_calculator(Circuit * _circuit) {
+COP_fault_calculator< _primitive>::COP_fault_calculator(Circuit * _circuit, bool stuck_target) {
 	this->faults_ = FaultGenerator<_primitive>::allFaults(_circuit);
 }
 
@@ -47,7 +47,14 @@ float COP_fault_calculator< _primitive>::detect(Fault<_primitive>* _fault) {
 		CC = 1 - CC;
 	}
 	//DEBUG printf("DBG Fault: %s (%d outputs) sa%d -> %f\n", _fault->location()->name().c_str(), _fault->location()->outputs().size(), SAValue, CC*CO); //DEBUG
-	return CC * CO;
+	if (stuck_target_ == true)
+	{
+		return CC * CO;
+	}
+	else
+	{
+		return CC * CO*(1 - CC);
+	}
 }
 
 template class COP_fault_calculator<unsigned long long int>;

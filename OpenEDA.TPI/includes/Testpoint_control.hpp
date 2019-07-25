@@ -119,7 +119,11 @@ public:
 			this->oldDriver_ = *(inputs.begin());
 			this->location_->removeInput(oldDriver_);
 		}*/
-
+		float oldcc = this->location_->controllability();
+		float c = this->value().magnitude();
+		float newcc = (c + oldcc) / 2;
+		this->location_->clearControllability();
+		this->location_->controllability(newcc);
 		this->oldDrivers_ = this->location_->inputs();
 		for (Connecting* input : this->oldDrivers_) {
 			input->removeOutput(this->location_);

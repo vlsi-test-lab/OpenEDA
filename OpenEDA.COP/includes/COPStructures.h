@@ -150,6 +150,17 @@ public:
  //  */
 	//virtual void addOutput(Connecting* _add);
 	
+	/*
+	 * Clear this object's observability and any observabilities that rely on this
+	 * object.
+	 */
+	virtual void clearObservability();
+
+	/*
+	 * Clear this object's controllability and any controllabilities that rely on
+	 * this object.
+	 */
+	virtual void clearControllability();
 
 
 
@@ -176,17 +187,7 @@ protected:
 	 */
 	virtual float calculateObservability(COP* _calling = nullptr) = 0;
 
-	/*
-	 * Clear this object's observability and any observabilities that rely on this
-	 * object.
-	 */
-	void clearObservability();
-
-	/*
-	 * Clear this object's controllability and any controllabilities that rely on 
-	 * this object.
-	 */
-	virtual void clearControllability();
+	
 
 private:
 
@@ -363,7 +364,20 @@ public:
 	 * @return new COPnode.
 	 */
 	virtual Connecting* clone();
+	/*
+* Clear this object's controllability and any controllabilities that rely on
+* this object.
+*/
 
+	virtual void clearControllability();
+
+
+
+	/*
+* Clear this object's observability and any observability that rely on
+* this object.
+*/
+	virtual void clearObservability();
 	
 protected:
 
@@ -389,11 +403,7 @@ protected:
 	 */
 	virtual float calculateObservability(COP* _calling = nullptr);
 
-	/*
- * Clear this object's controllability and any controllabilities that rely on
- * this object.
- */
-	virtual void clearControllability();
+
 };
 
 #endif

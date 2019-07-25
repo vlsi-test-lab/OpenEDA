@@ -30,7 +30,7 @@ public:
 	 *
 	 * @param _circuit The circuit to calculate for.
 	 */
-	COP_fault_calculator(Circuit* _circuit);
+	COP_fault_calculator(Circuit* _circuit, bool stuck_target);
 
 	/*
 	 * Upon deletion, delete all faults.
@@ -59,6 +59,12 @@ private:
 	 */
 	float detect(Fault<_primitive>* _fault);
 
+	/*
+	*if it is true use stuck target cop. if it is false use delay target cop
+	*/
+
+	bool stuck_target_;
 };
+
 
 #endif
