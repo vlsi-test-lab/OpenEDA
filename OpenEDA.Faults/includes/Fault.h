@@ -18,7 +18,7 @@
 #include "EventQueue.h"
 #include "FaultStructures.hpp"
 
-// Forward declaration.
+ // Forward declaration.
 template <class T>
 class Faulty;
 template <class T>
@@ -50,7 +50,7 @@ public:
 	Fault(FaultyLine<_primitive> * _location, Value<_primitive> _value);
 
 	/*
-	 * When a fault is destoryed, nothing will happen: the location will be 
+	 * When a fault is destoryed, nothing will happen: the location will be
 	 * untouched.
 	 */
 	~Fault();
@@ -67,7 +67,7 @@ public:
 	 *
 	 * @param _fault The fault to assign (copy).
 	 */
-	Fault<_primitive> operator = (const Fault<_primitive> _fault) ;
+	Fault<_primitive> operator = (const Fault<_primitive> _fault);
 
 	/*
 	 * Two faults are equal if they are on the same location and hold the same value.
@@ -120,23 +120,15 @@ public:
 	 */
 	FaultyLine<_primitive>* location() const;
 
-	/*
-	 * Return the faulty of this Fault.
-	 *
-	 * @return The faulty of this fault.
-	 */
 
-	//Faulty<_primitive>* getFaulty() const;
 
 	/*
-	 * (De)activate this Fault and return all output new events which need to be 
+	 * (De)activate this Fault and return all output new events which need to be
 	 * re-evaluated.
 	 *
 	 * @return New events (and their priority) created by activating this event.
 	 */
 	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go();
-
-	
 
 private:
 	/*
@@ -162,16 +154,7 @@ private:
 	/*
 	 * The Value (when active) of the Fault.
 	 */
-//DELETE (stored in the "Valued" portion)	Value<_primitive> value_;
-
-
-		/*
-	 * faulty of the Fault.
-	 */
-
-	//Faulty<_primitive>* Faulty_;
-
-
+	 //DELETE (stored in the "Valued" portion)	Value<_primitive> value_;
 };
 
 /*
@@ -243,20 +226,6 @@ public:
 	 */
 	bool isFaultActive(Fault<_primitive>* _fault);
 
-	/*
-	 * add fault to the fault set.
-	 *
-	 * @param _fault the Fault to add.
-	 * 
-	 */
-	//void addFault(Fault<_primitive>*_fault);
-	/*
-	 * delete fault to the fault set.
-	 *
-	 * @param _fault the Fault to delete.
-	 *
-	 */
-	//void deleteFault(Fault<_primitive>*_fault);
 private:
 	/*
 	 * Is there a fault currently active?
@@ -267,12 +236,6 @@ private:
 	 * What is the currently active fault?
 	 */
 	Fault<_primitive>* fault_;
-	/*
-fault set of a line
-
-*/
-	//std::unordered_set<Fault<_primitive>*>faults_;
-
 
 };
 

@@ -14,18 +14,17 @@
 #include "SimulationStructures.hpp"
 #include "Fault.h"
 
-//Forward declaration
+ //Forward declaration
 template <class T>
 class Faulty;
-template <class T>
-class Fault;
+
 /*
  * A Line with a potential Fault on it.
  *
  * @param _primitive The data primitive implemented by Values.
  */
 template <class _primitive>
-class FaultyLine : virtual public SimulationLine<_primitive> , virtual public Faulty<_primitive>, virtual public Fault<_primitive> {
+class FaultyLine : virtual public SimulationLine<_primitive>, virtual public Faulty<_primitive> {
 public:
 	/*
 	 * Create a with a "UNDEF" name.
@@ -38,10 +37,10 @@ public:
 	 *
 	 * @param _name The name of the Line
 	 */
-	FaultyLine(std::string _name) : 
-		SimulationLine<_primitive>(_name), 
+	FaultyLine(std::string _name) :
+		SimulationLine<_primitive>(_name),
 		Faulty<_primitive>(),
-		Connecting(_name) 
+		Connecting(_name)
 	{
 	};
 
@@ -56,41 +55,6 @@ public:
 	virtual Connecting* clone() const {
 		return new FaultyLine(this->name());
 	}
-
-
-	/*
-	 * add fault to the fault set.
-	 *
-	 * @param _fault the Fault to add.
-	 *
-	 */
-	void addFault(Fault<_primitive>*_fault) {
-		this->faults_.emplace(_fault);
-	}
-	/*
-	 * delete fault to the fault set.
-	 *
-	 * @param _fault the Fault to delete.
-	 *
-	 */
-	void deleteFault(Fault<_primitive>*_fault) {
-		this->faults_.erase(_fault);
-	}
-
-	/*
-	 * return faultline faults
-	 *
-	 * 
-	 *
-	 */
-	std::unordered_set<Fault<_primitive>*>getfaults()
-	{
-		return faults_
-	}
-
-
-private:
-	std::unordered_set<Fault<_primitive>*>faults_;
 };
 
 /*
@@ -118,14 +82,14 @@ public:
 	 * @param _outputs Output lines to the given node.
 	 */
 	FaultyNode(Function<_primitive>* _function,
-			std::unordered_set<FaultyLine<_primitive>*> _inputs = std::unordered_set<FaultyLine<_primitive>*>(), 
-			std::unordered_set<FaultyLine<_primitive>*> _outputs = std::unordered_set<FaultyLine<_primitive>*>()
+		std::unordered_set<FaultyLine<_primitive>*> _inputs = std::unordered_set<FaultyLine<_primitive>*>(),
+		std::unordered_set<FaultyLine<_primitive>*> _outputs = std::unordered_set<FaultyLine<_primitive>*>()
 	) :
 		SimulationNode<_primitive>(
 			_function,
 			std::unordered_set<SimulationLine<_primitive>*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<SimulationLine<_primitive>*>(_outputs.begin(), _outputs.end())
-		),
+			),
 		Connecting(
 			std::unordered_set<Connecting*>(_inputs.begin(), _inputs.end()),
 			std::unordered_set<Connecting*>(_outputs.begin(), _outputs.end())
