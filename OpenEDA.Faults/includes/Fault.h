@@ -120,7 +120,13 @@ public:
 	 */
 	FaultyLine<_primitive>* location() const;
 
+	/*
+	 * Return the faulty of this Fault.
+	 *
+	 * @return The faulty of this fault.
+	 */
 
+	//Faulty<_primitive>* getFaulty() const;
 
 	/*
 	 * (De)activate this Fault and return all output new events which need to be 
@@ -129,6 +135,8 @@ public:
 	 * @return New events (and their priority) created by activating this event.
 	 */
 	virtual std::set<std::pair<size_t, Evented<_primitive>*>> go();
+
+	
 
 private:
 	/*
@@ -155,6 +163,15 @@ private:
 	 * The Value (when active) of the Fault.
 	 */
 //DELETE (stored in the "Valued" portion)	Value<_primitive> value_;
+
+
+		/*
+	 * faulty of the Fault.
+	 */
+
+	//Faulty<_primitive>* Faulty_;
+
+
 };
 
 /*
@@ -226,6 +243,20 @@ public:
 	 */
 	bool isFaultActive(Fault<_primitive>* _fault);
 
+	/*
+	 * add fault to the fault set.
+	 *
+	 * @param _fault the Fault to add.
+	 * 
+	 */
+	//void addFault(Fault<_primitive>*_fault);
+	/*
+	 * delete fault to the fault set.
+	 *
+	 * @param _fault the Fault to delete.
+	 *
+	 */
+	//void deleteFault(Fault<_primitive>*_fault);
 private:
 	/*
 	 * Is there a fault currently active?
@@ -236,7 +267,13 @@ private:
 	 * What is the currently active fault?
 	 */
 	Fault<_primitive>* fault_;
-	
+	/*
+fault set of a line
+
+*/
+	//std::unordered_set<Fault<_primitive>*>faults_;
+
+
 };
 
 

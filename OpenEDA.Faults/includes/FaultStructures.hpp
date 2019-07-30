@@ -17,14 +17,15 @@
 //Forward declaration
 template <class T>
 class Faulty;
-
+template <class T>
+class Fault;
 /*
  * A Line with a potential Fault on it.
  *
  * @param _primitive The data primitive implemented by Values.
  */
 template <class _primitive>
-class FaultyLine : virtual public SimulationLine<_primitive> , virtual public Faulty<_primitive> {
+class FaultyLine : virtual public SimulationLine<_primitive> , virtual public Faulty<_primitive>, virtual public Fault<_primitive> {
 public:
 	/*
 	 * Create a with a "UNDEF" name.
@@ -55,6 +56,41 @@ public:
 	virtual Connecting* clone() const {
 		return new FaultyLine(this->name());
 	}
+
+
+	/*
+	 * add fault to the fault set.
+	 *
+	 * @param _fault the Fault to add.
+	 *
+	 */
+	void addFault(Fault<_primitive>*_fault) {
+		this->faults_.emplace(_fault);
+	}
+	/*
+	 * delete fault to the fault set.
+	 *
+	 * @param _fault the Fault to delete.
+	 *
+	 */
+	void deleteFault(Fault<_primitive>*_fault) {
+		this->faults_.erase(_fault);
+	}
+
+	/*
+	 * return faultline faults
+	 *
+	 * 
+	 *
+	 */
+	std::unordered_set<Fault<_primitive>*>getfaults()
+	{
+		return faults_
+	}
+
+
+private:
+	std::unordered_set<Fault<_primitive>*>faults_;
 };
 
 /*

@@ -14,6 +14,7 @@
 template <class _primitive>
 COP_fault_calculator< _primitive>::COP_fault_calculator(Circuit * _circuit, bool stuck_target) {
 	this->faults_ = FaultGenerator<_primitive>::allFaults(_circuit);
+	this->stuck_target_ = stuck_target;
 }
 
 template <class _primitive>
@@ -35,7 +36,7 @@ float COP_fault_calculator< _primitive>::faultCoverage() {
 
 template <class _primitive>
 float COP_fault_calculator< _primitive>::detect(Fault<_primitive>* _fault) {
-	FaultyLine<_primitive>* location = _fault->location();
+	Faulty<_primitive>* location = _fault->location();
 	COP* cast = dynamic_cast<COP*>(location);
 	if (cast == nullptr) {
 		throw "Cannot calculate fault-based fault coverage: COP not enabled on the fault location.";

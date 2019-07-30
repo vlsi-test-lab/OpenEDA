@@ -126,6 +126,9 @@ private:
 		this->baseFaultCoverage_ = _base;
 		return this->baseFaultCoverage_;
 	};
+
+
+	
 };
 
 #endif

@@ -20,10 +20,15 @@ template<class _primitive>
 Fault<_primitive>::Fault(FaultyLine<_primitive> * _location, Value<_primitive> _value) {
 	this->location_ = _location;
 	this->Valued<_primitive>::value(std::vector<Value<_primitive>>({ _value }));
+	this->location_->addFault(this);
+	
+	//this->Faulty_->addFault(this);
 }
 
 template<class _primitive>
 Fault<_primitive>::~Fault() {
+	this->location_->deleteFault(this);
+	//this->Faulty_->deleteFault(this);
 }
 
 template<class _primitive>
@@ -137,6 +142,14 @@ std::set<std::pair<size_t, Evented<_primitive>*>> Fault<_primitive>::go() {
 	return std::set<std::pair<size_t, Evented<_primitive>*>>();
 }
 
+
+/*
+template<class _primitive>
+Faulty<_primitive>* Fault<_primitive>::getFaulty()const {
+	return this->Faulty_;
+}
+*/
+
 template<class _primitive>
 Faulty<_primitive>::Faulty() {
 	this->active_ = false;
@@ -191,6 +204,24 @@ bool Faulty<_primitive>::isFaultActive(Fault<_primitive>* _fault) {
 	return fault_ == _fault;
 }
 
+/*
+template<class _primitive>
+void Faulty<_primitive>::addFault(Fault<_primitive>* _fault)
+
+{
+	this->faults_.emplace(_fault);
+}
+
+template<class _primitive>
+void Faulty<_primitive>::deleteFault(Fault<_primitive>*_fault)
+{
+	
+	
+	this->faults_.erase(_fault);
+	
+}
+
+*/
 template class Fault<bool>;
 template class Faulty<bool>;
 
