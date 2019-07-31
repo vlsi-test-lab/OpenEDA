@@ -195,7 +195,7 @@ Function<T>* CopyFunction<T>::clone() const {
 
 template<class T>
 Value<T> CopyFunction<T>::evaluate(std::vector<Value<T>> _vector) const {
-	if (this->value().valid() == true) {
+	if (this->value().valid()) {
 		return this->value();
 	}
 	if (_vector.size() == 0) {
